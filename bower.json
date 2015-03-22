@@ -1,0 +1,9 @@
+{
+  "name": "GymBroder",
+  "version": "1.0.0",
+  "devDependencies": {
+    "compass-mixins": "latest",
+    "breakpoint-sass": "~2.5.0",
+    "susy": "2.2.2.alpha.1"
+  }
+}

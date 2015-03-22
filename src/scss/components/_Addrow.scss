@@ -1,0 +1,8 @@
+.Addrow {
+  margin-bottom: $easy;
+  @include flex();
+}
+
+.Addrow-input {
+  margin-right: $easy;
+}

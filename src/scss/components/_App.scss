@@ -1,0 +1,9 @@
+.App {
+  max-width: $b-full;
+  margin: 0 auto;
+  padding: 0 $space;
+
+  @include breakpoint($b-full) {
+    padding: 0;
+  }
+}

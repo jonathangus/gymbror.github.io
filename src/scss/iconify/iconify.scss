@@ -1,0 +1,5 @@
+@import "icons.svg.scss";
+
+@mixin iconify($iconName){
+   @extend %iconify-#{$iconName};
+}

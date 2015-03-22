@@ -1,0 +1,36 @@
+::selection {
+  background: $color-base;
+  color: #FFF;
+}
+
+::-moz-selection {
+  background: $color-base;
+  color: #FFF;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background: $color-base;
+  color: $color-text;
+}
+
+input {
+  border: none;
+  padding: 10px 5px;
+  outline: none;
+  width: 100%;
+  border-radius: 0;
+}
+
+button,
+input,
+textarea {
+  color: $color-black;
+}
+
+p {
+  margin-bottom: $space;
+}
