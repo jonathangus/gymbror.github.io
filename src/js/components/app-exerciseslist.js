@@ -3,7 +3,6 @@ var React = require('react');
 var AppStore = require('../stores/app-store.js');
 var Exercise = require('./app-exercise.js');
 
-
 var ExercisesList = 
   React.createClass({
     render:function(){

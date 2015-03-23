@@ -7,7 +7,7 @@ var Exercise =
   React.createClass({
     render:function(){
       return (
-        <div>
+        <div className="Exercise">
           <h1>{this.props.exercise.name}</h1>
           <Graph exercise={this.props.exercise} key={this.props.key}/>
           <AddHandler exercise={this.props.exercise} />

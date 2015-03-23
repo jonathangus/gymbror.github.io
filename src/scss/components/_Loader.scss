@@ -1,27 +1,27 @@
 @include keyframes(rotate-one) {
   0% {
-    transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+    @include transform(rotateX(35deg) rotateY(-45deg) rotateZ(0deg));
   }
   100% {
-    transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+    @include transform(rotateX(35deg) rotateY(-45deg) rotateZ(360deg));
   }
 }
 
 @include keyframes(rotate-two) {
   0% {
-    transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+    @include transform(rotateX(50deg) rotateY(10deg) rotateZ(0deg));
   }
   100% {
-    transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+    @include transform(rotateX(50deg) rotateY(10deg) rotateZ(360deg));
   }
 }
 
 @include keyframes(rotate-three) {
   0% {
-    transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+    @include transform(rotateX(35deg) rotateY(55deg) rotateZ(0deg));
   }
   100% {
-    transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+    @include transform(rotateX(35deg) rotateY(55deg) rotateZ(360deg));
   }
 }
 
@@ -32,7 +32,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  perspective: 800px;
+  @include perspective(800px);
 }
 
 .Loader-inner {

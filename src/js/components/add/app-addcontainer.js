@@ -7,6 +7,9 @@ var ReactFireMixin = require('reactfire');
 
 var setsValue = [];
 
+var lastSet;
+var biggestLastVal = 0;
+
 var AddContainer =
   React.createClass({
     mixins:[ReactFireMixin],
@@ -16,7 +19,12 @@ var AddContainer =
       }
     },
     componentWillMount:function(){
-      this.bindAsArray(new Firebase('https://gymbror.firebaseio.com/exercises/' + this.props.exercise.id + '/sets'), 'sets');
+      this.bindAsArray(new Firebase('https://gymbror.firebaseio.com/exercises/' + this.props.exercise.name + '/sets'), 'sets');
+    },
+    componentDidMount:function(){
+      if(this.state.sets.length == 0) {
+        this.setState({sets: lastSet});
+      }
     },
     handleClick:function() {
       var sets = [];
@@ -36,20 +44,47 @@ var AddContainer =
 
     },
     addRow:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
-      lastSet.values.push(0);
-      this.setState({sets:this.state.sets})
+      if(this.state.sets.length > 0) {
+        var pastSet = this.state.sets[this.state.sets.length - 1];
+        pastSet.values.push(0);
+        this.setState({sets:this.state.sets});
+      }
+      else {
+        var pastSet = this.state.sets;
+        pastSet.values.push(0);
+        this.setState({sets:this.state.sets});
+      }
     },
     removeRow:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
-      lastSet.values.splice(-1, 1);
-      this.setState({sets:this.state.sets})
+
+      if(this.state.sets.length > 0) {
+        var pastSet = this.state.sets[this.state.sets.length - 1];
+        pastSet.values.splice(-1, 1);
+        this.setState({sets:this.state.sets});
+      }
+      else {
+        var pastSet = this.state.sets;
+        pastSet.values.splice(-1, 1);
+        this.setState({sets:this.state.sets});
+      }
     },
     render:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
+      var _this = this;
+      lastSet = this.state.sets[this.state.sets.length - 1];      
+
+      if(!lastSet || typeof lastSet == 'undefined') {
+        lastSet = {};
+        lastSet.values = [0];
+      }
+
+      if(typeof this.state.sets.values !== 'undefined') {
+        lastSet.values = this.state.sets.values;
+      }
+
       var rows = lastSet.values.map(function(value, i) {
         return <AddRow ref={'set-' + i} value={value} key={i}/>
       });
+
       return (
         <div className="AddContainer">
           {rows}

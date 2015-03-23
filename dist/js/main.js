@@ -26108,7 +26108,7 @@ var AppActions = {
 }
 
 module.exports = AppActions;
-},{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164}],153:[function(require,module,exports){
+},{"../constants/app-constants.js":164,"../dispatchers/app-dispatcher.js":165}],153:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AddRow = require('./app-addrow.js');
@@ -26117,6 +26117,9 @@ var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
 
 var setsValue = [];
+
+var lastSet;
+var biggestLastVal = 0;
 
 var AddContainer =
   React.createClass({displayName: 'AddContainer',
@@ -26127,7 +26130,12 @@ var AddContainer =
       }
     },
     componentWillMount:function(){
-      this.bindAsArray(new Firebase('https://gymbror.firebaseio.com/exercises/' + this.props.exercise.id + '/sets'), 'sets');
+      this.bindAsArray(new Firebase('https://gymbror.firebaseio.com/exercises/' + this.props.exercise.name + '/sets'), 'sets');
+    },
+    componentDidMount:function(){
+      if(this.state.sets.length == 0) {
+        this.setState({sets: lastSet});
+      }
     },
     handleClick:function() {
       var sets = [];
@@ -26147,20 +26155,47 @@ var AddContainer =
 
     },
     addRow:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
-      lastSet.values.push(0);
-      this.setState({sets:this.state.sets})
+      if(this.state.sets.length > 0) {
+        var pastSet = this.state.sets[this.state.sets.length - 1];
+        pastSet.values.push(0);
+        this.setState({sets:this.state.sets});
+      }
+      else {
+        var pastSet = this.state.sets;
+        pastSet.values.push(0);
+        this.setState({sets:this.state.sets});
+      }
     },
     removeRow:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
-      lastSet.values.splice(-1, 1);
-      this.setState({sets:this.state.sets})
+
+      if(this.state.sets.length > 0) {
+        var pastSet = this.state.sets[this.state.sets.length - 1];
+        pastSet.values.splice(-1, 1);
+        this.setState({sets:this.state.sets});
+      }
+      else {
+        var pastSet = this.state.sets;
+        pastSet.values.splice(-1, 1);
+        this.setState({sets:this.state.sets});
+      }
     },
     render:function() {
-      var lastSet = this.state.sets[this.state.sets.length - 1];
+      var _this = this;
+      lastSet = this.state.sets[this.state.sets.length - 1];      
+
+      if(!lastSet || typeof lastSet == 'undefined') {
+        lastSet = {};
+        lastSet.values = [0];
+      }
+
+      if(typeof this.state.sets.values !== 'undefined') {
+        lastSet.values = this.state.sets.values;
+      }
+
       var rows = lastSet.values.map(function(value, i) {
         return AddRow({ref: 'set-' + i, value: value, key: i})
       });
+
       return (
         React.DOM.div({className: "AddContainer"}, 
           rows, 
@@ -26232,7 +26267,7 @@ var AddRow =
 });
 
 module.exports = AddRow;
-},{"../../stores/app-store.js":168,"react":148}],156:[function(require,module,exports){
+},{"../../stores/app-store.js":169,"react":148}],156:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Graph = require('./app-graph.js');
@@ -26242,7 +26277,7 @@ var Exercise =
   React.createClass({displayName: 'Exercise',
     render:function(){
       return (
-        React.DOM.div(null, 
+        React.DOM.div({className: "Exercise"}, 
           React.DOM.h1(null, this.props.exercise.name), 
           Graph({exercise: this.props.exercise, key: this.props.key}), 
           AddHandler({exercise: this.props.exercise})
@@ -26257,7 +26292,6 @@ module.exports = Exercise;
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
 var Exercise = require('./app-exercise.js');
-
 
 var ExercisesList = 
   React.createClass({displayName: 'ExercisesList',
@@ -26278,7 +26312,7 @@ var ExercisesList =
 });
 
 module.exports = ExercisesList;
-},{"../stores/app-store.js":168,"./app-exercise.js":156,"react":148}],158:[function(require,module,exports){
+},{"../stores/app-store.js":169,"./app-exercise.js":156,"react":148}],158:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -26328,7 +26362,7 @@ module.exports = Graph;
 // <svg id={'Graph-' + this.props.key} version="1.1" xmlns="http://www.w3.org/2000/svg">
 
 //         </svg>
-},{"../stores/app-store.js":168,"react":148,"snapsvg":150}],159:[function(require,module,exports){
+},{"../stores/app-store.js":169,"react":148,"snapsvg":150}],159:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -26353,6 +26387,7 @@ var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
 var Login = require('./login/app-login.js');
 var Loader = require('./app-loader.js');
+var NewExercise = require('./exercise/add-newexercise.js');
 
 var APP = 
   React.createClass({displayName: 'APP',
@@ -26373,19 +26408,55 @@ var APP =
         _this.setState({loading: false});
       });
     },
+    addHandler:function(name) {
+      var ex = {};
+      ex.name = name;
+      this.firebaseRef.child(name).set({name: name});
+    },
     render:function(){
       return (
         React.DOM.div(null, 
           Login(null), 
-           this.state.loading ? Loader(null) : null, 
-          ExercisesList({exercises: this.state.exercises})
+           this.state.loading ? Loader(null) : React.DOM.div(null, ExercisesList({exercises: this.state.exercises}), " ", NewExercise({addWorkout: this.addHandler}))
+          
+          
         )
       )
     }
 });
 
 module.exports = APP;
-},{"./app-exerciseslist.js":157,"./app-loader.js":159,"./login/app-login.js":161,"firebase":11,"react":148,"reactfire":149}],161:[function(require,module,exports){
+},{"./app-exerciseslist.js":157,"./app-loader.js":159,"./exercise/add-newexercise.js":161,"./login/app-login.js":162,"firebase":11,"react":148,"reactfire":149}],161:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+
+var NewExercise = React.createClass({displayName: 'NewExercise',
+  getInitialState:function(){
+    return {
+      visible: false,
+      value: null
+    }
+  },
+  addWorkout:function() {
+    this.props.addWorkout(this.state.value);
+    this.setState({value: ''});
+  },
+  handleChange:function(event) {
+    this.setState({value: event.target.value});
+  },
+  render:function(){
+    return (
+      React.DOM.div(null, 
+        React.DOM.h2(null, "Add new exercise"), 
+        React.DOM.input({onChange: this.handleChange, value: this.state.value}), 
+         this.state.value ? React.DOM.button({onClick: this.addWorkout, className: "Button u-easy-top"}, "Submit") : null
+      )
+    )
+  }
+});
+
+module.exports = NewExercise;
+},{"react":148}],162:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var LoginForm = require('./app-loginform.js');
@@ -26437,7 +26508,7 @@ var Login =
 });
 
 module.exports = Login;
-},{"../../firebase-simple-login.js":167,"./app-loginform.js":162,"firebase":11,"react":148}],162:[function(require,module,exports){
+},{"../../firebase-simple-login.js":168,"./app-loginform.js":163,"firebase":11,"react":148}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -26458,14 +26529,14 @@ var LoginForm =
 });
 
 module.exports = LoginForm;
-},{"react":148}],163:[function(require,module,exports){
+},{"react":148}],164:[function(require,module,exports){
 module.exports = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   INCREASE_ITEM: 'INCREASE_ITEM',
   DECREASE_ITEM: 'DECREASE_ITEM',
 };
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var merge  = require('react/lib/merge');
 
@@ -26479,7 +26550,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 })
 
 module.exports = AppDispatcher;
-},{"./dispatcher.js":165,"react/lib/merge":134}],165:[function(require,module,exports){
+},{"./dispatcher.js":166,"react/lib/merge":134}],166:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -26535,7 +26606,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 });
 
 module.exports = Dispatcher;
-},{"es6-promise":1,"react/lib/merge":134}],166:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":134}],167:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var React = require('react');
@@ -26544,7 +26615,7 @@ React.renderComponent(
   APP(null),
   document.getElementById('app'));
 
-},{"./components/app":160,"react":148}],167:[function(require,module,exports){
+},{"./components/app":160,"react":148}],168:[function(require,module,exports){
 (function (process){
 (function() {var COMPILED=!0,goog=goog||{};goog.global=this;goog.exportPath_=function(a,d,e){a=a.split(".");e=e||goog.global;a[0]in e||!e.execScript||e.execScript("var "+a[0]);for(var f;a.length&&(f=a.shift());)a.length||void 0===d?e=e[f]?e[f]:e[f]={}:e[f]=d};goog.define=function(a,d){var e=d;COMPILED||goog.global.CLOSURE_DEFINES&&Object.prototype.hasOwnProperty.call(goog.global.CLOSURE_DEFINES,a)&&(e=goog.global.CLOSURE_DEFINES[a]);goog.exportPath_(a,e)};goog.DEBUG=!0;goog.LOCALE="en";goog.TRUSTED_SITE=!0;
 goog.provide=function(a){if(!COMPILED){if(goog.isProvided_(a))throw Error('Namespace "'+a+'" already declared.');delete goog.implicitNamespaces_[a];for(var d=a;(d=d.substring(0,d.lastIndexOf(".")))&&!goog.getObjectByName(d);)goog.implicitNamespaces_[d]=!0}goog.exportPath_(a)};goog.setTestOnly=function(a){if(COMPILED&&!goog.DEBUG)throw a=a||"",Error("Importing test-only code into non-debug environment"+a?": "+a:".");};goog.forwardDeclare=function(a){};
@@ -26695,7 +26766,7 @@ goog.exportProperty(FirebaseSimpleLogin,"onOpen",FirebaseSimpleLogin.onOpen);Fir
 module.exports = FirebaseSimpleLogin;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":13}],168:[function(require,module,exports){
+},{"oMfpAn":13}],169:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var AppConstants = require('../constants/app-constants.js');
 var merge = require('react/lib/merge');
@@ -26784,4 +26855,4 @@ var AppStore = merge(EventEmitter.prototype, {
 });
 
 module.exports = AppStore;
-},{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164,"events":12,"firebase":11,"react/lib/merge":134}]},{},[166])
+},{"../constants/app-constants.js":164,"../dispatchers/app-dispatcher.js":165,"events":12,"firebase":11,"react/lib/merge":134}]},{},[167])

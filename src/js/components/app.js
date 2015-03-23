@@ -5,6 +5,7 @@ var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
 var Login = require('./login/app-login.js');
 var Loader = require('./app-loader.js');
+var NewExercise = require('./exercise/add-newexercise.js');
 
 var APP = 
   React.createClass({
@@ -25,12 +26,18 @@ var APP =
         _this.setState({loading: false});
       });
     },
+    addHandler:function(name) {
+      var ex = {};
+      ex.name = name;
+      this.firebaseRef.child(name).set({name: name});
+    },
     render:function(){
       return (
         <div>
           <Login />
-          { this.state.loading ? <Loader /> : null }
-          <ExercisesList exercises={this.state.exercises} />
+          { this.state.loading ? <Loader /> : <div><ExercisesList exercises={this.state.exercises} /> <NewExercise addWorkout={this.addHandler} /></div>}
+          
+          
         </div>
       )
     }
