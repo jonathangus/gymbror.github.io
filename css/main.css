@@ -338,6 +338,9 @@ table {
 td, th {
   padding: 0; }
 
+.u-easy-top {
+  margin-top: 10px; }
+
 ::selection {
   background: #2c3e50;
   color: #FFF; }
@@ -345,6 +348,9 @@ td, th {
 ::-moz-selection {
   background: #2c3e50;
   color: #FFF; }
+
+html {
+  box-sizing: border-box; }
 
 *, *:before, *:after {
   box-sizing: inherit; }
@@ -364,37 +370,46 @@ button, input, textarea {
   color: #222; }
 
 p {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-top: 0; }
 
 .Login {
   display: none; }
 
 @-moz-keyframes rotate-one {
   0% {
+    -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
 
   100% {
+    -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); } }
 
 @-webkit-keyframes rotate-one {
   0% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
 
   100% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); } }
 
 @-o-keyframes rotate-one {
   0% {
+    -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
 
   100% {
+    -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); } }
 
 @-ms-keyframes rotate-one {
   0% {
+    -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
 
   100% {
+    -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); } }
 
 @keyframes rotate-one {
@@ -406,30 +421,38 @@ p {
 
 @-moz-keyframes rotate-two {
   0% {
+    -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
 
   100% {
+    -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); } }
 
 @-webkit-keyframes rotate-two {
   0% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
 
   100% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); } }
 
 @-o-keyframes rotate-two {
   0% {
+    -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
 
   100% {
+    -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); } }
 
 @-ms-keyframes rotate-two {
   0% {
+    -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
 
   100% {
+    -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); } }
 
 @keyframes rotate-two {
@@ -441,30 +464,38 @@ p {
 
 @-moz-keyframes rotate-three {
   0% {
+    -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
 
   100% {
+    -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); } }
 
 @-webkit-keyframes rotate-three {
   0% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
 
   100% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); } }
 
 @-o-keyframes rotate-three {
   0% {
+    -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
 
   100% {
+    -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); } }
 
 @-ms-keyframes rotate-three {
   0% {
+    -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
 
   100% {
+    -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); } }
 
 @keyframes rotate-three {
@@ -481,6 +512,10 @@ p {
   width: 64px;
   height: 64px;
   border-radius: 50%;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  -ms-perspective: 800px;
+  -o-perspective: 800px;
   perspective: 800px; }
 
 .Loader-inner {
@@ -521,12 +556,15 @@ p {
   animation: rotate-three 1s linear infinite; }
 
 .App {
-  max-width: 1040px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 20px; }
-  @media all and (min-width: 1040px) {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 40px; }
+  @media all and (min-width: 800px) {
     .App {
-      padding: 0; } }
+      padding-left: 0;
+      padding-right: 0; } }
 
 .Addrow {
   margin-bottom: 10px;
@@ -578,3 +616,7 @@ p {
 
 .AddContainer {
   margin-top: 10px; }
+
+.Exercise {
+  padding: 20px 0;
+  border-bottom: 1px solid #fafafa; }
