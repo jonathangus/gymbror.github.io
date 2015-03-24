@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* For now the only way to use Susy with Libass, https://github.com/ericam/susy/issues/408, https://github.com/ericam/susy */
 /* Compass mixins, https://github.com/Igosuki/compass-mixins */
 /*
@@ -15,6 +16,180 @@
 /* Breakpoint mixin, https://github.com/at-import/breakpoint */
 .Button--add {
   background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%3E%3Cpath%20d%3D%22M516.667%20200H333.333V16.667C333.333%207.462%20325.87%200%20316.667%200h-100C207.462%200%20200%207.462%20200%2016.667V200H16.667C7.462%20200%200%20207.462%200%20216.667v100c0%209.204%207.462%2016.666%2016.667%2016.666H200v183.334c0%209.204%207.462%2016.666%2016.667%2016.666h100c9.204%200%2016.667-7.462%2016.667-16.666V333.333h183.333c9.204%200%2016.667-7.462%2016.667-16.666v-100C30%20207.462%20525.87%20200%20516.667%20200z%22%2F%3E%3C%2Fsvg%3E'); }
+
+/*!
+ * Pikaday
+ * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/
+ */
+.pika-single {
+  z-index: 9999;
+  display: block;
+  position: relative;
+  color: #333;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-bottom-color: #bbb;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+/*
+clear child float (pika-lendar), using the famous micro clearfix hack
+http://nicolasgallagher.com/micro-clearfix-hack/
+*/
+.pika-single:before, .pika-single:after {
+  content: " ";
+  display: table; }
+
+.pika-single:after {
+  clear: both; }
+
+.pika-single {
+  *zoom: 1; }
+
+.pika-single.is-hidden {
+  display: none; }
+
+.pika-single.is-bound {
+  position: absolute;
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.5); }
+
+.pika-lendar {
+  float: left;
+  width: 240px;
+  margin: 8px; }
+
+.pika-title {
+  position: relative;
+  text-align: center; }
+
+.pika-label {
+  display: inline-block;
+  *display: inline;
+  position: relative;
+  z-index: 9999;
+  overflow: hidden;
+  margin: 0;
+  padding: 5px 3px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+  background-color: #fff; }
+
+.pika-title select {
+  cursor: pointer;
+  position: absolute;
+  z-index: 9998;
+  margin: 0;
+  left: 0;
+  top: 5px;
+  filter: alpha(opacity=0);
+  opacity: 0; }
+
+.pika-prev, .pika-next {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  border: 0;
+  padding: 0;
+  width: 20px;
+  height: 30px;
+  /* hide text using text-indent trick, using width value (it's enough) */
+  text-indent: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 75% 75%;
+  opacity: .5;
+  *position: absolute;
+  *top: 0; }
+
+.pika-prev:hover, .pika-next:hover {
+  opacity: 1; }
+
+.pika-prev, .is-rtl .pika-next {
+  float: left;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==');
+  *left: 0; }
+
+.pika-next, .is-rtl .pika-prev {
+  float: right;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=');
+  *right: 0; }
+
+.pika-prev.is-disabled, .pika-next.is-disabled {
+  cursor: default;
+  opacity: .2; }
+
+.pika-select {
+  display: inline-block;
+  *display: inline; }
+
+.pika-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0; }
+
+.pika-table th, .pika-table td {
+  width: 14.28571%;
+  padding: 0; }
+
+.pika-table th {
+  color: #999;
+  font-size: 12px;
+  line-height: 25px;
+  font-weight: bold;
+  text-align: center; }
+
+.pika-button {
+  cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  border: 0;
+  margin: 0;
+  width: 100%;
+  padding: 5px;
+  color: #666;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: right;
+  background: #f5f5f5; }
+
+.pika-week {
+  font-size: 11px;
+  color: #999; }
+
+.is-today .pika-button {
+  color: #33aaff;
+  font-weight: bold; }
+
+.is-selected .pika-button {
+  color: #fff;
+  font-weight: bold;
+  background: #33aaff;
+  box-shadow: inset 0 1px 3px #178fe5;
+  border-radius: 3px; }
+
+.is-disabled .pika-button {
+  pointer-events: none;
+  cursor: default;
+  color: #999;
+  opacity: .3; }
+
+.pika-button:hover {
+  color: #fff !important;
+  background: #ff8000 !important;
+  box-shadow: none !important;
+  border-radius: 3px !important; }
+
+/* styling for abbr */
+.pika-table abbr {
+  border-bottom: none;
+  cursor: help; }
 
 /*! normalize.css v3.0.2 | MIT License | github.com/necolas/normalize.css */
 /**
@@ -341,6 +516,9 @@ td, th {
 .u-easy-top {
   margin-top: 10px; }
 
+.u-easy-bottom {
+  margin-bottom: 10px; }
+
 ::selection {
   background: #2c3e50;
   color: #FFF; }
@@ -374,7 +552,24 @@ p {
   margin-top: 0; }
 
 .Login {
-  display: none; }
+  position: absolute;
+  z-index: 10;
+  right: 20px;
+  top: 20px; }
+  @media all and (min-width: 500px) {
+    .Login {
+      right: 0; } }
+
+.Login .Button {
+  margin-right: 0; }
+
+.Login-container {
+  width: 200px;
+  padding: 20px;
+  background: #2c3e50;
+  border: 1px solid #FFF;
+  position: absolute;
+  right: 0; }
 
 @-moz-keyframes rotate-one {
   0% {
@@ -507,8 +702,8 @@ p {
 
 .Loader {
   position: absolute;
-  top: calc(50% - 32px);
-  left: calc(50% - 32px);
+  left: 50%;
+  top: 50%;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -516,7 +711,12 @@ p {
   -moz-perspective: 800px;
   -ms-perspective: 800px;
   -o-perspective: 800px;
-  perspective: 800px; }
+  perspective: 800px;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
 
 .Loader-inner {
   position: absolute;
@@ -556,12 +756,14 @@ p {
   animation: rotate-three 1s linear infinite; }
 
 .App {
-  max-width: 800px;
+  position: relative;
+  min-height: 100vh;
+  max-width: 500px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 40px; }
-  @media all and (min-width: 800px) {
+  @media all and (min-width: 500px) {
     .App {
       padding-left: 0;
       padding-right: 0; } }
@@ -584,6 +786,9 @@ p {
   padding: 10px 15px;
   color: #fafafa;
   margin-right: 10px; }
+
+button.Button, input.Button {
+  width: auto; }
 
 .Button:last-child {
   margin-right: 0; }
@@ -620,3 +825,17 @@ p {
 .Exercise {
   padding: 20px 0;
   border-bottom: 1px solid #fafafa; }
+
+.Set {
+  position: relative;
+  margin-bottom: 20px; }
+
+.Set .Button {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%); }
