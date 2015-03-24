@@ -6,13 +6,16 @@ var LoginForm =
     onAuth:function() {
       this.props.onAuth('aaada a');
     },
+    tryLogin:function(e) {
+      e.preventDefault();
+    },
     render:function() {
       return (
-        <div>
-          <input />
-          <input />
-          <button onClick={this.onAuth}>submit</button>
-        </div>
+        <form className="Login-container" onSubmit={this.tryLogin}>
+          <input placeholder="Username" className="u-easy-bottom" />
+          <input placeholder="Password" type="password" className="u-easy-bottom" />
+          <button type="submit" className="Button" onClick={this.onAuth}>submit</button>
+        </form>
       )
     }
 });

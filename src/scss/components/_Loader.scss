@@ -27,12 +27,13 @@
 
 .Loader {
   position: absolute;
-  top: calc(50% - 32px);
-  left: calc(50% - 32px);
+  left: 50%;
+  top: 50%;
   width: 64px;
   height: 64px;
   border-radius: 50%;
   @include perspective(800px);
+  @include transform(translate(-50%, -50%));
 }
 
 .Loader-inner {

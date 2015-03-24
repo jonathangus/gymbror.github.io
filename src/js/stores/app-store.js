@@ -6,36 +6,18 @@ var Firebase = require('firebase');
 
 var CHANGE_EVENT = "change";
 
-var _exercises = [];
-
-_exercises[1] = {
-  'name': 'Marklyft',
-  'sets': [
-    [50, 50, 50, 55, 55],
-    [55, 55, 55, 60, 60]
-  ]
-}
-
-
-_exercises[2] = {
-  'name': 'Benpress',
-  'sets': [
-    [50, 50, 50],
-    [55, 55, 55]
-  ]
-}
-
-// var ref = new Firebase('https://gymbror.firebaseio.com/exercises');
-// ref.on("value", function(snapshot) {
-//   console.log(snapshot.val());
-// });
-
 function _addWorkout(name, sets) {
   _exercises.forEach(function(value) {
     if(value.name == name) {
       value.sets.push(sets);
     }
   }); 
+}
+
+var ref = new Firebase('https://gymbror.firebaseio.com/exercises');
+
+function _removeItem(name, key) {
+  ref.child(name + '/sets/' + key).remove();
 }
 
 var AppStore = merge(EventEmitter.prototype, {
@@ -67,7 +49,7 @@ var AppStore = merge(EventEmitter.prototype, {
         break;
 
       case AppConstants.REMOVE_ITEM:
-        _removeItem(payload.action.index);
+        _removeItem(payload.action.name, payload.action.key);
         break;
 
       case AppConstants.INCREASE_ITEM:

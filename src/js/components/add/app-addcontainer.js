@@ -4,7 +4,9 @@ var AddRow = require('./app-addrow.js');
 var AppActions = require('../../actions/app-actions.js');
 var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
+var Pikaday = require('pikaday');
 
+var picker;
 var setsValue = [];
 
 var lastSet;
@@ -25,33 +27,22 @@ var AddContainer =
       if(this.state.sets.length == 0) {
         this.setState({sets: lastSet});
       }
+      picker = new Pikaday({ field: this.refs.date.getDOMNode() });
+      picker.setDate(new Date());
+      this.refs.lastrow.getDOMNode().querySelector('input').focus();
     },
-    handleClick:function() {
-      var sets = [];
-
-      for(var index in this.refs) { 
-        var attr = this.refs[index];
-        sets.push(attr.getDOMNode().querySelector('input').value);
-      }
-
-      var newWorkout = {
-        date: new Date().getTime(),
-        values: sets
-      }
-
-      this.firebaseRefs.sets.push(newWorkout);
-      this.props.handleClick();
-
+    componentWillUnmount:function() {
+      picker.destroy();
     },
     addRow:function() {
       if(this.state.sets.length > 0) {
         var pastSet = this.state.sets[this.state.sets.length - 1];
-        pastSet.values.push(0);
+        pastSet.values.push('');
         this.setState({sets:this.state.sets});
       }
       else {
         var pastSet = this.state.sets;
-        pastSet.values.push(0);
+        pastSet.values.push('');
         this.setState({sets:this.state.sets});
       }
     },
@@ -68,6 +59,29 @@ var AddContainer =
         this.setState({sets:this.state.sets});
       }
     },
+    addWorkout:function(e) {
+      e.preventDefault();
+
+      var sets = [];
+      for(var index in this.refs) {
+          if(index !== 'date') {
+          var attr = this.refs[index];
+          sets.push(attr.getDOMNode().querySelector('input').value);
+        }
+      }
+
+      var d = new Date(picker.getDate());
+      var newWorkout = {
+        date: d.getTime(),
+        values: sets
+      }
+
+      this.firebaseRefs.sets.push(newWorkout);
+      this.props.handleClick();
+
+      
+      return;
+    },
     render:function() {
       var _this = this;
       lastSet = this.state.sets[this.state.sets.length - 1];      
@@ -82,16 +96,22 @@ var AddContainer =
       }
 
       var rows = lastSet.values.map(function(value, i) {
-        return <AddRow ref={'set-' + i} value={value} key={i}/>
+        if (i === lastSet.values.length - 1) {
+          return <AddRow ref={'lastrow'} value={value} key={i}/>
+        }
+        else {
+          return <AddRow ref={'set' + i} value={value} key={i}/>
+        }
       });
 
       return (
-        <div className="AddContainer">
+        <form className="AddContainer" onSubmit={this.addWorkout}>
           {rows}
-          <button className="Button Button--half" onClick={this.addRow}>Add Row</button>
-          <button className="Button Button--half" onClick={this.removeRow}>Remove Row</button>
-          <button className="Button Button--full" onClick={this.handleClick}>Add Set</button>
-        </div>
+          <input type="text" className="u-easy-bottom" ref={'date'} />
+          <button type="button" className="Button Button--half" onClick={this.addRow}>Add Row</button>
+          <button type="button" className="Button Button--half" onClick={this.removeRow}>Remove Row</button>
+          <input className="Button" type="submit" value="Add set" />
+        </form>
       )
     }
 });

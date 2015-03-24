@@ -10,6 +10,7 @@
 $breakpoint-force-media-all: true; // ¯\_(ツ)_/¯
 
 @import "./iconify/iconify.scss";
+@import "./pickaday";
 
 @import "normalize";
 @import "variables";
@@ -24,3 +25,4 @@ $breakpoint-force-media-all: true; // ¯\_(ツ)_/¯
 @import "components/Button";
 @import "components/AddContainer";
 @import "components/Exercise";
+@import "components/Set";

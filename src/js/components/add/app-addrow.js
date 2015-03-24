@@ -22,8 +22,8 @@ var AddRow =
       return (
         <div className="Addrow">
           <input className="Addrow-input" type="text" value={this.state.value} onChange={this.handleChange} />
-          <div className="Button" onClick={this.decrease}>-</div>
-          <div className="Button" onClick={this.increase}>+</div>
+          <button type="button" className="Button" onClick={this.decrease}>-</button>
+          <button type="button" className="Button" onClick={this.increase}>+</button>
         </div>
       )
     }

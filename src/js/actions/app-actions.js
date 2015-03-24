@@ -9,10 +9,11 @@ var AppActions = {
       sets: sets
     })
   },
-  removeItem:function(index){
+  removeWorkout:function(name, key){
     AppDispatcher.handleViewAction({
       actionType: AppConstants.REMOVE_ITEM,
-      index: index
+      name: name,
+      key: key
     })
   },
   decreaseItem:function(index){

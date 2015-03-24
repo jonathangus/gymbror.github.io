@@ -16,7 +16,7 @@ var Login =
   React.createClass({
     getInitialState:function(){
       return {
-        show: true
+        show: false
       }
     },
     showLogin:function() {
@@ -41,8 +41,8 @@ var Login =
     render:function() {
       return (
         <div className="Login">
-          <button onClick={this.showLogin}>Login</button>
-          { this.state.show ? <LoginForm onAuth={this.handleLogin} /> : null }
+          <button className="Button u-easy-bottom" onClick={this.showLogin}>Login</button>
+          { this.state.show ? <LoginForm ref={"form"} onAuth={this.handleLogin} /> : null }
         </div>
       )
     }

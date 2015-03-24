@@ -1,4 +1,6 @@
 .App {
+  position: relative;
+  min-height: 100vh;
   max-width: $b-full;
   margin: 0 auto;
   padding-left: $space;

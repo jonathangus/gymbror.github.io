@@ -1,0 +1,11 @@
+.Set {
+  position: relative;
+  margin-bottom: $space;
+}
+
+.Set .Button {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  @include transform(translateY(-50%));
+}

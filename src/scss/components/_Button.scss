@@ -7,6 +7,11 @@
   margin-right: $easy;
 }
 
+button.Button,
+input.Button {
+  width: auto;
+}
+
 .Button:last-child {
   margin-right: 0;
 }

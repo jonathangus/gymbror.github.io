@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
+var AppActions = require('../actions/app-actions.js');
 var AppStore = require('../stores/app-store.js');
 var Snap = require('snapsvg');
 
@@ -24,15 +25,22 @@ var Graph =
     componentDidMount:function(){
       //graphSnap('#Graph-' + this.props.key);
     },
+    removeItem:function(key) {
+      AppActions.removeWorkout(this.props.exercise.name, key);
+    },
     render:function(){
       var sets = [];
 
       for(var index in this.props.exercise.sets) {
         var set = this.props.exercise.sets[index];
-        var graph = <p><b>{_getDate(set.date)}</b> <br />reps: {set.values.join(', ')}</p>;
+        var graph = <div className="Set">
+          <span>{_getDate(set.date)}</span> 
+          <br />
+          <span>reps: {set.values.join(', ')}</span>
+          <button className="Button" onClick={this.removeItem.bind(this, index)}>Remove</button>
+        </div>;
         sets.push(graph);
       }
-
 
       return (
         <div> 

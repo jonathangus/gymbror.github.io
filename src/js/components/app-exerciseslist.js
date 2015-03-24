@@ -9,7 +9,7 @@ var ExercisesList =
       var items = this.props.exercises.map(function(exercise, key){
         return (
           <div>
-            <Exercise key={'ex-' + key} exercise={exercise}/>
+            <Exercise key={key} exercise={exercise}/>
           </div>
         )
       });
