@@ -30172,22 +30172,17 @@ var AppActions = {
       key: key
     })
   },
-  decreaseItem:function(index){
+  registerUser: function(email, password) {
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.DECREASE_ITEM,
-      index: index
-    })
+      actionType: AppConstants.REGISTER_USER,
+      email: email,
+      password: password
+    });
   },
-  increaseItem:function(index){
-    AppDispatcher.handleViewAction({
-      actionType: AppConstants.INCREASE_ITEM,
-      index: index
-    })
-  }
 }
 
 module.exports = AppActions;
-},{"../constants/app-constants.js":166,"../dispatchers/app-dispatcher.js":167}],155:[function(require,module,exports){
+},{"../constants/app-constants.js":168,"../dispatchers/app-dispatcher.js":170}],155:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AddRow = require('./app-addrow.js');
@@ -30366,7 +30361,7 @@ var AddRow =
 });
 
 module.exports = AddRow;
-},{"../../stores/app-store.js":171,"react":150}],158:[function(require,module,exports){
+},{"../../stores/app-store.js":178,"react":150}],158:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Graph = require('./app-graph.js');
@@ -30411,7 +30406,7 @@ var ExercisesList =
 });
 
 module.exports = ExercisesList;
-},{"../stores/app-store.js":171,"./app-exercise.js":158,"react":150}],160:[function(require,module,exports){
+},{"../stores/app-store.js":178,"./app-exercise.js":158,"react":150}],160:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30469,7 +30464,7 @@ module.exports = Graph;
 // <svg id={'Graph-' + this.props.key} version="1.1" xmlns="http://www.w3.org/2000/svg">
 
 //         </svg>
-},{"../actions/app-actions.js":154,"../stores/app-store.js":171,"react":150,"snapsvg":152}],161:[function(require,module,exports){
+},{"../actions/app-actions.js":154,"../stores/app-store.js":178,"react":150,"snapsvg":152}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -30485,20 +30480,40 @@ var Loader = React.createClass({displayName: 'Loader',
   }
 });
 
-module.exports = Loader;
+// module.exports = Loader;
 },{"react":150}],162:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+
+var Notification = React.createClass({displayName: 'Notification',
+  render:function(){
+    return (
+      React.DOM.div({className: "Notification Notification--" + this.props.type}, 
+        this.props.message
+      )
+    )
+  }
+});
+
+module.exports = Notification;
+},{"react":150}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesList = require('./app-exerciseslist.js');
 var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
-var Login = require('./login/app-login.js');
 var Loader = require('./app-loader.js');
-var NewExercise = require('./exercise/add-newexercise.js');
+var NewExercise = require('./exercise/add-newexercise.js')
+var Auth = require('./auth/app-auth.js');
+var LoggedInMixin = require('../mixins/LoggedInMixin.js');
+
+function cartItems(){
+  return {items: AppStore.getCart()}
+}
 
 var APP = 
   React.createClass({displayName: 'APP',
-    mixins:[ReactFireMixin],
+    mixins:[ReactFireMixin, LoggedInMixin],
     getInitialState:function(){
       return {
         exercises: [],
@@ -30523,17 +30538,140 @@ var APP =
     render:function(){
       return (
         React.DOM.div(null, 
-          Login(null), 
-           this.state.loading ? Loader(null) : React.DOM.div(null, ExercisesList({exercises: this.state.exercises}), " ", NewExercise({addWorkout: this.addHandler}))
-          
-          
+          Auth(null)
         )
       )
     }
 });
 
 module.exports = APP;
-},{"./app-exerciseslist.js":159,"./app-loader.js":161,"./exercise/add-newexercise.js":163,"./login/app-login.js":164,"firebase":11,"react":150,"reactfire":151}],163:[function(require,module,exports){
+
+ // { this.state.loading ? <Loader /> : <div><ExercisesList exercises={this.state.exercises} /> <NewExercise addWorkout={this.addHandler} /></div>}
+},{"../mixins/LoggedInMixin.js":176,"./app-exerciseslist.js":159,"./app-loader.js":161,"./auth/app-auth.js":164,"./exercise/add-newexercise.js":167,"firebase":11,"react":150,"reactfire":151}],164:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var Login = require('./app-login.js');
+var Register = require('./app-register.js');
+var AppStore = require('../../stores/app-store.js');
+
+var Auth = React.createClass({displayName: 'Auth',
+  getInitialState:function(){
+    return {
+      toggle: false 
+    }
+  },
+  toggle:function() {
+    this.setState({toggle: !this.state.toggle});
+  },
+  handleLogin:function(email, password) {
+    AppStore.loginUser(email, password);
+  },
+  onRegistred:function() {
+    this.toggle();
+  },
+  render:function(){
+    return (
+      React.DOM.div({className: "Auth"}, 
+        React.DOM.button({className: "Button", onClick: this.toggle}, "Login"), 
+        React.DOM.button({className: "Button", onClick: this.toggle}, "Register"), 
+         this.state.toggle ? Login({handleLogin: this.handleLogin}) : Register({onSuccess: this.onRegistred})
+      )
+    )
+  }
+});
+
+module.exports = Auth;
+},{"../../stores/app-store.js":178,"./app-login.js":165,"./app-register.js":166,"react":150}],165:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+
+var Login = 
+  React.createClass({displayName: 'Login',
+    componentDidMount:function(){
+      this.refs.email.getDOMNode().focus();
+    },
+    handleLogin:function(e) {
+      e.preventDefault();
+      var email = this.refs.email.getDOMNode().value;
+      var password = this.refs.password.getDOMNode().value;
+      this.props.handleLogin(email, password);
+    },
+    render:function() {
+      return (
+        React.DOM.div(null, 
+          React.DOM.h2(null, "Login"), 
+          React.DOM.form({onSubmit: this.handleLogin, className: "Login"}, 
+            React.DOM.input({ref: "email", placeholder: "Email", className: "u-easy-bottom"}), 
+            React.DOM.input({ref: "password", placeholder: "Password", type: "password", className: "u-easy-bottom"}), 
+            React.DOM.button({type: "submit", className: "Button"}, "submit")
+          )
+        )
+      )
+    }
+});
+
+module.exports = Login;
+},{"react":150}],166:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var RegisterUserStore = require('../../stores/RegisterUserStore.js');
+var AppActions = require('../../actions/app-actions.js');
+var Notification = require('../app-notification.js');
+
+var getState = function() {
+  return {
+    validationMessages: RegisterUserStore.getValidationMessages(),
+  };
+};
+
+var Register = 
+  React.createClass({displayName: 'Register',
+    getInitialState : function() {
+      return {
+        validationMessages : []
+      };
+    },
+    componentDidMount: function() {
+      RegisterUserStore.addChangeListener(this._onChange);
+      this.refs.email.getDOMNode().focus();
+    },
+    componentWillUnmount: function() {
+      RegisterUserStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+      this.setState(getState());
+    },
+    handleRegister:function(e) {
+      e.preventDefault();
+      this.setState({validationMessages: []});
+      var email = this.refs.email.getDOMNode().value;
+      var password = this.refs.password.getDOMNode().value;
+      AppActions.registerUser(email, password);
+      console.log(this.props.onSuccess());
+    },
+    render:function() {
+      var validationMessages = '';
+      if(this.state.validationMessages.length > 0) {
+        validationMessages = this.state.validationMessages.map(function(value, i) {
+          return Notification({key: i, message: value.message, type: value.type})
+        });
+      }
+      return (
+        React.DOM.div(null, 
+          React.DOM.h2(null, "Register"), 
+          validationMessages, 
+          React.DOM.form({onSubmit: this.handleRegister, className: "Register"}, 
+            React.DOM.input({ref: "email", placeholder: "Email", className: "u-easy-bottom"}), 
+            React.DOM.input({ref: "password", placeholder: "Password", type: "password", className: "u-easy-bottom"}), 
+            React.DOM.button({type: "submit", className: "Button"}, "Submit")
+          )
+        )
+      )
+    }
+});
+
+module.exports = Register;
+},{"../../actions/app-actions.js":154,"../../stores/RegisterUserStore.js":177,"../app-notification.js":162,"react":150}],167:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -30563,90 +30701,27 @@ var NewExercise = React.createClass({displayName: 'NewExercise',
 });
 
 module.exports = NewExercise;
-},{"react":150}],164:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var LoginForm = require('./app-loginform.js');
-var Firebase = require('firebase');
-var FirebaseSimpleLogin = require('../../firebase-simple-login.js');
-
-function authDataCallback(authData) {
-  if (authData) {
-    console.log("User " + authData.uid + " is logged in with " + authData.provider);
-  } else {
-    console.log("User is logged out");
-  }
-}
-
-var Login = 
-  React.createClass({displayName: 'Login',
-    getInitialState:function(){
-      return {
-        show: false
-      }
-    },
-    showLogin:function() {
-      this.setState({show: !this.state.show});
-    },
-    handleLogin:function(bree) {
-
-
-    },
-    componentWillMount:function(){
-      var ref = new Firebase('https://gymbror.firebaseio.com/');
-      var auth = new FirebaseSimpleLogin(ref, function(error, user) {
-        if (error) {
-          console.log('Authentication error: ', error);
-        } else if (user) {
-          console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
-        } else {
-          console.log("User is logged2 out.")
-        }
-      });
-    },
-    render:function() {
-      return (
-        React.DOM.div({className: "Login"}, 
-          React.DOM.button({className: "Button u-easy-bottom", onClick: this.showLogin}, "Login"), 
-           this.state.show ? LoginForm({ref: "form", onAuth: this.handleLogin}) : null
-        )
-      )
-    }
-});
-
-module.exports = Login;
-},{"../../firebase-simple-login.js":170,"./app-loginform.js":165,"firebase":11,"react":150}],165:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-
-var LoginForm = 
-  React.createClass({displayName: 'LoginForm',
-    onAuth:function() {
-      this.props.onAuth('aaada a');
-    },
-    tryLogin:function(e) {
-      e.preventDefault();
-    },
-    render:function() {
-      return (
-        React.DOM.form({className: "Login-container", onSubmit: this.tryLogin}, 
-          React.DOM.input({placeholder: "Username", className: "u-easy-bottom"}), 
-          React.DOM.input({placeholder: "Password", type: "password", className: "u-easy-bottom"}), 
-          React.DOM.button({type: "submit", className: "Button", onClick: this.onAuth}, "submit")
-        )
-      )
-    }
-});
-
-module.exports = LoginForm;
-},{"react":150}],166:[function(require,module,exports){
+},{"react":150}],168:[function(require,module,exports){
 module.exports = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   INCREASE_ITEM: 'INCREASE_ITEM',
   DECREASE_ITEM: 'DECREASE_ITEM',
+  REGISTER_USER: 'REGISTER_USER'
 };
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
+var keyMirror = require('react/lib/keyMirror');
+
+module.exports = keyMirror({
+
+  YO_SEND_YO: null,
+  YO_USER_AUTHENTICATED: null,
+  YO_USER_UNAUTHENTICATED: null,
+
+  ADD_PERSON: null,
+  ADD_PERSON_CHANGE_NAME: null
+});
+},{"react/lib/keyMirror":133}],170:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var merge  = require('react/lib/merge');
 
@@ -30660,7 +30735,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 })
 
 module.exports = AppDispatcher;
-},{"./dispatcher.js":168,"react/lib/merge":136}],168:[function(require,module,exports){
+},{"./dispatcher.js":171,"react/lib/merge":136}],171:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -30716,7 +30791,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 });
 
 module.exports = Dispatcher;
-},{"es6-promise":1,"react/lib/merge":136}],169:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":136}],172:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var React = require('react');
@@ -30725,7 +30800,7 @@ React.renderComponent(
   APP(null),
   document.getElementById('app'));
 
-},{"./components/app":162,"react":150}],170:[function(require,module,exports){
+},{"./components/app":163,"react":150}],173:[function(require,module,exports){
 (function (process){
 (function() {var COMPILED=!0,goog=goog||{};goog.global=this;goog.exportPath_=function(a,d,e){a=a.split(".");e=e||goog.global;a[0]in e||!e.execScript||e.execScript("var "+a[0]);for(var f;a.length&&(f=a.shift());)a.length||void 0===d?e=e[f]?e[f]:e[f]={}:e[f]=d};goog.define=function(a,d){var e=d;COMPILED||goog.global.CLOSURE_DEFINES&&Object.prototype.hasOwnProperty.call(goog.global.CLOSURE_DEFINES,a)&&(e=goog.global.CLOSURE_DEFINES[a]);goog.exportPath_(a,e)};goog.DEBUG=!0;goog.LOCALE="en";goog.TRUSTED_SITE=!0;
 goog.provide=function(a){if(!COMPILED){if(goog.isProvided_(a))throw Error('Namespace "'+a+'" already declared.');delete goog.implicitNamespaces_[a];for(var d=a;(d=d.substring(0,d.lastIndexOf(".")))&&!goog.getObjectByName(d);)goog.implicitNamespaces_[d]=!0}goog.exportPath_(a)};goog.setTestOnly=function(a){if(COMPILED&&!goog.DEBUG)throw a=a||"",Error("Importing test-only code into non-debug environment"+a?": "+a:".");};goog.forwardDeclare=function(a){};
@@ -30876,12 +30951,169 @@ goog.exportProperty(FirebaseSimpleLogin,"onOpen",FirebaseSimpleLogin.onOpen);Fir
 module.exports = FirebaseSimpleLogin;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":13}],171:[function(require,module,exports){
+},{"oMfpAn":13}],174:[function(require,module,exports){
+var firebaseConnection = require('./firebaseConnection.js');
+
+var authClient = new FirebaseSimpleLogin(firebaseConnection, function(error, user) {
+  if (error) {
+    console.log('Authentication error: ', error);
+  } else if (user) {
+    console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
+  } else {
+    console.log("User is logged2 out.")
+  }
+});
+
+module.exports = authClient;
+},{"./firebaseConnection.js":175}],175:[function(require,module,exports){
+var Firebase = require('firebase/lib/firebase-web');
+
+var baseUrl = 'https://gymbror.firebaseio.com';
+
+var firebaseConnection = new Firebase(baseUrl);
+
+module.exports = firebaseConnection;
+},{"firebase/lib/firebase-web":11}],176:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppStore = require('../stores/app-store.js');
+
+var LoggedInMixin = function(cb){
+  return {
+    getInitialState:function(){
+      return cb(this);
+    },
+    componentWillMount:function(){
+      AppStore.addChangeListener(this._onChange)
+    },
+    componentWillUnmount:function(){
+      AppStore.removeChangeListener(this._onChange)
+    },
+    _onChange:function(){
+      alert('a')
+    }
+  }
+}
+
+module.exports = LoggedInMixin;
+},{"../stores/app-store.js":178,"react":150}],177:[function(require,module,exports){
+var AppDispatcher = require('../dispatchers/app-dispatcher.js');
+var EventEmitter = require('events').EventEmitter;
+var YoConstants = require('../constants/user-constants.js');
+var merge = require('react/lib/merge');
+var AppConstants = require('../constants/app-constants.js');
+var authClient = require('../firebaseAuth.js');
+var firebaseConnection = require('../firebaseConnection');
+var CHANGE_EVENT = 'change';
+
+
+var RegisterUserStore = merge(EventEmitter.prototype, {
+
+  getNewPersonName: function() {
+    return newPersonsName;
+  },
+
+  getValidationMessages: function() {
+    return validationMessages;
+  },
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+});
+
+var authenticatedUser;
+
+var _registerValidation = function(email, password) {
+  if(email.length < 4) {
+    validationMessages.push({
+      'message': 'Email to short',
+      'type': 'error'
+    });
+  }
+  if(password.length < 1) {
+    validationMessages.push({
+      'message': 'Password to short',
+      'type': 'error'
+    });
+  }
+
+  if(validationMessages.length < 1) { return true }
+  return false
+}
+
+var _registerUser = function(email, password) {
+  var $this = this;
+  validationMessages = [];
+
+  if(!_registerValidation(email, password)) {
+    RegisterUserStore.emitChange();
+    return;
+  }
+
+  authClient.createUser(email, password, function (error, user) {
+    if (!error) {
+
+      authClient.login('password', {
+        email: email,
+        password: password
+      });
+      validationMessages.push({
+        'message': 'User have been registred',
+        'type': 'success'
+      });
+
+    } else {
+      validationMessages.push({
+        'message': error,
+        'type': 'error'
+      });
+    }
+
+    RegisterUserStore.emitChange();
+  });
+
+};
+
+// Register to handle all updates
+AppDispatcher.register(function(payload) {
+  var action = payload.action;
+  var text;
+
+  switch(action.actionType) {
+    case AppConstants.REGISTER_USER:
+      _registerUser(action.email, action.password);
+      break;
+
+    default:
+      return true;
+  }
+
+  return true; // No errors.  Needed by promise in Dispatcher.
+});
+
+module.exports = RegisterUserStore;
+},{"../constants/app-constants.js":168,"../constants/user-constants.js":169,"../dispatchers/app-dispatcher.js":170,"../firebaseAuth.js":174,"../firebaseConnection":175,"events":12,"react/lib/merge":136}],178:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var AppConstants = require('../constants/app-constants.js');
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 var Firebase = require('firebase');
+var FirebaseSimpleLogin = require('../firebase-simple-login.js');
 
 var CHANGE_EVENT = "change";
 
@@ -30899,6 +31131,33 @@ function _removeItem(name, key) {
   ref.child(name + '/sets/' + key).remove();
 }
 
+var authClient = new FirebaseSimpleLogin(ref, function(error, user) {
+  if (error) {
+    console.log('Authentication error: ', error);
+  } else if (user) {
+    console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
+  } else {
+    console.log("User is logged2 out.")
+  }
+});
+
+function _loginUser(email, password) {
+  authClient.login('password', {
+    email: email,
+    password: password
+  });
+}
+
+function _registerUser(email, password) {
+  authClient.createUser(email, password, function (error, user) {
+    if (!error) {
+        _loginUser(email, password);
+    } else {
+        console.log(error);
+    }
+  });
+}
+
 var AppStore = merge(EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT);
@@ -30914,7 +31173,12 @@ var AppStore = merge(EventEmitter.prototype, {
   getExercises:function() {
     return _exercises;
   },
-
+  loginUser: function(email, password) {
+    _loginUser(email, password);
+  },
+  registerUser: function(email, password) {
+    _registerUser(email, password);
+  },
   addWorkout:function(name, sets) {
     _addWorkout(name, sets);
   },
@@ -30947,4 +31211,4 @@ var AppStore = merge(EventEmitter.prototype, {
 });
 
 module.exports = AppStore;
-},{"../constants/app-constants.js":166,"../dispatchers/app-dispatcher.js":167,"events":12,"firebase":11,"react/lib/merge":136}]},{},[169])
+},{"../constants/app-constants.js":168,"../dispatchers/app-dispatcher.js":170,"../firebase-simple-login.js":173,"events":12,"firebase":11,"react/lib/merge":136}]},{},[172])

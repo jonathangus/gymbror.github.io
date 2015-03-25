@@ -3,6 +3,7 @@ var AppConstants = require('../constants/app-constants.js');
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 var Firebase = require('firebase');
+var FirebaseSimpleLogin = require('../firebase-simple-login.js');
 
 var CHANGE_EVENT = "change";
 
@@ -20,6 +21,33 @@ function _removeItem(name, key) {
   ref.child(name + '/sets/' + key).remove();
 }
 
+var authClient = new FirebaseSimpleLogin(ref, function(error, user) {
+  if (error) {
+    console.log('Authentication error: ', error);
+  } else if (user) {
+    console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
+  } else {
+    console.log("User is logged2 out.")
+  }
+});
+
+function _loginUser(email, password) {
+  authClient.login('password', {
+    email: email,
+    password: password
+  });
+}
+
+function _registerUser(email, password) {
+  authClient.createUser(email, password, function (error, user) {
+    if (!error) {
+        _loginUser(email, password);
+    } else {
+        console.log(error);
+    }
+  });
+}
+
 var AppStore = merge(EventEmitter.prototype, {
   emitChange:function(){
     this.emit(CHANGE_EVENT);
@@ -35,7 +63,12 @@ var AppStore = merge(EventEmitter.prototype, {
   getExercises:function() {
     return _exercises;
   },
-
+  loginUser: function(email, password) {
+    _loginUser(email, password);
+  },
+  registerUser: function(email, password) {
+    _registerUser(email, password);
+  },
   addWorkout:function(name, sets) {
     _addWorkout(name, sets);
   },

@@ -1,0 +1,16 @@
+.Notification {
+  padding: 10px;
+  margin-bottom: $easy;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.Notification--error {
+  background: $color-red;
+}
+
+.Notification--success {
+  background: $color-green;
+}

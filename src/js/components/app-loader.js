@@ -13,4 +13,4 @@ var Loader = React.createClass({
   }
 });
 
-module.exports = Loader;
+// module.exports = Loader;

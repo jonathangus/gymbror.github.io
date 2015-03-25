@@ -3,13 +3,18 @@ var React = require('react');
 var ExercisesList = require('./app-exerciseslist.js');
 var Firebase = require('firebase');
 var ReactFireMixin = require('reactfire');
-var Login = require('./login/app-login.js');
 var Loader = require('./app-loader.js');
-var NewExercise = require('./exercise/add-newexercise.js');
+var NewExercise = require('./exercise/add-newexercise.js')
+var Auth = require('./auth/app-auth.js');
+var LoggedInMixin = require('../mixins/LoggedInMixin.js');
+
+function cartItems(){
+  return {items: AppStore.getCart()}
+}
 
 var APP = 
   React.createClass({
-    mixins:[ReactFireMixin],
+    mixins:[ReactFireMixin, LoggedInMixin],
     getInitialState:function(){
       return {
         exercises: [],
@@ -33,14 +38,13 @@ var APP =
     },
     render:function(){
       return (
-        <div>
-          <Login />
-          { this.state.loading ? <Loader /> : <div><ExercisesList exercises={this.state.exercises} /> <NewExercise addWorkout={this.addHandler} /></div>}
-          
-          
+        <div>        
+          <Auth />
         </div>
       )
     }
 });
 
 module.exports = APP;
+
+ // { this.state.loading ? <Loader /> : <div><ExercisesList exercises={this.state.exercises} /> <NewExercise addWorkout={this.addHandler} /></div>}

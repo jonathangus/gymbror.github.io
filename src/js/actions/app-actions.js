@@ -16,18 +16,13 @@ var AppActions = {
       key: key
     })
   },
-  decreaseItem:function(index){
+  registerUser: function(email, password) {
     AppDispatcher.handleViewAction({
-      actionType: AppConstants.DECREASE_ITEM,
-      index: index
-    })
+      actionType: AppConstants.REGISTER_USER,
+      email: email,
+      password: password
+    });
   },
-  increaseItem:function(index){
-    AppDispatcher.handleViewAction({
-      actionType: AppConstants.INCREASE_ITEM,
-      index: index
-    })
-  }
 }
 
 module.exports = AppActions;

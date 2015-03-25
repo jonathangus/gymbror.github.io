@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 
-var LoginForm = 
+var RegisterForm = 
   React.createClass({
     onAuth:function() {
       this.props.onAuth('aaada a');
@@ -20,4 +20,4 @@ var LoginForm =
     }
 });
 
-module.exports = LoginForm;
+module.exports = RegisterForm;

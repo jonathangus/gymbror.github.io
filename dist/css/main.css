@@ -551,26 +551,6 @@ p {
   margin-bottom: 20px;
   margin-top: 0; }
 
-.Login {
-  position: absolute;
-  z-index: 10;
-  right: 20px;
-  top: 20px; }
-  @media all and (min-width: 500px) {
-    .Login {
-      right: 0; } }
-
-.Login .Button {
-  margin-right: 0; }
-
-.Login-container {
-  width: 200px;
-  padding: 20px;
-  background: #2c3e50;
-  border: 1px solid #FFF;
-  position: absolute;
-  right: 0; }
-
 @-moz-keyframes rotate-one {
   0% {
     -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
@@ -839,3 +819,21 @@ button.Button, input.Button {
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%); }
+
+.Auth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%; }
+
+.Notification {
+  padding: 10px;
+  margin-bottom: 10px; }
+  .Notification:last-child {
+    margin-bottom: 0; }
+
+.Notification--error {
+  background: #e74c3c; }
+
+.Notification--success {
+  background: #2ecc71; }
