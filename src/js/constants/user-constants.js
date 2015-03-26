@@ -7,5 +7,7 @@ module.exports = keyMirror({
   YO_USER_UNAUTHENTICATED: null,
 
   ADD_PERSON: null,
-  ADD_PERSON_CHANGE_NAME: null
+  ADD_PERSON_CHANGE_NAME: null,
+  USER_STATUS: 'USER_STATUS',
+  USER_LOGIN: 'USER_LOGIN'
 });

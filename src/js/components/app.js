@@ -1,50 +1,43 @@
 /** @jsx React.DOM */
 var React = require('react');
-var ExercisesList = require('./app-exerciseslist.js');
-var Firebase = require('firebase');
-var ReactFireMixin = require('reactfire');
-var Loader = require('./app-loader.js');
-var NewExercise = require('./exercise/add-newexercise.js')
+var UserStore = require('../stores/UserStore.js');
 var Auth = require('./auth/app-auth.js');
-var LoggedInMixin = require('../mixins/LoggedInMixin.js');
+var Logout = require('./auth/logout.js');
+var Loader = require('./app-loader.js');
+var Exercises = require('./exercises/Exercises.js');
 
-function cartItems(){
-  return {items: AppStore.getCart()}
-}
-
-var APP = 
+var APP =
   React.createClass({
-    mixins:[ReactFireMixin, LoggedInMixin],
     getInitialState:function(){
       return {
-        exercises: [],
-        loading: false
+        loading: true,
+        loggedIn: false
       }
     },
-    componentWillMount:function(){
-      var _this = this;
-      this.setState({loading: true});
-      this.firebaseRef = new Firebase('https://gymbror.firebaseio.com/exercises');
-      this.bindAsArray(this.firebaseRef, 'exercises');
 
-      this.firebaseRef.on('child_added', function(dataSnapshot) {
-        _this.setState({loading: false});
+    componentDidMount: function() {
+      UserStore.addChangeListener(this._onChange);
+    },
+
+    componentWillUnmount: function() {
+      UserStore.removeChangeListener(this._onChange);
+    },
+
+    _onChange: function() {
+      this.setState({
+        loggedIn: UserStore.isLoggedIn(), 
+        loading: false
       });
     },
-    addHandler:function(name) {
-      var ex = {};
-      ex.name = name;
-      this.firebaseRef.child(name).set({name: name});
-    },
+
     render:function(){
       return (
-        <div>        
-          <Auth />
+        <div className="container">
+          {this.state.loggedIn ? <Logout /> : null }
+          {!this.state.loggedIn ? <Auth /> : <Exercises user={UserStore.getUser()} />}
+          <Loader show={this.state.loading} />
         </div>
       )
     }
-});
-
+  });
 module.exports = APP;
-
- // { this.state.loading ? <Loader /> : <div><ExercisesList exercises={this.state.exercises} /> <NewExercise addWorkout={this.addHandler} /></div>}

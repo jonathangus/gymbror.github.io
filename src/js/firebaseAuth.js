@@ -1,12 +1,16 @@
 var firebaseConnection = require('./firebaseConnection.js');
+var FirebaseSimpleLogin = require('./firebase-simple-login.js');
+var UserActions = require('./actions/user-actions.js');
+var UserStore = require('./stores/UserStore.js');
 
 var authClient = new FirebaseSimpleLogin(firebaseConnection, function(error, user) {
   if (error) {
-    console.log('Authentication error: ', error);
+    UserStore.setMessages(error);
   } else if (user) {
-    console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
+    UserStore.setUser(user);
+    UserActions.updateUserStatus(true);
   } else {
-    console.log("User is logged2 out.")
+    UserActions.updateUserStatus(false);
   }
 });
 

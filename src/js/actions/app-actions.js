@@ -22,7 +22,7 @@ var AppActions = {
       email: email,
       password: password
     });
-  },
+  }
 }
 
 module.exports = AppActions;

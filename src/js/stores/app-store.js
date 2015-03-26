@@ -4,6 +4,7 @@ var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 var Firebase = require('firebase');
 var FirebaseSimpleLogin = require('../firebase-simple-login.js');
+var authClient = require('../firebaseAuth.js');
 
 var CHANGE_EVENT = "change";
 
@@ -21,22 +22,7 @@ function _removeItem(name, key) {
   ref.child(name + '/sets/' + key).remove();
 }
 
-var authClient = new FirebaseSimpleLogin(ref, function(error, user) {
-  if (error) {
-    console.log('Authentication error: ', error);
-  } else if (user) {
-    console.log('User ' + user.id + ' authenticated via the ' + user.provider + ' provider!');
-  } else {
-    console.log("User is logged2 out.")
-  }
-});
 
-function _loginUser(email, password) {
-  authClient.login('password', {
-    email: email,
-    password: password
-  });
-}
 
 function _registerUser(email, password) {
   authClient.createUser(email, password, function (error, user) {
