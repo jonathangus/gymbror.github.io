@@ -3,11 +3,14 @@ var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants.js');
 var merge = require('react/lib/merge');
 var authClient = require('../firebaseAuth.js');
+var swal = require('sweetalert');
+swal.setDefaults({ allowOutsideClick: true });
+
 var CHANGE_EVENT = 'change';
 
 var _loggedIn = false;
 var _currentUser = null;
-var _erros = null;
+var _validationMessages = [];
 
 var UserStore = merge(EventEmitter.prototype, {
   emitChange: function() {
@@ -31,13 +34,34 @@ var UserStore = merge(EventEmitter.prototype, {
   },
 
   loginUser: function(email, password) {
-    authClient = require('../firebaseAuth.js');
-
     authClient.login('password', {
       email: email,
       password: password,
       rememberMe: true
     });
+  },
+
+  registerUser: function(email, password) {
+    authClient.createUser(email, password, function (error, user) {
+      if(!error) {
+        UserStore.loginUser(email, password);
+        swal("Register successful", "You will be logged in", "success");
+      } 
+      else {
+        UserStore.setValidationMessages(error.message);
+      }
+    });
+
+  },
+
+  getValidationMessages:function() {
+    return _validationMessages;
+  },
+
+  setValidationMessages:function(message) {
+    _validationMessages = [];
+    _validationMessages.push(message);
+    this.emitChange();
   },
 
   /**
@@ -63,12 +87,16 @@ AppDispatcher.register(function(payload) {
     case UserConstants.USER_STATUS:
       _loggedIn = action.status;
       UserStore.emitChange();
-      // UserStore.emit();
       break;
 
     case UserConstants.USER_LOGIN:
       UserStore.loginUser(action.email, action.password);
-      // UserStore.emitChange();
+      UserStore.emitChange();
+      break;
+
+    case UserConstants.USER_REGISTER:
+      UserStore.registerUser(action.email, action.password);
+      UserStore.emitChange();
       break;
 
     default:

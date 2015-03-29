@@ -1,10 +1,10 @@
 /** @jsx React.DOM */
 var React = require('react');
-var UserStore = require('../stores/UserStore.js');
+var UserStore = require('../stores/user-store.js');
 var Auth = require('./auth/app-auth.js');
 var Logout = require('./auth/logout.js');
 var Loader = require('./app-loader.js');
-var Exercises = require('./exercises/Exercises.js');
+var Exercises = require('./exercises/exercises.js');
 
 var APP =
   React.createClass({

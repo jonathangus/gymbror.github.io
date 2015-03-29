@@ -14,6 +14,13 @@ var UserActions = {
       email: email,
       password: password
     });
+  },
+  registerUser: function(email, password) {
+    AppDispatcher.handleViewAction({
+      actionType: UserConstants.USER_REGISTER,
+      email: email,
+      password: password
+    });
   }
 }
 

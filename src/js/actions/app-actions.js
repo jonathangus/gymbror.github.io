@@ -16,13 +16,6 @@ var AppActions = {
       key: key
     })
   },
-  registerUser: function(email, password) {
-    AppDispatcher.handleViewAction({
-      actionType: AppConstants.REGISTER_USER,
-      email: email,
-      password: password
-    });
-  }
 }
 
 module.exports = AppActions;
