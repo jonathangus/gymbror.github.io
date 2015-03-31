@@ -38,12 +38,10 @@ var ExerciseItem = React.createClass({
     this.setState({open: !this.state.open});
   },
   componentWillMount:function(){
-    console.log(this.props.exercise);
     var lastkey;
 
     if(this.props.exercise.workouts) {
       for(index in this.props.exercise.workouts) {
-        console.log(index);
         lastkey = index;
         lastworkout = this.props.exercise.workouts[index];
       }
@@ -56,17 +54,16 @@ var ExerciseItem = React.createClass({
         }]
       }
     }
-
     
   },
   render:function(){
     return (
       <div>
       <h1>{this.props.exercise.name}</h1>
-      <Graph exercise={this.props.exercise} />
+      <Graph exerciseID={this.props.key} />
       <button onClick={this.remove} className="Button">Remove</button>
       <button className="Button" onClick={this.toggleAdd}>Add workout</button>
-      {this.state.open ? <AddWorkout toggleAdd={this.toggleAdd} lastworkout={lastworkout} key={this.props.key} /> : null }
+      {this.state.open ? <AddWorkout toggleAdd={this.toggleAdd} lastworkout={lastworkout} key={this.props.key} /> : null}
       </div>
     )
   }

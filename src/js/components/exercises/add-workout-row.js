@@ -12,6 +12,10 @@ var AddWorkoutRpw = React.createClass({
     this.setState({value: event.target.value});
   },
 
+  repChange: function(e) {
+    console.log(event.target.value);
+  },
+
   increase:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },
@@ -29,7 +33,7 @@ var AddWorkoutRpw = React.createClass({
     return (
       <div>
         <input value={this.state.value} onChange={this.onChange}/>
-         <select value={this.props.reps}>
+         <select defaultValue={this.props.reps}>
           {options}
         </select>
         <button type="button" className="Button" onClick={this.decrease}>-</button>

@@ -9,8 +9,10 @@ var picker;
 var lastWorkout = null;
 
 var AddWorkout = React.createClass({
-  handleSubmit: function(e) {
-    e.preventDefault();
+  getInitialState:function(){
+    return {
+      rows: this.props.lastworkout.values
+    }
   },
   componentDidMount: function() {
     picker = new Pikaday({ field: this.refs.date.getDOMNode() });
@@ -19,6 +21,41 @@ var AddWorkout = React.createClass({
 
   componentWillUnmount: function() {
     picker.destroy();
+  },
+
+  addRow: function() {
+    var rows = this.state.rows,
+      lastRow;
+
+    for(var index in this.refs) {
+      if(index !== 'date') {
+        var attr = this.refs[index];
+        lastRow = {
+          reps: attr.getDOMNode().querySelector('select').value,
+          value: attr.getDOMNode().querySelector('input').value
+        }
+      }
+    }
+    rows.push(lastRow);
+    this.setState({rows: rows});
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    var lastInput;
+    for(var index in this.refs) {
+      if(index !== 'date') {
+        lastInput = this.refs[index];
+        // lastInput = attr.getDOMNode().querySelector('input');
+      }
+    }
+    lastInput.getDOMNode().querySelector('input').focus();
+    lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
+  },
+
+  removeRow: function() {
+    var rows = this.state.rows;
+    rows.splice(-1,1);
+    this.setState({rows: rows});
   },
 
   submitWorkout: function(e) {    
@@ -49,8 +86,7 @@ var AddWorkout = React.createClass({
 
   render:function(){
     var sets;
-    console.log(this.props.lastworkout);
-    sets = this.props.lastworkout.values.map(function(row, i) {
+    sets = this.state.rows.map(function(row, i) {
       return <AddWorkoutRow ref={'w' + i} value={row.value} reps={row.reps} /> 
     });
     
@@ -59,6 +95,8 @@ var AddWorkout = React.createClass({
         <form onSubmit={this.submitWorkout}>
         {sets}
         <input ref={'date'}/>
+        <div onClick={this.addRow} className="Button" role="button">New row</div>
+        <div onClick={this.removeRow} className="Button" role="button">Remove row</div>
         <button className="Button" role="submit">Add</button>
         </form>
       </div>

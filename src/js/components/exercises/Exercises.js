@@ -10,20 +10,10 @@ var Firebase = require('firebase');
 var Exercises = React.createClass({
   getInitialState:function(){
     return {
-      items: [],
-      exercises: []
+      items: []
     }
   },
-  componentWillMount:function(){
-    // this.firebaseRef = new Firebase('https://gymbror.firebaseio.com/users/' + this.props.user.id + '/exercises');
-    // this.bindAsArray(firebaseRef, "exercises");
-
-    // this.firebaseRef.on('child_added', function(dataSnapshot) {
-    //   console.log('WAÖÖA');
-    // });
-  },
   componentDidMount: function() {
-    ExercisesStore.init();
     ExercisesStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -38,11 +28,12 @@ var Exercises = React.createClass({
     for(index in this.state.items) {
       items.push(<ExerciseItem key={index} exercise={this.state.items[index]} />);
     }
+
     return (
       <div>
-        <h1>Exercises for {this.props.user.email}</h1>
         {items}
         <NewExercise />
+      }
       </div>
     )
   }

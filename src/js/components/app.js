@@ -34,7 +34,7 @@ var APP =
       return (
         <div className="container">
           {this.state.loggedIn ? <Logout /> : null }
-          {!this.state.loggedIn ? <Auth /> : <Exercises user={UserStore.getUser()} />}
+          {!this.state.loggedIn ? <Auth /> : <Exercises />}
           <Loader show={this.state.loading} />
         </div>
       )

@@ -2,6 +2,12 @@ var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var ExercisesConstants = require('../constants/exercises-constants.js');
 
 var ExercisesActions = {
+  fetchExercises: function(user) {
+    AppDispatcher.handleViewAction({
+      actionType: ExercisesConstants.FETCH_EXERCISES,
+      user: user
+    });
+  },
   addExercise: function(name) {
     AppDispatcher.handleViewAction({
       actionType: ExercisesConstants.ADD_EXERCISE,

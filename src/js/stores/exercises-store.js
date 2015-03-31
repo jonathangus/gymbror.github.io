@@ -4,6 +4,7 @@ var merge = require('react/lib/merge');
 var ExercisesConstants = require('../constants/exercises-constants.js');
 var firebaseConnection = require('../firebaseConnection.js');
 var UserStore = require('./user-store.js');
+var Promise = require('es6-promise').Promise;
 
 var CHANGE_EVENT = 'change';
 
@@ -15,23 +16,28 @@ var _lastWorkout;
 var ExerciseStore = merge(EventEmitter.prototype, {
   init: function() {
     user = UserStore.getUser();
-    ref = firebaseConnection.child('users/' + user.id);
-    ref.child('exercises').on('value', function(snapshot) {
+  },
+
+  fetchExercises: function(user) {
+    firebaseConnection.child('users/' + user.id + '/exercises').on('value', function(snapshot) {
       _exercises = snapshot.val();
       ExerciseStore.emitChange();
-    });
+    }); 
   },
 
   addExercise: function(name) {
-    ref.child('exercises').push({name: name});
+    firebaseConnection.child('users/' + user.id + '/exercises').push({name: name});
   },
 
   removeWorkout: function(id) {
-    ref.child('exercises/' + id).remove();
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id).remove();
   },
 
   addWorkout: function(workout, id) {
-    ref.child('exercises/' + id + '/workouts').push(workout);
+    console.log(workout);
+    console.log(id);
+    console.log(user.id);
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
     this.emitChange();
   },
 
@@ -40,7 +46,7 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   setLastWorkout: function(id) {
-    ref.child('exercises/' + id + '/workouts').orderByChild('date').limit(1).on('value', function(snapshot) {
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').limit(1).on('value', function(snapshot) {
       _lastWorkout = snapshot.val();
       ExerciseStore.emitChange();
     });
@@ -48,6 +54,18 @@ var ExerciseStore = merge(EventEmitter.prototype, {
 
   getLastWorkout: function() {
     return _lastWorkout;
+  },
+
+  getSortedWorkouts: function(id) {
+    user = UserStore.getUser();
+
+    return p1 = new Promise(
+      function(resolve, reject) {   
+        firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').on('value', function(snapshot) {
+        resolve(snapshot.val());
+      });    
+    });
+
   },
 
   emitChange: function() {
@@ -73,6 +91,10 @@ AppDispatcher.register(function(payload) {
   var action = payload.action;
 
   switch(action.actionType) {
+    case ExercisesConstants.FETCH_EXERCISES:
+      ExerciseStore.fetchExercises(action.user);
+      break;
+
     case ExercisesConstants.ADD_EXERCISE:
       ExerciseStore.addExercise(action.name);
       ExerciseStore.emitChange();

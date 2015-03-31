@@ -23642,6 +23642,12 @@ var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var ExercisesConstants = require('../constants/exercises-constants.js');
 
 var ExercisesActions = {
+  fetchExercises: function(user) {
+    AppDispatcher.handleViewAction({
+      actionType: ExercisesConstants.FETCH_EXERCISES,
+      user: user
+    });
+  },
   addExercise: function(name) {
     AppDispatcher.handleViewAction({
       actionType: ExercisesConstants.ADD_EXERCISE,
@@ -23664,7 +23670,7 @@ var ExercisesActions = {
 };
 
 module.exports = ExercisesActions;
-},{"../constants/exercises-constants.js":168,"../dispatchers/app-dispatcher.js":170}],154:[function(require,module,exports){
+},{"../constants/exercises-constants.js":169,"../dispatchers/app-dispatcher.js":171}],154:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var UserConstants = require('../constants/user-constants.js');
 
@@ -23692,7 +23698,7 @@ var UserActions = {
 }
 
 module.exports = UserActions;
-},{"../constants/user-constants.js":169,"../dispatchers/app-dispatcher.js":170}],155:[function(require,module,exports){
+},{"../constants/user-constants.js":170,"../dispatchers/app-dispatcher.js":171}],155:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -23766,14 +23772,14 @@ var APP =
       return (
         React.DOM.div({className: "container"}, 
           this.state.loggedIn ? Logout(null) : null, 
-          !this.state.loggedIn ? Auth(null) : Exercises({user: UserStore.getUser()}), 
+          !this.state.loggedIn ? Auth(null) : Exercises(null), 
           Loader({show: this.state.loading})
         )
       )
     }
   });
 module.exports = APP;
-},{"../stores/user-store.js":177,"./app-loader.js":155,"./auth/app-auth.js":158,"./auth/logout.js":161,"./exercises/exercises.js":165,"react":150}],158:[function(require,module,exports){
+},{"../stores/user-store.js":178,"./app-loader.js":155,"./auth/app-auth.js":158,"./auth/logout.js":161,"./exercises/exercises.js":165,"react":150}],158:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Login = require('./app-login.js');
@@ -23855,7 +23861,7 @@ var Auth = React.createClass({displayName: 'Auth',
 });
 
 module.exports = Auth;
-},{"../../actions/user-actions.js":154,"../../stores/user-store.js":177,"../app-notification.js":156,"./app-login.js":159,"./app-register.js":160,"react":150}],159:[function(require,module,exports){
+},{"../../actions/user-actions.js":154,"../../stores/user-store.js":178,"../app-notification.js":156,"./app-login.js":159,"./app-register.js":160,"react":150}],159:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -23933,7 +23939,7 @@ var Logout =
 });
 
 module.exports = Logout;
-},{"../../firebaseAuth.js":174,"react":150}],162:[function(require,module,exports){
+},{"../../firebaseAuth.js":175,"react":150}],162:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -23946,6 +23952,10 @@ var AddWorkoutRpw = React.createClass({displayName: 'AddWorkoutRpw',
 
   onChange: function(e) {
     this.setState({value: event.target.value});
+  },
+
+  repChange: function(e) {
+    console.log(event.target.value);
   },
 
   increase:function() {
@@ -23965,7 +23975,7 @@ var AddWorkoutRpw = React.createClass({displayName: 'AddWorkoutRpw',
     return (
       React.DOM.div(null, 
         React.DOM.input({value: this.state.value, onChange: this.onChange}), 
-         React.DOM.select({value: this.props.reps}, 
+         React.DOM.select({defaultValue: this.props.reps}, 
           options
         ), 
         React.DOM.button({type: "button", className: "Button", onClick: this.decrease}, "-"), 
@@ -23988,8 +23998,10 @@ var picker;
 var lastWorkout = null;
 
 var AddWorkout = React.createClass({displayName: 'AddWorkout',
-  handleSubmit: function(e) {
-    e.preventDefault();
+  getInitialState:function(){
+    return {
+      rows: this.props.lastworkout.values
+    }
   },
   componentDidMount: function() {
     picker = new Pikaday({ field: this.refs.date.getDOMNode() });
@@ -23998,6 +24010,41 @@ var AddWorkout = React.createClass({displayName: 'AddWorkout',
 
   componentWillUnmount: function() {
     picker.destroy();
+  },
+
+  addRow: function() {
+    var rows = this.state.rows,
+      lastRow;
+
+    for(var index in this.refs) {
+      if(index !== 'date') {
+        var attr = this.refs[index];
+        lastRow = {
+          reps: attr.getDOMNode().querySelector('select').value,
+          value: attr.getDOMNode().querySelector('input').value
+        }
+      }
+    }
+    rows.push(lastRow);
+    this.setState({rows: rows});
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    var lastInput;
+    for(var index in this.refs) {
+      if(index !== 'date') {
+        lastInput = this.refs[index];
+        // lastInput = attr.getDOMNode().querySelector('input');
+      }
+    }
+    lastInput.getDOMNode().querySelector('input').focus();
+    lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
+  },
+
+  removeRow: function() {
+    var rows = this.state.rows;
+    rows.splice(-1,1);
+    this.setState({rows: rows});
   },
 
   submitWorkout: function(e) {    
@@ -24028,8 +24075,7 @@ var AddWorkout = React.createClass({displayName: 'AddWorkout',
 
   render:function(){
     var sets;
-    console.log(this.props.lastworkout);
-    sets = this.props.lastworkout.values.map(function(row, i) {
+    sets = this.state.rows.map(function(row, i) {
       return AddWorkoutRow({ref: 'w' + i, value: row.value, reps: row.reps}) 
     });
     
@@ -24038,6 +24084,8 @@ var AddWorkout = React.createClass({displayName: 'AddWorkout',
         React.DOM.form({onSubmit: this.submitWorkout}, 
         sets, 
         React.DOM.input({ref: 'date'}), 
+        React.DOM.div({onClick: this.addRow, className: "Button", role: "button"}, "New row"), 
+        React.DOM.div({onClick: this.removeRow, className: "Button", role: "button"}, "Remove row"), 
         React.DOM.button({className: "Button", role: "submit"}, "Add")
         )
       )
@@ -24046,7 +24094,7 @@ var AddWorkout = React.createClass({displayName: 'AddWorkout',
 });
 
 module.exports = AddWorkout;
-},{"../../actions/exercises-actions.js":153,"../../stores/exercises-store.js":176,"./add-workout-row.js":162,"pikaday":15,"react":150}],164:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":153,"../../stores/exercises-store.js":177,"./add-workout-row.js":162,"pikaday":15,"react":150}],164:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
@@ -24087,12 +24135,10 @@ var ExerciseItem = React.createClass({displayName: 'ExerciseItem',
     this.setState({open: !this.state.open});
   },
   componentWillMount:function(){
-    console.log(this.props.exercise);
     var lastkey;
 
     if(this.props.exercise.workouts) {
       for(index in this.props.exercise.workouts) {
-        console.log(index);
         lastkey = index;
         lastworkout = this.props.exercise.workouts[index];
       }
@@ -24105,14 +24151,13 @@ var ExerciseItem = React.createClass({displayName: 'ExerciseItem',
         }]
       }
     }
-
     
   },
   render:function(){
     return (
       React.DOM.div(null, 
       React.DOM.h1(null, this.props.exercise.name), 
-      Graph({exercise: this.props.exercise}), 
+      Graph({exerciseID: this.props.key}), 
       React.DOM.button({onClick: this.remove, className: "Button"}, "Remove"), 
       React.DOM.button({className: "Button", onClick: this.toggleAdd}, "Add workout"), 
       this.state.open ? AddWorkout({toggleAdd: this.toggleAdd, lastworkout: lastworkout, key: this.props.key}) : null
@@ -24122,7 +24167,7 @@ var ExerciseItem = React.createClass({displayName: 'ExerciseItem',
 });
 
 module.exports = ExerciseItem;
-},{"../../actions/exercises-actions.js":153,"./add-workout.js":163,"./graph.js":166,"react":150,"sweetalert":152}],165:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":153,"./add-workout.js":163,"./graph.js":167,"react":150,"sweetalert":152}],165:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesStore = require('../../stores/exercises-store.js');
@@ -24135,20 +24180,10 @@ var Firebase = require('firebase');
 var Exercises = React.createClass({displayName: 'Exercises',
   getInitialState:function(){
     return {
-      items: [],
-      exercises: []
+      items: []
     }
   },
-  componentWillMount:function(){
-    // this.firebaseRef = new Firebase('https://gymbror.firebaseio.com/users/' + this.props.user.id + '/exercises');
-    // this.bindAsArray(firebaseRef, "exercises");
-
-    // this.firebaseRef.on('child_added', function(dataSnapshot) {
-    //   console.log('WAÖÖA');
-    // });
-  },
   componentDidMount: function() {
-    ExercisesStore.init();
     ExercisesStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -24163,18 +24198,19 @@ var Exercises = React.createClass({displayName: 'Exercises',
     for(index in this.state.items) {
       items.push(ExerciseItem({key: index, exercise: this.state.items[index]}));
     }
+
     return (
       React.DOM.div(null, 
-        React.DOM.h1(null, "Exercises for ", this.props.user.email), 
         items, 
-        NewExercise(null)
+        NewExercise(null), 
+      "}"
       )
     )
   }
 });
 
 module.exports = Exercises;
-},{"../../actions/exercises-actions.js":153,"../../stores/exercises-store.js":176,"./exercise-item.js":164,"./new-exercise.js":167,"firebase":11,"react":150,"reactfire":151}],166:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":153,"../../stores/exercises-store.js":177,"./exercise-item.js":164,"./new-exercise.js":168,"firebase":11,"react":150,"reactfire":151}],166:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -24186,28 +24222,65 @@ function _getDate(timestamp) {
   return '' + yyyy + '/' + (mm <= 9 ? '0' + mm : mm) + '/' + (dd <= 9 ? '0' + dd : dd);
 }
 
+var GraphItem = React.createClass({displayName: 'GraphItem',
+  render:function(){
+    return (
+      React.DOM.div(null, 
+        _getDate(this.props.item.date)
+      )
+    )
+  }
+});
+
+module.exports = GraphItem;
+},{"react":150}],167:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var ExercisesStore = require('../../stores/exercises-store.js');
+var GraphItem = require('./graph-item.js');
+
 var Graph = React.createClass({displayName: 'Graph',
+  getInitialState:function(){
+    return {
+      items: null
+    }
+  },
   propTypes: {
-    exercise: React.PropTypes.object.isRequired,
+    exerciseID: React.PropTypes.string.isRequired,
+  },
+  componentDidMount: function() {
+    var that = this;
+
+    ExercisesStore.addChangeListener(this._onChange);
+    ExercisesStore.getSortedWorkouts(this.props.exerciseID).then(function(items) {
+      that.setState({items: items});
+    });
+  },
+  componentWillUnmount: function() {
+    ExercisesStore.removeChangeListener(this._onChange);
+  },
+  _onChange: function() {
+    ExercisesStore.getSortedWorkouts(this.props.exerciseID).then(function(items) {
+      that.setState({items: items});
+    });
   },
   render:function(){
-    var list = [];
 
-    for(index in this.props.exercise.workouts) {
-      list.push(_getDate(this.props.exercise.workouts[index].date) + '   ');
-      // console.log(this.props.exercise.workouts[index]);
+    var graph = [];
+
+    for(index in this.state.items) {
+      graph.push(GraphItem({item: this.state.items[index]}))
     }
 
     return (
 
-
-      React.DOM.div(null, list)
+      React.DOM.div(null, graph)
     )
   }
 });
 
 module.exports = Graph;
-},{"react":150}],167:[function(require,module,exports){
+},{"../../stores/exercises-store.js":177,"./graph-item.js":166,"react":150}],168:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
@@ -24241,19 +24314,20 @@ var NewExercise = React.createClass({displayName: 'NewExercise',
 });
 
 module.exports = NewExercise;
-},{"../../actions/exercises-actions.js":153,"react":150}],168:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":153,"react":150}],169:[function(require,module,exports){
 module.exports = {
+  FETCH_EXERCISES: 'FETCH_EXERCISES',
   ADD_EXERCISE: 'ADD_EXERCISE',
   REMOVE_EXERCISE: 'REMOVE_EXERCISE',
   ADD_WORKOUT: 'ADD_WORKOUT'
 }
-},{}],169:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = {
   USER_STATUS: 'USER_STATUS',
   USER_LOGIN: 'USER_LOGIN',
   USER_REGISTER: 'USER_REGISTER'
 };
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var merge  = require('react/lib/merge');
 
@@ -24267,7 +24341,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 })
 
 module.exports = AppDispatcher;
-},{"./dispatcher.js":171,"react/lib/merge":136}],171:[function(require,module,exports){
+},{"./dispatcher.js":172,"react/lib/merge":136}],172:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -24323,7 +24397,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 });
 
 module.exports = Dispatcher;
-},{"es6-promise":1,"react/lib/merge":136}],172:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":136}],173:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app.js');
 var React = require('react');
@@ -24332,7 +24406,7 @@ React.renderComponent(
   APP(null),
   document.getElementById('app'));
 
-},{"./components/app.js":157,"react":150}],173:[function(require,module,exports){
+},{"./components/app.js":157,"react":150}],174:[function(require,module,exports){
 (function (process){
 (function() {var COMPILED=!0,goog=goog||{};goog.global=this;goog.exportPath_=function(a,d,e){a=a.split(".");e=e||goog.global;a[0]in e||!e.execScript||e.execScript("var "+a[0]);for(var f;a.length&&(f=a.shift());)a.length||void 0===d?e=e[f]?e[f]:e[f]={}:e[f]=d};goog.define=function(a,d){var e=d;COMPILED||goog.global.CLOSURE_DEFINES&&Object.prototype.hasOwnProperty.call(goog.global.CLOSURE_DEFINES,a)&&(e=goog.global.CLOSURE_DEFINES[a]);goog.exportPath_(a,e)};goog.DEBUG=!0;goog.LOCALE="en";goog.TRUSTED_SITE=!0;
 goog.provide=function(a){if(!COMPILED){if(goog.isProvided_(a))throw Error('Namespace "'+a+'" already declared.');delete goog.implicitNamespaces_[a];for(var d=a;(d=d.substring(0,d.lastIndexOf(".")))&&!goog.getObjectByName(d);)goog.implicitNamespaces_[d]=!0}goog.exportPath_(a)};goog.setTestOnly=function(a){if(COMPILED&&!goog.DEBUG)throw a=a||"",Error("Importing test-only code into non-debug environment"+a?": "+a:".");};goog.forwardDeclare=function(a){};
@@ -24483,11 +24557,12 @@ goog.exportProperty(FirebaseSimpleLogin,"onOpen",FirebaseSimpleLogin.onOpen);Fir
 module.exports = FirebaseSimpleLogin;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":13}],174:[function(require,module,exports){
+},{"oMfpAn":13}],175:[function(require,module,exports){
 var firebaseConnection = require('./firebaseConnection.js');
 var FirebaseSimpleLogin = require('./firebase-simple-login.js');
 var UserActions = require('./actions/user-actions.js');
 var UserStore = require('./stores/user-store.js');
+var ExerciseActions = require('./actions/exercises-actions.js');
 
 var authClient = new FirebaseSimpleLogin(firebaseConnection, function(error, user) {
   UserStore = require('./stores/user-store.js');
@@ -24496,13 +24571,14 @@ var authClient = new FirebaseSimpleLogin(firebaseConnection, function(error, use
   } else if (user) {
     UserStore.setUser(user);
     UserActions.updateUserStatus(true);
+    ExerciseActions.fetchExercises(user);
   } else {
     UserActions.updateUserStatus(false);
   }
 });
 
 module.exports = authClient;
-},{"./actions/user-actions.js":154,"./firebase-simple-login.js":173,"./firebaseConnection.js":175,"./stores/user-store.js":177}],175:[function(require,module,exports){
+},{"./actions/exercises-actions.js":153,"./actions/user-actions.js":154,"./firebase-simple-login.js":174,"./firebaseConnection.js":176,"./stores/user-store.js":178}],176:[function(require,module,exports){
 var Firebase = require('firebase/lib/firebase-web');
 
 var baseUrl = 'https://gymbror.firebaseio.com';
@@ -24510,13 +24586,14 @@ var baseUrl = 'https://gymbror.firebaseio.com';
 var firebaseConnection = new Firebase(baseUrl);
 
 module.exports = firebaseConnection;
-},{"firebase/lib/firebase-web":11}],176:[function(require,module,exports){
+},{"firebase/lib/firebase-web":11}],177:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var merge = require('react/lib/merge');
 var ExercisesConstants = require('../constants/exercises-constants.js');
 var firebaseConnection = require('../firebaseConnection.js');
 var UserStore = require('./user-store.js');
+var Promise = require('es6-promise').Promise;
 
 var CHANGE_EVENT = 'change';
 
@@ -24528,23 +24605,28 @@ var _lastWorkout;
 var ExerciseStore = merge(EventEmitter.prototype, {
   init: function() {
     user = UserStore.getUser();
-    ref = firebaseConnection.child('users/' + user.id);
-    ref.child('exercises').on('value', function(snapshot) {
+  },
+
+  fetchExercises: function(user) {
+    firebaseConnection.child('users/' + user.id + '/exercises').on('value', function(snapshot) {
       _exercises = snapshot.val();
       ExerciseStore.emitChange();
-    });
+    }); 
   },
 
   addExercise: function(name) {
-    ref.child('exercises').push({name: name});
+    firebaseConnection.child('users/' + user.id + '/exercises').push({name: name});
   },
 
   removeWorkout: function(id) {
-    ref.child('exercises/' + id).remove();
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id).remove();
   },
 
   addWorkout: function(workout, id) {
-    ref.child('exercises/' + id + '/workouts').push(workout);
+    console.log(workout);
+    console.log(id);
+    console.log(user.id);
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
     this.emitChange();
   },
 
@@ -24553,7 +24635,7 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   setLastWorkout: function(id) {
-    ref.child('exercises/' + id + '/workouts').orderByChild('date').limit(1).on('value', function(snapshot) {
+    firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').limit(1).on('value', function(snapshot) {
       _lastWorkout = snapshot.val();
       ExerciseStore.emitChange();
     });
@@ -24561,6 +24643,18 @@ var ExerciseStore = merge(EventEmitter.prototype, {
 
   getLastWorkout: function() {
     return _lastWorkout;
+  },
+
+  getSortedWorkouts: function(id) {
+    user = UserStore.getUser();
+
+    return p1 = new Promise(
+      function(resolve, reject) {   
+        firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').on('value', function(snapshot) {
+        resolve(snapshot.val());
+      });    
+    });
+
   },
 
   emitChange: function() {
@@ -24586,6 +24680,10 @@ AppDispatcher.register(function(payload) {
   var action = payload.action;
 
   switch(action.actionType) {
+    case ExercisesConstants.FETCH_EXERCISES:
+      ExerciseStore.fetchExercises(action.user);
+      break;
+
     case ExercisesConstants.ADD_EXERCISE:
       ExerciseStore.addExercise(action.name);
       ExerciseStore.emitChange();
@@ -24609,7 +24707,7 @@ AppDispatcher.register(function(payload) {
 });
 
 module.exports = ExerciseStore;
-},{"../constants/exercises-constants.js":168,"../dispatchers/app-dispatcher.js":170,"../firebaseConnection.js":175,"./user-store.js":177,"events":12,"react/lib/merge":136}],177:[function(require,module,exports){
+},{"../constants/exercises-constants.js":169,"../dispatchers/app-dispatcher.js":171,"../firebaseConnection.js":176,"./user-store.js":178,"es6-promise":1,"events":12,"react/lib/merge":136}],178:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants.js');
@@ -24719,4 +24817,4 @@ AppDispatcher.register(function(payload) {
 });
 
 module.exports = UserStore;
-},{"../constants/user-constants.js":169,"../dispatchers/app-dispatcher.js":170,"../firebaseAuth.js":174,"events":12,"react/lib/merge":136,"sweetalert":152}]},{},[172])
+},{"../constants/user-constants.js":170,"../dispatchers/app-dispatcher.js":171,"../firebaseAuth.js":175,"events":12,"react/lib/merge":136,"sweetalert":152}]},{},[173])
