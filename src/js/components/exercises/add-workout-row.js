@@ -11,11 +11,7 @@ var AddWorkoutRpw = React.createClass({
   onChange: function(e) {
     this.setState({value: event.target.value});
   },
-
-  repChange: function(e) {
-    console.log(event.target.value);
-  },
-
+  
   increase:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },

@@ -23666,6 +23666,13 @@ var ExercisesActions = {
       workout: workout,
       id: id
     });
+  },
+  removeWorkout: function(exerciseID, workoutID) {
+    AppDispatcher.handleViewAction({
+      actionType: ExercisesConstants.REMOVE_WORKOUT,
+      exerciseID: exerciseID,
+      workoutID: workoutID
+    });
   }
 };
 
@@ -23953,11 +23960,7 @@ var AddWorkoutRpw = React.createClass({displayName: 'AddWorkoutRpw',
   onChange: function(e) {
     this.setState({value: event.target.value});
   },
-
-  repChange: function(e) {
-    console.log(event.target.value);
-  },
-
+  
   increase:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },
@@ -24037,8 +24040,8 @@ var AddWorkout = React.createClass({displayName: 'AddWorkout',
         // lastInput = attr.getDOMNode().querySelector('input');
       }
     }
-    lastInput.getDOMNode().querySelector('input').focus();
-    lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
+    // lastInput.getDOMNode().querySelector('input').focus();
+    // lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
   },
 
   removeRow: function() {
@@ -24223,10 +24226,14 @@ function _getDate(timestamp) {
 }
 
 var GraphItem = React.createClass({displayName: 'GraphItem',
+  removeWorkout: function() {
+    this.props.removeWorkout(this.props.key);
+  },
   render:function(){
     return (
       React.DOM.div(null, 
-        _getDate(this.props.item.date)
+        _getDate(this.props.item.date), 
+        React.DOM.span({onClick: this.removeWorkout}, "   X")
       )
     )
   }
@@ -24238,6 +24245,7 @@ module.exports = GraphItem;
 var React = require('react');
 var ExercisesStore = require('../../stores/exercises-store.js');
 var GraphItem = require('./graph-item.js');
+var ExercisesActions = require('../../actions/exercises-actions.js'); 
 
 var Graph = React.createClass({displayName: 'Graph',
   getInitialState:function(){
@@ -24256,20 +24264,29 @@ var Graph = React.createClass({displayName: 'Graph',
       that.setState({items: items});
     });
   },
+
   componentWillUnmount: function() {
     ExercisesStore.removeChangeListener(this._onChange);
   },
+
   _onChange: function() {
+    var that = this;
+    
     ExercisesStore.getSortedWorkouts(this.props.exerciseID).then(function(items) {
       that.setState({items: items});
     });
   },
+
+  removeWorkout: function(workoutId) {
+    ExercisesActions.removeWorkout(this.props.exerciseID, workoutId);
+  },
+
   render:function(){
 
     var graph = [];
 
-    for(index in this.state.items) {
-      graph.push(GraphItem({item: this.state.items[index]}))
+    for(key in this.state.items) {
+      graph.push(GraphItem({key: key, removeWorkout: this.removeWorkout, item: this.state.items[key]}))
     }
 
     return (
@@ -24280,7 +24297,7 @@ var Graph = React.createClass({displayName: 'Graph',
 });
 
 module.exports = Graph;
-},{"../../stores/exercises-store.js":177,"./graph-item.js":166,"react":150}],168:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":153,"../../stores/exercises-store.js":177,"./graph-item.js":166,"react":150}],168:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
@@ -24319,7 +24336,8 @@ module.exports = {
   FETCH_EXERCISES: 'FETCH_EXERCISES',
   ADD_EXERCISE: 'ADD_EXERCISE',
   REMOVE_EXERCISE: 'REMOVE_EXERCISE',
-  ADD_WORKOUT: 'ADD_WORKOUT'
+  ADD_WORKOUT: 'ADD_WORKOUT',
+  REMOVE_WORKOUT: 'REMOVE_WORKOUT'
 }
 },{}],170:[function(require,module,exports){
 module.exports = {
@@ -24623,10 +24641,12 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   addWorkout: function(workout, id) {
-    console.log(workout);
-    console.log(id);
-    console.log(user.id);
     firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
+    this.emitChange();
+  },
+
+  removeWorkout: function(exerciseID, workoutID) {
+    firebaseConnection.child('users/' + user.id + '/exercises/' + exerciseID + '/workouts/' + workoutID).remove();
     this.emitChange();
   },
 
@@ -24648,7 +24668,7 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   getSortedWorkouts: function(id) {
     user = UserStore.getUser();
 
-    return p1 = new Promise(
+    return new Promise(
       function(resolve, reject) {   
         firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').on('value', function(snapshot) {
         resolve(snapshot.val());
@@ -24698,6 +24718,13 @@ AppDispatcher.register(function(payload) {
       ExerciseStore.addWorkout(action.workout, action.id);
       ExerciseStore.emitChange();
       break;
+
+    case ExercisesConstants.REMOVE_WORKOUT:
+      ExerciseStore.removeWorkout(action.exerciseID, action.workoutID);
+      ExerciseStore.emitChange();
+      break;
+
+
 
     default:
       return true;

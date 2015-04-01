@@ -26,6 +26,13 @@ var ExercisesActions = {
       workout: workout,
       id: id
     });
+  },
+  removeWorkout: function(exerciseID, workoutID) {
+    AppDispatcher.handleViewAction({
+      actionType: ExercisesConstants.REMOVE_WORKOUT,
+      exerciseID: exerciseID,
+      workoutID: workoutID
+    });
   }
 };
 

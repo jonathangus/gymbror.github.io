@@ -48,8 +48,8 @@ var AddWorkout = React.createClass({
         // lastInput = attr.getDOMNode().querySelector('input');
       }
     }
-    lastInput.getDOMNode().querySelector('input').focus();
-    lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
+    // lastInput.getDOMNode().querySelector('input').focus();
+    // lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
   },
 
   removeRow: function() {

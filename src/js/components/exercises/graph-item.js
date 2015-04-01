@@ -10,10 +10,14 @@ function _getDate(timestamp) {
 }
 
 var GraphItem = React.createClass({
+  removeWorkout: function() {
+    this.props.removeWorkout(this.props.key);
+  },
   render:function(){
     return (
       <div>
         {_getDate(this.props.item.date)}
+        <span onClick={this.removeWorkout}>   X</span>
       </div>
     )
   }

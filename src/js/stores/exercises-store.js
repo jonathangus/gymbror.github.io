@@ -34,10 +34,12 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   addWorkout: function(workout, id) {
-    console.log(workout);
-    console.log(id);
-    console.log(user.id);
     firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
+    this.emitChange();
+  },
+
+  removeWorkout: function(exerciseID, workoutID) {
+    firebaseConnection.child('users/' + user.id + '/exercises/' + exerciseID + '/workouts/' + workoutID).remove();
     this.emitChange();
   },
 
@@ -59,7 +61,7 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   getSortedWorkouts: function(id) {
     user = UserStore.getUser();
 
-    return p1 = new Promise(
+    return new Promise(
       function(resolve, reject) {   
         firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').on('value', function(snapshot) {
         resolve(snapshot.val());
@@ -109,6 +111,13 @@ AppDispatcher.register(function(payload) {
       ExerciseStore.addWorkout(action.workout, action.id);
       ExerciseStore.emitChange();
       break;
+
+    case ExercisesConstants.REMOVE_WORKOUT:
+      ExerciseStore.removeWorkout(action.exerciseID, action.workoutID);
+      ExerciseStore.emitChange();
+      break;
+
+
 
     default:
       return true;
