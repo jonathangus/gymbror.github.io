@@ -1811,3 +1811,14 @@ button.Button, input.Button {
 .Exercises-inner {
   width: 980px;
   margin: 0 auto; }
+
+.Graph-tooltip {
+  padding: 20px;
+  background: red; }
+
+.Graph-tooltip-row {
+  display: block;
+  margin-bottom: 5px; }
+
+.Graph-tooltip-rep {
+  font-weight: bold; }
