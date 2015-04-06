@@ -14,12 +14,12 @@ var Register =
     },
     render:function() {
       return (
-        <div>
+        <div className={this.props.class}>
           <h2>Register</h2>
-          <form onSubmit={this.handleRegister} className="Register">
-            <input ref="email" placeholder="Email" className="u-easy-bottom" />
-            <input ref="password" placeholder="Password" type="password" className="u-easy-bottom" />
-            <button type="submit" className="Button">Submit</button>
+          <form onSubmit={this.handleRegister} className="Form">
+            <input type="text" required="_" ref="email" placeholder="Email" className="Form-input Form-input--fade Form-anim" />
+            <input type="text" required="_" ref="password" placeholder="Password" type="password" className="Form-input Form-input--fade Form-anim" />
+            <button type="submit" className="Button Form-anim">Register</button>
           </form>
         </div>
       )

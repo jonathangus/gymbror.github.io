@@ -1,0 +1,85 @@
+.Form {
+  box-sizing: border-box;
+}
+
+.Form-input{
+  position: relative;
+  margin-bottom: $space;
+  margin-top: 0;
+  @include transition(margin 0.3s ease);
+
+  &:focus,
+  &:valid{
+    margin-top: 25px;
+
+    @include breakpoint($b-tablet) {
+      margin-top: 0;
+    }
+
+    &::-webkit-input-placeholder {
+      
+      visibility: visible !important;
+      opacity: 0.7;
+
+      @include transform(translateY(-45px));
+
+      @include breakpoint($b-tablet) {
+        @include transform(translateX(-85px));
+      }
+    }
+  }
+}
+
+.Form-input {
+  &::-webkit-input-placeholder {
+    @include transition(transform 0.3s ease);
+  }
+}
+
+.Form-input--fade {
+  background: rgba(255, 255, 255, .6);
+}
+
+.Form-anim {
+  opacity: 0;
+  @include transform(translateY(50px));
+  @include animation(fadeInUp);
+  @include animation-duration(0.6s);
+  @include animation-fill-mode(forwards);
+
+  &:nth-child(2) {
+    @include animation-delay(0.3s); 
+  }
+
+  &:nth-child(3) {
+    @include animation-delay(0.6s); 
+  }
+
+  &:nth-child(4) {
+    @include animation-delay(0.9s); 
+  }
+
+  &:nth-child(5) {
+    @include animation-delay(1.2s); 
+  }
+
+  &:nth-child(6) {
+    @include animation-delay(1.5s); 
+  }
+
+  &:nth-child(7) {
+    @include animation-delay(1.8s); 
+  }
+}
+
+
+@include keyframes(fadeInUp) {
+  from {
+    opacity: 0;
+    @include transform(translateY(50px)); 
+  }
+  to {
+    opacity: 1;
+    @include transform(translateY(0px));
+  }
+}

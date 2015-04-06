@@ -1,0 +1,26 @@
+@font-face {
+  font-family:'LucidaGrande';
+  src: url('../assets/fonts/LucidaGrande/LucidaGrande.eot');
+  src: url('../assets/fonts/LucidaGrande/LucidaGrande.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/LucidaGrande/LucidaGrande.woff') format('woff'),
+    url('../assets/fonts/LucidaGrande/LucidaGrande.ttf') format('truetype'),
+    url('../assets/fonts/LucidaGrande/LucidaGrande.svg#LucidaGrande') format('svg');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family:'DINWebPro-Medium';
+  src: url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.eot');
+  src: url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.woff') format('woff'),
+    url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.ttf') format('truetype'),
+    url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.svg#DINWebPro-Medium') format('svg');
+}
+
+body {
+  font: 13px/18px "LucidaGrande",verdana,sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DINWebPro-Medium';
+}

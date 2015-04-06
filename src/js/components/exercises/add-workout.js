@@ -11,7 +11,8 @@ var lastWorkout = null;
 var AddWorkout = React.createClass({
   getInitialState:function(){
     return {
-      rows: this.props.lastworkout.values
+      rows: this.props.lastworkout.values,
+      removeButton: (this.props.lastworkout.values.length <= 1)
     }
   },
   componentDidMount: function() {
@@ -38,6 +39,7 @@ var AddWorkout = React.createClass({
     }
     rows.push(lastRow);
     this.setState({rows: rows});
+    this.buttonVisible();
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -52,10 +54,20 @@ var AddWorkout = React.createClass({
     // lastInput.getDOMNode().querySelector('input').value = lastInput.getDOMNode().querySelector('input').value;
   },
 
+  buttonVisible: function() {
+    if(this.state.rows.length <= 1) {
+      this.setState({removeButton: true});
+    }
+    else {
+      this.setState({removeButton: false});
+    }
+  },
+
   removeRow: function() {
     var rows = this.state.rows;
     rows.splice(-1,1);
     this.setState({rows: rows});
+    this.buttonVisible();
   },
 
   submitWorkout: function(e) {    
@@ -75,9 +87,16 @@ var AddWorkout = React.createClass({
 
     var d = new Date(this.refs.date.getDOMNode().value);
     
+    var summary = 0;
+
+    sets.forEach(function(s) {
+      summary += parseInt(s.value) * parseInt(s.reps);
+    });
+
     var newWorkout = {
       date: d.getTime(),
-      values: sets
+      values: sets,
+      summary: summary / sets.length
     }
 
     ExercisesActions.addWorkout(newWorkout, this.props.key);
@@ -92,12 +111,12 @@ var AddWorkout = React.createClass({
     
     return (
       <div>
-        <form onSubmit={this.submitWorkout}>
+        <form className="Form" onSubmit={this.submitWorkout}>
         {sets}
-        <input ref={'date'}/>
-        <div onClick={this.addRow} className="Button" role="button">New row</div>
-        <div onClick={this.removeRow} className="Button" role="button">Remove row</div>
-        <button className="Button" role="submit">Add</button>
+        <input className="Form-anim" ref={'date'}/>
+        <div onClick={this.addRow} className="Button Form-anim" role="button">New row</div>
+        {this.state.removeButton ? null : <div onClick={this.removeRow} className="Button Form-anim" role="button">Remove row</div> }
+        <button className="Button Form-anim" role="submit">Add</button>
         </form>
       </div>
     )

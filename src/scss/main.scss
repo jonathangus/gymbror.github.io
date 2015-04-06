@@ -18,8 +18,9 @@ $breakpoint-force-media-all: true; // ¯\_(ツ)_/¯
 @import "mixins";
 @import "utils";
 @import "base";
+@import "typography";
 
-@import "components/Login";
+@import "components/Form";
 @import "components/Loader";
 @import "components/App";
 @import "components/Addrow";
@@ -29,3 +30,4 @@ $breakpoint-force-media-all: true; // ¯\_(ツ)_/¯
 @import "components/Set";
 @import "components/Auth";
 @import "components/Notification";
+@import "components/Exercises";

@@ -33,7 +33,8 @@ var APP =
     render:function(){
       return (
         <div className="container">
-          {this.state.loggedIn ? <Logout /> : null }
+          {!this.state.loggedIn ? <div className="App-video"><video muted autoPlay><source src="assets/insp.mp4" type="video/mp4"></source></video></div> : null}
+          {this.state.loggedIn ? <Logout /> : null}
           {!this.state.loggedIn ? <Auth /> : <Exercises />}
           <Loader show={this.state.loading} />
         </div>

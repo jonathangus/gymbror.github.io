@@ -1,12 +1,20 @@
 $color-base: #2c3e50;
 $color-primary: #2980b9;
+$color-secondary: #82929d;
 $color-text: #fafafa;
 $color-black: #222;
 $color-red: #e74c3c;
 $color-green: #2ecc71;
+$color-active: #8CD0D5;
+
+$input-background-focus: $color-secondary;
+$input-background: rgba($color-secondary, .6);
+$input-radius: 5px;
+$input-padding: 15px;
 
 $space: 20px;
 $easy: 10px;
 
 $b-full: 500px;
+$b-tablet: 820px;
 $b-mob: 500px;

@@ -1270,12 +1270,229 @@ input {
   width: 100%;
   border-radius: 0; }
 
+::-webkit-input-placeholder {
+  color: #fafafa; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #fafafa; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fafafa; }
+
+:-ms-input-placeholder {
+  color: #fafafa; }
+
+input, input[type=text], input[type=textarea], input[type=password] {
+  padding: 15px; }
+
 button, input, textarea {
   color: #222; }
 
 p {
   margin-bottom: 20px;
   margin-top: 0; }
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #46464F;
+  opactiy: 0.0001;
+  shape-rendering: crispEdges; }
+
+.x.axis path, .y.axis path {
+  display: none; }
+
+.line {
+  fill: none;
+  stroke: #377CC3;
+  stroke-width: 1.5px; }
+
+.overlay {
+  fill: none;
+  pointer-events: all; }
+
+.focus circle {
+  fill: #46464F;
+  stroke: #377CC3; }
+
+.grid .tick {
+  stroke: #46464F;
+  opacity: 0.7; }
+
+.axis g.tick {
+  stroke: #56565F; }
+
+.focus text {
+  stroke: #A6A6AF; }
+
+.grid path {
+  stroke-width: 0; }
+
+.area {
+  /*
+  here's where the gradient would go
+  **/
+  fill: #8CD0D5;
+  stroke-width: 0; }
+
+.yAxisTicks {
+  /*
+  styling for axis ticks/labels goes here
+  **/ }
+
+.xAxisTicks {
+  /*
+  styling for axis ticks/labels goes here
+  **/ }
+
+@font-face {
+  font-family: 'LucidaGrande';
+  src: url('../assets/fonts/LucidaGrande/LucidaGrande.eot');
+  src: url('../assets/fonts/LucidaGrande/LucidaGrande.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/LucidaGrande/LucidaGrande.woff') format('woff'), url('../assets/fonts/LucidaGrande/LucidaGrande.ttf') format('truetype'), url('../assets/fonts/LucidaGrande/LucidaGrande.svg#LucidaGrande') format('svg');
+  font-weight: 400; }
+
+@font-face {
+  font-family: 'DINWebPro-Medium';
+  src: url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.eot');
+  src: url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.woff') format('woff'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.ttf') format('truetype'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.svg#DINWebPro-Medium') format('svg'); }
+
+body {
+  font: 13px/18px "LucidaGrande", verdana, sans-serif; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DINWebPro-Medium'; }
+
+.Form {
+  box-sizing: border-box; }
+
+.Form-input {
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 0;
+  -webkit-transition: margin 0.3s ease;
+  -moz-transition: margin 0.3s ease;
+  -o-transition: margin 0.3s ease;
+  transition: margin 0.3s ease; }
+  .Form-input:focus, .Form-input:valid {
+    margin-top: 25px; }
+    @media all and (min-width: 820px) {
+      .Form-input:focus, .Form-input:valid {
+        margin-top: 0; } }
+    .Form-input:focus::-webkit-input-placeholder, .Form-input:valid::-webkit-input-placeholder {
+      visibility: visible !important;
+      opacity: 0.7;
+      -webkit-transform: translateY(-45px);
+      -moz-transform: translateY(-45px);
+      -ms-transform: translateY(-45px);
+      -o-transform: translateY(-45px);
+      transform: translateY(-45px); }
+      @media all and (min-width: 820px) {
+        .Form-input:focus::-webkit-input-placeholder, .Form-input:valid::-webkit-input-placeholder {
+          -webkit-transform: translateX(-85px);
+          -moz-transform: translateX(-85px);
+          -ms-transform: translateX(-85px);
+          -o-transform: translateX(-85px);
+          transform: translateX(-85px); } }
+
+.Form-input::-webkit-input-placeholder {
+  -webkit-transition: -webkit-transform 0.3s ease;
+  -moz-transition: -moz-transform 0.3s ease;
+  -o-transition: -o-transform 0.3s ease;
+  transition: transform 0.3s ease; }
+
+.Form-input--fade {
+  background: rgba(255, 255, 255, 0.6); }
+
+.Form-anim {
+  opacity: 0;
+  -webkit-transform: translateY(50px);
+  -moz-transform: translateY(50px);
+  -ms-transform: translateY(50px);
+  -o-transform: translateY(50px);
+  transform: translateY(50px);
+  -webkit-animation: fadeInUp;
+  animation: fadeInUp;
+  -webkit-animation-duration: 0.6s;
+  -moz-animation-duration: 0.6s;
+  -ms-animation-duration: 0.6s;
+  -o-animation-duration: 0.6s;
+  animation-duration: 0.6s;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; }
+  .Form-anim:nth-child(2) {
+    -webkit-animation-delay: 0.3s;
+    -moz-animation-delay: 0.3s;
+    -ms-animation-delay: 0.3s;
+    -o-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+  .Form-anim:nth-child(3) {
+    -webkit-animation-delay: 0.6s;
+    -moz-animation-delay: 0.6s;
+    -ms-animation-delay: 0.6s;
+    -o-animation-delay: 0.6s;
+    animation-delay: 0.6s; }
+  .Form-anim:nth-child(4) {
+    -webkit-animation-delay: 0.9s;
+    -moz-animation-delay: 0.9s;
+    -ms-animation-delay: 0.9s;
+    -o-animation-delay: 0.9s;
+    animation-delay: 0.9s; }
+  .Form-anim:nth-child(5) {
+    -webkit-animation-delay: 1.2s;
+    -moz-animation-delay: 1.2s;
+    -ms-animation-delay: 1.2s;
+    -o-animation-delay: 1.2s;
+    animation-delay: 1.2s; }
+  .Form-anim:nth-child(6) {
+    -webkit-animation-delay: 1.5s;
+    -moz-animation-delay: 1.5s;
+    -ms-animation-delay: 1.5s;
+    -o-animation-delay: 1.5s;
+    animation-delay: 1.5s; }
+  .Form-anim:nth-child(7) {
+    -webkit-animation-delay: 1.8s;
+    -moz-animation-delay: 1.8s;
+    -ms-animation-delay: 1.8s;
+    -o-animation-delay: 1.8s;
+    animation-delay: 1.8s; }
+
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(50px);
+    -moz-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    -o-transform: translateY(50px);
+    transform: translateY(50px); }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transform: translateY(0px); } }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(50px);
+    -moz-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    -o-transform: translateY(50px);
+    transform: translateY(50px); }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    transform: translateY(0px); } }
 
 @-webkit-keyframes rotate-one {
   0% {
@@ -1435,6 +1652,24 @@ p {
       padding-left: 0;
       padding-right: 0; } }
 
+.App-video {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%; }
+  .App-video video {
+    min-height: 100vh;
+    min-width: 100vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); }
+
 .Addrow {
   margin-bottom: 10px;
   display: -webkit-box;
@@ -1459,6 +1694,9 @@ button.Button, input.Button {
 
 .Button:last-child {
   margin-right: 0; }
+
+.Button--active {
+  background: #2ecc71; }
 
 .Button--add {
   background-size: 35px;
@@ -1508,7 +1746,8 @@ button.Button, input.Button {
   transform: translateY(-50%); }
 
 .Auth {
-  width: 430px;
+  width: 100%;
+  padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1517,6 +1756,45 @@ button.Button, input.Button {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
+  @media all and (min-width: 500px) {
+    .Auth {
+      padding: 0;
+      width: 430px; } }
+
+.Auth-container {
+  white-space: nowrap; }
+
+.Auth-form {
+  width: 100%;
+  display: inline-block;
+  white-space: normal;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+
+.Auth-form--register {
+  opacity: 0; }
+
+.Auth-container--swiped .Auth-form--register {
+  opacity: 1;
+  -webkit-transform: translateX(-100%);
+  -moz-transform: translateX(-100%);
+  -ms-transform: translateX(-100%);
+  -o-transform: translateX(-100%);
+  transform: translateX(-100%); }
+.Auth-container--swiped .Auth-form--login {
+  opacity: 0;
+  -webkit-transform: translateX(-100%);
+  -moz-transform: translateX(-100%);
+  -ms-transform: translateX(-100%);
+  -o-transform: translateX(-100%);
+  transform: translateX(-100%); }
 
 .Notification {
   padding: 10px;
@@ -1529,3 +1807,7 @@ button.Button, input.Button {
 
 .Notification--success {
   background: #2ecc71; }
+
+.Exercises-inner {
+  width: 980px;
+  margin: 0 auto; }

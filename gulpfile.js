@@ -4,12 +4,14 @@ var concat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var iconify = require('gulp-iconify');
+var livereload = require('gulp-livereload');
 
 gulp.task('sass', function () {
     gulp.src('./src/scss/*.scss')
         .pipe(plumber())
         .pipe(sass())
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest('./dist/css'))
+        .pipe(livereload());
 });
 
 gulp.task('browserify', function() {
@@ -40,6 +42,7 @@ gulp.task('copy', function() {
 gulp.task('default',['browserify', 'copy']);
 
 gulp.task('watch', function() {
+    livereload.listen();
     gulp.watch('src/js/**/*.*', ['default']);
     gulp.watch('src/scss/**/*.*', ['sass']);
     gulp.watch('src/assets/images/*.svg', ['iconify']);

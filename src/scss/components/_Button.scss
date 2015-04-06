@@ -16,6 +16,10 @@ input.Button {
   margin-right: 0;
 }
 
+.Button--active {
+  background: $color-green;
+}
+
 .Button--add {
   background-size: 35px;
   background-repeat: no-repeat;

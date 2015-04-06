@@ -12,7 +12,7 @@ var lastworkout;
 var ExerciseItem = React.createClass({
   getInitialState:function(){
     return {
-      open: true
+      open: false
     }
   },
   remove:function() {

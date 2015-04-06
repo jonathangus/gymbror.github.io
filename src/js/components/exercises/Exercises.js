@@ -30,10 +30,11 @@ var Exercises = React.createClass({
     }
 
     return (
-      <div>
-        {items}
+      <div className='Exercises'>
+        <div className='Exercises-inner'>
+          {items}
+        </div>
         <NewExercise />
-      }
       </div>
     )
   }

@@ -1,7 +1,50 @@
 .Auth {
-  width: 430px;
+  width: 100%;
+  padding: $space;
   position: absolute;
   top: 50%;
   left: 50%;
   @include transform(translate(-50%, -50%));
+
+  @include breakpoint($b-mob) {
+    padding: 0;
+    width: 430px;
+  }
+}
+
+.Auth-container {
+  white-space: nowrap;
+}
+
+.Auth-form {
+  width: 100%;
+  display: inline-block;
+  white-space: normal;
+
+  @include transform(translateX(0));
+  @include transition(all 0.3s ease);
+}
+
+.Auth-form--login {
+
+}
+
+.Auth-form--register {
+  opacity: 0;
+}
+
+.Auth-container {
+  
+}
+
+.Auth-container--swiped {
+  .Auth-form--register {
+    opacity: 1;
+    @include transform(translateX(-100%));
+  }
+
+  .Auth-form--login {
+    opacity: 0;
+    @include transform(translateX(-100%));
+  }
 }

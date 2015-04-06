@@ -50,9 +50,16 @@ var Auth = React.createClass({
     UserActions.registerUser(email, password);
   },
 
-  toggle:function() {
+  setLogin: function() {
     this.setState({
-      toggle: !this.state.toggle,
+      toggle: true,
+      validationMessages: []
+    });
+  },
+
+  setRegister: function() {
+    this.setState({
+      toggle: false,
       validationMessages: []
     });
   },
@@ -64,12 +71,13 @@ var Auth = React.createClass({
         return <Notification key={i} message={value} type={'error'} />
       });
     }
+    var containerClass = 'Auth-container' + (this.state.toggle ? '' : ' Auth-container--swiped');
     return (
       <div className="Auth">
-        <div>
-          <button className="Button" onClick={this.toggle}>Login</button>
-          <button className="Button" onClick={this.toggle}>Register</button>
-          {this.state.toggle ? <Login handleLogin={this.handleLogin} /> : <Register handleRegister={this.handleRegister} />}
+        {this.state.toggle ? <button className="Button" onClick={this.setRegister}>Register</button> : <button className="Button" onClick={this.setLogin}>Login</button>}
+        <div className={containerClass}>
+          <Login class={'Auth-form Auth-form--login'} handleLogin={this.handleLogin} />
+          <Register class={'Auth-form Auth-form--register'} handleRegister={this.handleRegister} />
           {validationMessages}
           {this.state.loading ? 'ladda' : null}
         </div>

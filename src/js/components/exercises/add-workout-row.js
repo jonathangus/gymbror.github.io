@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 
-var AddWorkoutRpw = React.createClass({
+var AddWorkoutRow = React.createClass({
   getInitialState:function(){
     return {
       value: this.props.value
@@ -11,7 +11,7 @@ var AddWorkoutRpw = React.createClass({
   onChange: function(e) {
     this.setState({value: event.target.value});
   },
-  
+
   increase:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },
@@ -27,7 +27,7 @@ var AddWorkoutRpw = React.createClass({
     });
 
     return (
-      <div>
+      <div className="Form-anim">
         <input value={this.state.value} onChange={this.onChange}/>
          <select defaultValue={this.props.reps}>
           {options}
@@ -39,4 +39,4 @@ var AddWorkoutRpw = React.createClass({
   }
 });
 
-module.exports = AddWorkoutRpw;
+module.exports = AddWorkoutRow;

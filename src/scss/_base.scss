@@ -31,6 +31,36 @@ input {
   border-radius: 0;
 }
 
+::-webkit-input-placeholder {
+   color: $color-text;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: $color-text;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: $color-text;  
+}
+
+:-ms-input-placeholder {  
+   color: $color-text;  
+}
+
+input,
+input[type=text],
+input[type=textarea],
+input[type=password] {
+  // color: $color-text;
+  // background: $input-background;
+  // border-radius: $input-radius;
+  padding: $input-padding;
+}
+
+input:focus {
+  // background: $input-background-focus;
+}
+
 button,
 input,
 textarea {
@@ -41,3 +71,64 @@ p {
   margin-bottom: $space;
   margin-top: 0;
 }
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #46464F;
+  opactiy: 0.0001;
+  shape-rendering: crispEdges;
+}
+.x.axis path, .y.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: #377CC3;
+  stroke-width: 1.5px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: #46464F;
+  stroke: #377CC3;
+}
+.grid .tick {
+  stroke: #46464F;
+  opacity: 0.7;
+  // stroke-dasharray="1,3";
+}
+.axis g.tick{
+  stroke: #56565F;
+}
+.focus text{
+  stroke: #A6A6AF;
+}
+.grid path {
+      stroke-width: 0;
+}
+.area {
+  /*
+  here's where the gradient would go
+  **/
+    fill: $color-active;
+    // opacity: .1;
+    stroke-width: 0;
+}
+.yAxisTicks {
+  /*
+  styling for axis ticks/labels goes here
+  **/
+}
+.xAxisTicks {
+  /*
+  styling for axis ticks/labels goes here
+  **/
+}
+    

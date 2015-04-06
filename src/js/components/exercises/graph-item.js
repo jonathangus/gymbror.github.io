@@ -17,6 +17,7 @@ var GraphItem = React.createClass({
     return (
       <div>
         {_getDate(this.props.item.date)}
+        <div>{this.props.item.summary}</div>
         <span onClick={this.removeWorkout}>   X</span>
       </div>
     )

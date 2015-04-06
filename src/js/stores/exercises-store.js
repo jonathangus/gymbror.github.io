@@ -5,6 +5,7 @@ var ExercisesConstants = require('../constants/exercises-constants.js');
 var firebaseConnection = require('../firebaseConnection.js');
 var UserStore = require('./user-store.js');
 var Promise = require('es6-promise').Promise;
+var Firebase = require('firebase');
 
 var CHANGE_EVENT = 'change';
 
@@ -29,7 +30,9 @@ var ExerciseStore = merge(EventEmitter.prototype, {
     firebaseConnection.child('users/' + user.id + '/exercises').push({name: name});
   },
 
-  removeWorkout: function(id) {
+  removeExercise: function(id) {
+    console.log(id);
+    user = UserStore.getUser();
     firebaseConnection.child('users/' + user.id + '/exercises/' + id).remove();
   },
 
@@ -62,9 +65,10 @@ var ExerciseStore = merge(EventEmitter.prototype, {
     user = UserStore.getUser();
 
     return new Promise(
-      function(resolve, reject) {   
-        firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').orderByChild('date').on('value', function(snapshot) {
-        resolve(snapshot.val());
+      function(resolve, reject) {
+        var ref = new Firebase('https://gymbror.firebaseio.com/users/' + user.id + '/exercises/' + id + '/workouts');
+        ref.orderByChild('summary').on('value', function(snapshot) {
+          resolve(snapshot.val());
       });    
     });
 
@@ -103,7 +107,7 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ExercisesConstants.REMOVE_EXERCISE:
-      ExerciseStore.removeWorkout(action.id);
+      ExerciseStore.removeExercise(action.id);
       ExerciseStore.emitChange();
       break;
 
