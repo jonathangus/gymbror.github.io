@@ -9,7 +9,7 @@ var Logout =
     },
     render:function() {
       return (
-        <button onClick={this.handleLogout}>Logout</button>
+        <button className="Button" onClick={this.handleLogout}>Logout</button>
       )
     }
 });

@@ -6,6 +6,7 @@ var NewExercise = require('./new-exercise.js');
 var ExerciseItem = require('./exercise-item.js');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
+var Logout = require('../auth/logout.js');
 
 var ExercisesList = React.createClass({
   changeExercise: function(index) {
@@ -23,6 +24,7 @@ var ExercisesList = React.createClass({
       <div className='ExerciseList'>
         {items}
         <NewExercise />
+        <Logout />
       </div>
     )
   }

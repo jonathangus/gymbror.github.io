@@ -25,10 +25,11 @@ var MainView =
     },
 
     render:function(){
+
       return  (
         <div className="container">
           <ExerciseList items={this.props.items} setSelected={this.setSelected} />
-          <SelectedExercise selected={this.state.selected} selectedKey={_selectedIndex}/>
+          {_.values(this.props.items).length > 0 ? <SelectedExercise selected={this.state.selected} selectedKey={_selectedIndex}/> : null}
         </div>
         )
     }

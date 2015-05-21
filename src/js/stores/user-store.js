@@ -3,8 +3,6 @@ var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants.js');
 var merge = require('react/lib/merge');
 var authClient = require('../firebaseAuth.js');
-var swal = require('sweetalert');
-swal.setDefaults({ allowOutsideClick: true });
 
 var CHANGE_EVENT = 'change';
 
