@@ -1,31 +1,4 @@
-.App {
-  position: relative;
-  min-height: 100vh;
-  max-width: $b-full;
+.App-container {
+  width: 1140px;
   margin: 0 auto;
-  padding-left: $space;
-  padding-right: $space;
-  padding-bottom: $space * 2;
-
-  @include breakpoint($b-full) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-.App-video {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-
-  video {
-    min-height: 100vh;
-    min-width: 100vw;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    @include transform(translate(-50%, -50%));
-  }
 }

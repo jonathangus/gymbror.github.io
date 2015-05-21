@@ -27,17 +27,20 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   addExercise: function(name) {
+    user = UserStore.getUser();
     firebaseConnection.child('users/' + user.id + '/exercises').push({name: name});
   },
 
   removeExercise: function(id) {
-    console.log(id);
     user = UserStore.getUser();
     firebaseConnection.child('users/' + user.id + '/exercises/' + id).remove();
   },
 
   addWorkout: function(workout, id) {
-    firebaseConnection.child('users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
+    console.log(workout);
+    console.log(id);
+    user = UserStore.getUser();
+    ref = new Firebase('https://gymbror.firebaseio.com/users/' + user.id + '/exercises/' + id + '/workouts').push(workout);
     this.emitChange();
   },
 
@@ -47,7 +50,15 @@ var ExerciseStore = merge(EventEmitter.prototype, {
   },
 
   getExercises: function() {
-    return _exercises;
+    user = UserStore.getUser();
+
+    return new Promise(
+      function(resolve, reject) {
+        ref = new Firebase('https://gymbror.firebaseio.com/users/' + user.id + '/exercises/');
+        ref.orderByChild('summary').on('value', function(snapshot) {
+          resolve(snapshot.val());
+      });    
+    });
   },
 
   setLastWorkout: function(id) {
@@ -98,7 +109,7 @@ AppDispatcher.register(function(payload) {
 
   switch(action.actionType) {
     case ExercisesConstants.FETCH_EXERCISES:
-      ExerciseStore.fetchExercises(action.user);
+      // ExerciseStore.fetchExercises(action.user);
       break;
 
     case ExercisesConstants.ADD_EXERCISE:

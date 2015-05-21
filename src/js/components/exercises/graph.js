@@ -23,6 +23,10 @@ var margin = {top: 20, right: 20, bottom: 20, left: 20},
 var svg;
 
 function _GraphGoTime(items) {
+  if(typeof svg !== 'undefined') {
+    d3.select("svg").remove();
+  }
+
   svg = d3.select('#chart').append("svg")
     .attr('class', 'Graph')
     .attr("width", width)
@@ -41,7 +45,7 @@ function _GraphUpdate(items) {
 }
 
 function _GraphGoItems(items) {
-  gItems = _.values(items);
+  gItems = items;
 
   gItems.forEach(function (d) {
     d.date = new Date(d.date);
@@ -162,45 +166,31 @@ function _GraphGoItems(items) {
 }
 
 var Graph = React.createClass({
-  getInitialState:function(){
-    return {
-      items: null
+  componentDidMount:function(){
+    var items = _.values(this.props.items);
+    if(items.length > 0) {
+       _GraphGoTime(items);
+    }
+    else {
+      document.getElementById('chart').innerHTML = '';
     }
   },
-  propTypes: {
-    exerciseID: React.PropTypes.string.isRequired,
-  },
-  componentDidMount: function() {
-    var that = this;
-
-    ExercisesStore.addChangeListener(this._onChange);
-    ExercisesStore.getSortedWorkouts(this.props.exerciseID).then(function(items) {
-      that.setState({items: items});
-      _GraphGoTime(items);
-    });
-  },
-
-  componentWillUnmount: function() {
-    ExercisesStore.removeChangeListener(this._onChange);
-  },
-
-  _onChange: function() {
-    var that = this;
-    
-    ExercisesStore.getSortedWorkouts(this.props.exerciseID).then(function(items) {
-      that.setState({items: items});
-      _GraphUpdate(items)
-    });
-  },
-
-  removeWorkout: function(workoutId) {
-    ExercisesActions.removeWorkout(this.props.exerciseID, workoutId);
+  componentDidUpdate: function() {
+    // console.log('UPDATE FROM GRAPH');
+    // console.log(_.values(this.props.items));
+    var items = _.values(this.props.items);
+    if(items.length > 0) {
+       _GraphGoTime(items);
+    }
+    else {
+      document.getElementById('chart').innerHTML = '';
+    }
   },
 
   render:function(){
     return (
       <div>
-      <div id="chart"></div>
+        <div id="chart"></div>
       </div>
     )
   }

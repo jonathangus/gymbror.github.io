@@ -4,6 +4,7 @@ var AddWorkoutRow = require('./add-workout-row.js');
 var ExercisesStore = require('../../stores/exercises-store.js');
 var Pikaday = require('pikaday');
 var ExercisesActions = require('../../actions/exercises-actions.js');
+var _ = require('lodash');
 
 var picker;
 var lastWorkout = null;
@@ -11,10 +12,15 @@ var lastWorkout = null;
 var AddWorkout = React.createClass({
   getInitialState:function(){
     return {
-      rows: this.props.lastworkout.values,
+      rows: _.values(this.props.lastworkout.values),
       removeButton: (this.props.lastworkout.values.length <= 1)
     }
   },
+  
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({rows: _.values(nextProps.lastworkout.values)});
+  },
+
   componentDidMount: function() {
     picker = new Pikaday({ field: this.refs.date.getDOMNode() });
     picker.setDate(new Date());
@@ -100,10 +106,10 @@ var AddWorkout = React.createClass({
     }
 
     ExercisesActions.addWorkout(newWorkout, this.props.key);
-    this.props.toggleAdd();
   },
 
   render:function(){
+    console.log(this.state.rows);
     var sets;
     sets = this.state.rows.map(function(row, i) {
       return <AddWorkoutRow ref={'w' + i} value={row.value} reps={row.reps} /> 

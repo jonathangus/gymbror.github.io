@@ -3,6 +3,7 @@ var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
 var Graph = require('./graph.js');
 var AddWorkout = require('./add-workout.js');
+var _ = require('lodash');
 
 var swal = require('sweetalert');
 swal.setDefaults({ allowOutsideClick: true });
@@ -37,6 +38,11 @@ var ExerciseItem = React.createClass({
   toggleAdd: function() {
     this.setState({open: !this.state.open});
   },
+
+  set: function() {
+    this.props.changeExercise(this.props.key);
+  },
+
   componentWillMount:function(){
     var lastkey;
 
@@ -57,13 +63,13 @@ var ExerciseItem = React.createClass({
     
   },
   render:function(){
+    var abab = _.values(this.props.exercise.workouts);
+    var dd = abab.length;
+
     return (
       <div>
-      <h1>{this.props.exercise.name}</h1>
-      <Graph exerciseID={this.props.key} />
-      <button onClick={this.remove} className="Button">Remove</button>
-      <button className="Button" onClick={this.toggleAdd}>Add workout</button>
-      {this.state.open ? <AddWorkout toggleAdd={this.toggleAdd} lastworkout={lastworkout} key={this.props.key} /> : null}
+      <h1 onClick={this.set}>{this.props.exercise.name}</h1>
+      {dd}
       </div>
     )
   }

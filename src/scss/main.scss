@@ -30,5 +30,6 @@ $breakpoint-force-media-all: true; // ¯\_(ツ)_/¯
 @import "components/Set";
 @import "components/Auth";
 @import "components/Notification";
-@import "components/Exercises";
+@import "components/ExerciseList";
 @import "components/Graph";
+@import "components/SelectedExercise";
