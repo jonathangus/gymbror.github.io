@@ -6,9 +6,11 @@ var NewExercise = require('./new-exercise.js');
 var ExerciseItem = require('./exercise-item.js');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
+var Logout = require('../auth/logout.js');
 
 var ExercisesList = React.createClass({
   changeExercise: function(index) {
+    console.log(index);
     this.props.setSelected(index);
   },
 
@@ -16,13 +18,14 @@ var ExercisesList = React.createClass({
     var items = [];
 
     for(index in this.props.items) {
-      items.push(<ExerciseItem changeExercise={this.changeExercise} key={index} exercise={this.props.items[index]} />);
+      items.push(<ExerciseItem changeExercise={this.changeExercise} id={index} exercise={this.props.items[index]} />);
     }
 
     return (
       <div className='ExerciseList'>
         {items}
         <NewExercise />
+        <Logout />
       </div>
     )
   }

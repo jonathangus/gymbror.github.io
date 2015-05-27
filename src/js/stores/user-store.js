@@ -1,10 +1,8 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants.js');
-var merge = require('react/lib/merge');
+var assign = require('object-assign');
 var authClient = require('../firebaseAuth.js');
-var swal = require('sweetalert');
-swal.setDefaults({ allowOutsideClick: true });
 
 var CHANGE_EVENT = 'change';
 
@@ -12,7 +10,7 @@ var _loggedIn = false;
 var _currentUser = null;
 var _validationMessages = [];
 
-var UserStore = merge(EventEmitter.prototype, {
+var UserStore = assign({}, EventEmitter.prototype, {
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },

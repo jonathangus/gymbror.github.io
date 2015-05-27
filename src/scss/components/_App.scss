@@ -2,3 +2,21 @@
   width: 1140px;
   margin: 0 auto;
 }
+
+.App-video {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  
+  video {
+    min-height: 100vh;
+    min-width: 100vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    @include transform(translate(-50%, -50%));
+  }
+}

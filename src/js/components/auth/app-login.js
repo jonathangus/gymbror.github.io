@@ -17,9 +17,9 @@ var Login =
         <div className={this.props.class}>
           <h2>Login</h2>
           <form onSubmit={this.handleLogin} className="Form">
-            <input type="text" ref="email" placeholder="Email" required="_" className="Form-input Form-input--fade Form-anim" />
+            <input type="text" ref="email" placeholder="Email" required="_" className="Form-input Form-anim" />
             
-            <input ref="password" placeholder="Password" type="password" required="_" className="Form-input Form-input--fade Form-anim" />
+            <input ref="password" placeholder="Password" type="password" required="_" className="Form-input Form-anim" />
             <button type="submit" className="Button Form-anim">Login</button>
           </form>
         </div>

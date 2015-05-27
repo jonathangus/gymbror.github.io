@@ -2,6 +2,6 @@
 var APP = require('./components/app.js');
 var React = require('react');
 
-React.renderComponent(
+React.render(
   <APP />,
   document.getElementById('app'));

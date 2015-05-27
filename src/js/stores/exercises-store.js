@@ -1,6 +1,6 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
-var merge = require('react/lib/merge');
+var assign = require('object-assign');
 var ExercisesConstants = require('../constants/exercises-constants.js');
 var firebaseConnection = require('../firebaseConnection.js');
 var UserStore = require('./user-store.js');
@@ -14,7 +14,7 @@ var _exercises;
 var ref;
 var _lastWorkout;
 
-var ExerciseStore = merge(EventEmitter.prototype, {
+var ExerciseStore = assign({}, EventEmitter.prototype, {
   init: function() {
     user = UserStore.getUser();
   },

@@ -40,7 +40,7 @@ var ExerciseItem = React.createClass({
   },
 
   set: function() {
-    this.props.changeExercise(this.props.key);
+    this.props.changeExercise(this.props.id);
   },
 
   componentWillMount:function(){

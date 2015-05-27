@@ -62,6 +62,18 @@ _.extend(Store.prototype, {
   },
 
   /**
+   * loads all the events since passed commitStamp
+   * @param {Date}     commitStamp the date object
+   * @param {Number}   skip        how many events should be skipped? [optional]
+   * @param {Number}   limit       how many events do you want in the result? [optional]
+   * @param {Function} callback    the function that will be called when this action has finished
+   *                               `function(err, events){}`
+   */
+  getEventsSince: function (commitStamp, skip, limit, callback) {
+    implementError(callback);
+  },
+
+  /**
    * loads the events
    * @param {Object}   query    the query object
    * @param {Number}   revMin   revision start point

@@ -178,9 +178,9 @@ _.extend(Redis.prototype, {
       if (!evt.aggregateId) {
         noAggId = true;
       }
-      keysEvtMap.push(self.options.prefix + ':' + self.options.eventsCollectionName + ':' + evt.commitStamp.getTime() + evt.commitSequence.toString() + ':' + context + ':' + aggregate + ':' + aggregateId + ':' + evt.id);
+      keysEvtMap.push(self.options.prefix + ':' + self.options.eventsCollectionName + ':' + evt.commitStamp.getTime() + ':' + evt.commitSequence.toString() + ':' + context + ':' + aggregate + ':' + aggregateId + ':' + evt.id);
       keysEvtMap.push(JSON.stringify(evt));
-      undispKeysEvtMap.push(self.options.prefix + ':undispatched_' + self.options.eventsCollectionName + ':' + evt.commitStamp.getTime() + evt.commitSequence.toString() + ':' + context + ':' + aggregate + ':' + aggregateId + ':' + evt.id);
+      undispKeysEvtMap.push(self.options.prefix + ':undispatched_' + self.options.eventsCollectionName + ':' + evt.commitStamp.getTime() + ':' + evt.commitSequence.toString() + ':' + context + ':' + aggregate + ':' + aggregateId + ':' + evt.id);
       undispKeysEvtMap.push(JSON.stringify(evt));
     });
 
@@ -204,10 +204,10 @@ _.extend(Redis.prototype, {
     var aggregateId = query.aggregateId || '*';
     var aggregate = query.aggregate || '*';
     var context = query.context || '*';
-    
+
     var self = this;
-    
-    this.client.keys(this.options.prefix + ':' + this.options.eventsCollectionName + ':*:' + context + ':' + aggregate + ':' + aggregateId + ':*', function (err, keys) {
+
+    this.client.keys(this.options.prefix + ':' + this.options.eventsCollectionName + ':*:*:' + context + ':' + aggregate + ':' + aggregateId + ':*', function (err, keys) {
       if (err) {
         debug(err);
         if (callback) callback(err);
@@ -224,7 +224,46 @@ _.extend(Redis.prototype, {
       else {
         keys = keys.slice(skip, skip + limit);
       }
-      
+
+      if (keys.length === 0) {
+        return callback(null, []);
+      }
+
+      var args = keys.concat(function (err, res) {
+        handleResultSet(err, res, callback);
+      });
+
+      self.client.mget.apply(self.client, args);
+    });
+  },
+
+  getEventsSince: function (date, skip, limit, callback) {
+    var self = this;
+
+    this.client.keys(this.options.prefix + ':' + this.options.eventsCollectionName + ':*:*:*:*:*:*', function (err, keys) {
+      if (err) {
+        debug(err);
+        if (callback) callback(err);
+        return;
+      }
+
+      keys = _.sortBy(keys, function (s) {
+        return s;
+      });
+
+      keys = _.filter(keys, function (s) {
+        var parts = s.split(':');
+        var timePart = parseInt(parts[2], 10);
+        return timePart >= date.getTime();
+      });
+
+      if (limit === -1) {
+        keys = keys.slice(skip);
+      }
+      else {
+        keys = keys.slice(skip, skip + limit);
+      }
+
       if (keys.length === 0) {
         return callback(null, []);
       }
@@ -251,7 +290,7 @@ _.extend(Redis.prototype, {
 
     var self = this;
 
-    this.client.keys(this.options.prefix + ':' + this.options.eventsCollectionName + ':*:' + context + ':' + aggregate + ':' + aggregateId + ':*', function (err, keys) {
+    this.client.keys(this.options.prefix + ':' + this.options.eventsCollectionName + ':*:*:' + context + ':' + aggregate + ':' + aggregateId + ':*', function (err, keys) {
       if (err) {
         debug(err);
         if (callback) callback(err);
@@ -283,7 +322,7 @@ _.extend(Redis.prototype, {
 
   getUndispatchedEvents: function (callback) {
     var self = this;
-    this.client.keys(this.options.prefix + ':undispatched_' + this.options.eventsCollectionName + ':*:*:*:*:*', function (err, keys) {
+    this.client.keys(this.options.prefix + ':undispatched_' + this.options.eventsCollectionName + ':*:*:*:*:*:*', function (err, keys) {
       if (err) {
         debug(err);
         if (callback) callback(err);
@@ -304,7 +343,7 @@ _.extend(Redis.prototype, {
 
   setEventToDispatched: function (id, callback) {
     var self = this;
-    this.client.keys(this.options.prefix + ':undispatched_' + this.options.eventsCollectionName + ':*:*:*:*:' + id, function (err, keys) {
+    this.client.keys(this.options.prefix + ':undispatched_' + this.options.eventsCollectionName + ':*:*:*:*:*:' + id, function (err, keys) {
       if (err) {
         debug(err);
         if (callback) callback(err);
