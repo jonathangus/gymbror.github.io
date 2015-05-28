@@ -168,7 +168,7 @@ function _GraphGoItems(items) {
 var Graph = React.createClass({
   componentDidMount:function(){
     var items = _.values(this.props.items);
-    if(items.length > 0) {
+    if(items.length > 1) {
        _GraphGoTime(items);
     }
     else {

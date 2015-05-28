@@ -9,7 +9,9 @@ var AddWorkoutRow = React.createClass({
   },
 
   onChange: function(e) {
-    this.setState({value: event.target.value});
+    if(/^\d+$/.test(event.target.value) || event.target.value === '') {
+      this.setState({value: event.target.value});
+    }
   },
 
   increase:function() {
@@ -27,13 +29,21 @@ var AddWorkoutRow = React.createClass({
     });
 
     return (
-      <div className="Form-anim">
-        <input value={this.state.value} onChange={this.onChange}/>
+      <div className="Form-anim AddWorkoutRow" >
+        <div className="AddWorkoutRow-values">
+          <label>Reps
+            <input value={this.state.value} onChange={this.onChange}/>
+          </label>
+          <div className="Icon Icon--add"></div>
+          <div className="Icon Icon--remove"></div>
+          <button type="button" className="Button" onClick={this.decrease}>-</button>
+          <button type="button" className="Button" onClick={this.increase}>+</button>
+        </div>
+
          <select defaultValue={this.props.reps}>
           {options}
         </select>
-        <button type="button" className="Button" onClick={this.decrease}>-</button>
-        <button type="button" className="Button" onClick={this.increase}>+</button>
+       
       </div>
     )
   }

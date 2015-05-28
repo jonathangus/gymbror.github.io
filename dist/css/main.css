@@ -14,8 +14,11 @@
  * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
  */
 /* Breakpoint mixin, https://github.com/at-import/breakpoint */
-.Button--add {
-  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%3E%3Cpath%20d%3D%22M516.667%20200H333.333V16.667C333.333%207.462%20325.87%200%20316.667%200h-100C207.462%200%20200%207.462%20200%2016.667V200H16.667C7.462%20200%200%20207.462%200%20216.667v100c0%209.204%207.462%2016.666%2016.667%2016.666H200v183.334c0%209.204%207.462%2016.666%2016.667%2016.666h100c9.204%200%2016.667-7.462%2016.667-16.666V333.333h183.333c9.204%200%2016.667-7.462%2016.667-16.666v-100C30%20207.462%20525.87%20200%20516.667%20200z%22%2F%3E%3C%2Fsvg%3E'); }
+.Icon--add {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20d%3D%22M38%2026H26v12h-4V26H10v-4h12V10h4v12h12v4z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.Icon--remove {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20d%3D%22M38%2026H10v-4h28v4z%22%2F%3E%3C%2Fsvg%3E'); }
 
 /*!
  * Pikaday
@@ -1243,11 +1246,11 @@ td, th {
   margin-bottom: 10px; }
 
 ::selection {
-  background: #2c3e50;
+  background: #27272b;
   color: #FFF; }
 
 ::-moz-selection {
-  background: #2c3e50;
+  background: #27272b;
   color: #FFF; }
 
 html {
@@ -1258,8 +1261,8 @@ html {
   box-sizing: inherit; }
 
 body {
-  background: #2c3e50;
-  color: #fafafa;
+  background: #27272b;
+  color: #5c5f66;
   font-size: 14px;
   line-height: 1.55; }
 
@@ -1271,18 +1274,18 @@ input {
   border-radius: 0; }
 
 ::-webkit-input-placeholder {
-  color: #fafafa; }
+  color: #5c5f66; }
 
 :-moz-placeholder {
   /* Firefox 18- */
-  color: #fafafa; }
+  color: #5c5f66; }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: #fafafa; }
+  color: #5c5f66; }
 
 :-ms-input-placeholder {
-  color: #fafafa; }
+  color: #5c5f66; }
 
 input, input[type=text], input[type=textarea], input[type=password] {
   padding: 15px; }
@@ -1333,7 +1336,7 @@ p {
   /*
   here's where the gradient would go
   **/
-  fill: #8CD0D5;
+  fill: #36b8b8;
   stroke-width: 0; }
 
 .yAxisTicks {
@@ -1537,7 +1540,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   top: 0;
   left: 0;
-  background: #2c3e50; }
+  background: #27272b; }
 
 .Loader-container {
   position: absolute;
@@ -1624,7 +1627,7 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
   border: none;
   padding: 10px 15px;
-  color: #fafafa;
+  color: #5c5f66;
   margin-right: 10px; }
 
 button.Button, input.Button {
@@ -1667,7 +1670,7 @@ button.Button, input.Button {
 
 .Exercise {
   padding: 20px 0;
-  border-bottom: 1px solid #fafafa; }
+  border-bottom: 1px solid #5c5f66; }
 
 .Set {
   position: relative;
@@ -1750,7 +1753,7 @@ button.Button, input.Button {
   position: fixed;
   left: 0;
   top: 0;
-  background: #333;
+  background: #2b2c31;
   bottom: 0;
   padding: 40px 20px 0 20px;
   width: 300px; }
@@ -1770,3 +1773,33 @@ button.Button, input.Button {
   margin-left: 320px;
   margin-top: 40px;
   margin-right: 20px; }
+
+.AddWorkoutRow {
+  margin-bottom: 20px; }
+
+.AddWorkoutRow-values {
+  display: inline-block; }
+
+.AddWorkoutRow input {
+  width: auto;
+  background: transparent;
+  position: relative;
+  color: #5c5f66;
+  border-bottom: 1px solid #2f2f37; }
+  .AddWorkoutRow input:focus {
+    border-bottom: 1px solid #c1cad3; }
+
+.Icon {
+  display: inline-block;
+  background-size: 100% auto;
+  vertical-align: middle; }
+
+.Icon--add {
+  cursor: pointer;
+  height: 30px;
+  width: 30px; }
+
+.Icon--remove {
+  cursor: pointer;
+  height: 30px;
+  width: 30px; }

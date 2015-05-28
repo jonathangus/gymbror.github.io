@@ -1,11 +1,17 @@
-$color-base: #2c3e50;
+$color-flat-one: rgba(39, 39, 43, 1);
+$color-flat-two: rgba(43, 44, 49, 1);
+$color-flat-third: rgba(47, 47, 55, 1);
+
+$color-base: $color-flat-one;
 $color-primary: #2980b9;
 $color-secondary: #82929d;
-$color-text: #fafafa;
+$color-text: rgba(92, 95, 102, 1);
 $color-black: #222;
 $color-red: #e74c3c;
 $color-green: #2ecc71;
-$color-active: #8CD0D5;
+$color-active: rgba(54, 184, 184, 1);
+$color-label: #fafafa;
+$color-highlight: rgba(193, 202, 211, 1);
 
 $input-background-focus: $color-secondary;
 $input-background: rgba($color-secondary, .6);

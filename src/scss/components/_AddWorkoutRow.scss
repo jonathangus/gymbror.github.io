@@ -1,0 +1,19 @@
+.AddWorkoutRow {
+  margin-bottom: $space;
+}
+
+.AddWorkoutRow-values {
+  display: inline-block;
+}
+
+.AddWorkoutRow input {
+  width: auto;
+  background: transparent;
+  position: relative;
+  color: $color-text;
+  border-bottom: 1px solid $color-flat-third;
+  
+  &:focus {
+    border-bottom: 1px solid $color-highlight;
+  }
+}

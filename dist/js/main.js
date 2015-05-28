@@ -47435,7 +47435,7 @@ var ExercisesActions = {
 
 module.exports = ExercisesActions;
 
-},{"../constants/exercises-constants.js":186,"../dispatchers/app-dispatcher.js":188}],168:[function(require,module,exports){
+},{"../constants/exercises-constants.js":187,"../dispatchers/app-dispatcher.js":189}],168:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var UserConstants = require('../constants/user-constants.js');
 
@@ -47464,7 +47464,7 @@ var UserActions = {
 
 module.exports = UserActions;
 
-},{"../constants/user-constants.js":187,"../dispatchers/app-dispatcher.js":188}],169:[function(require,module,exports){
+},{"../constants/user-constants.js":188,"../dispatchers/app-dispatcher.js":189}],169:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Auth = require('./auth/app-auth.js');
@@ -47529,10 +47529,11 @@ module.exports = Notification;
 },{"react":164}],172:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
+var Header = require('./header.js');
 var UserStore = require('../stores/user-store.js');
 var Logout = require('./auth/logout.js');
 var Loader = require('./app-loader.js');
-var MainView = require('./main-view.js');
+var Exercises = require('./exercises.js');
 var AnonView = require('./anon-view.js');
 var ExercisesStore = require('../stores/exercises-store.js');
 var ReactFireMixin = require('reactfire');
@@ -47542,7 +47543,7 @@ var _items = null;
 
 var APP =
   React.createClass({displayName: "APP",
-    mixins:[ReactFireMixin],
+    mixins:[ReactFireMixin ],
 
     getInitialState:function(){
       return {
@@ -47581,6 +47582,7 @@ var APP =
             loggedIn: true, 
             loading: false
           });
+
         }.bind(this));
 
       }
@@ -47589,16 +47591,18 @@ var APP =
     render:function(){
       return (
         React.createElement("div", {className: "container"}, 
+          React.createElement(Header, null), 
           this.state.loggedIn ? React.createElement(Logout, null) : null, 
-          !this.state.loggedIn ? React.createElement(AnonView, null) : React.createElement(MainView, {items: this.state.exercises}), 
+          !this.state.loggedIn ? React.createElement(AnonView, null) : React.createElement(Exercises, {items: this.state.exercises}), 
           React.createElement(Loader, {show: this.state.loading})
         )
       )
     }
   });
+
 module.exports = APP;
 
-},{"../stores/exercises-store.js":194,"../stores/user-store.js":195,"./anon-view.js":169,"./app-loader.js":170,"./auth/logout.js":176,"./main-view.js":185,"firebase":3,"react":164,"reactfire":165}],173:[function(require,module,exports){
+},{"../stores/exercises-store.js":195,"../stores/user-store.js":196,"./anon-view.js":169,"./app-loader.js":170,"./auth/logout.js":176,"./exercises.js":177,"./header.js":186,"firebase":3,"react":164,"reactfire":165}],173:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Login = require('./app-login.js');
@@ -47689,7 +47693,7 @@ var Auth = React.createClass({displayName: "Auth",
 
 module.exports = Auth;
 
-},{"../../actions/user-actions.js":168,"../../stores/user-store.js":195,"../app-notification.js":171,"./app-login.js":174,"./app-register.js":175,"react":164}],174:[function(require,module,exports){
+},{"../../actions/user-actions.js":168,"../../stores/user-store.js":196,"../app-notification.js":171,"./app-login.js":174,"./app-register.js":175,"react":164}],174:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -47771,7 +47775,46 @@ var Logout =
 
 module.exports = Logout;
 
-},{"../../firebaseAuth.js":192,"react":164}],177:[function(require,module,exports){
+},{"../../firebaseAuth.js":193,"react":164}],177:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var ExerciseList = require('./exercises/exercises-list.js');
+var SelectedExercise = require('./exercises/seleted-exercise.js');
+var ExercisesStore = require('../stores/exercises-store.js');
+var ExercisesActions = require('../actions/exercises-actions.js');
+var AddWorkout = require('./exercises/add-workout.js');
+var _ = require('lodash');
+
+var _selectedIndex;
+
+var Exercises =
+  React.createClass({displayName: "Exercises",
+
+    getInitialState:function(){
+      return {
+        selected: _.values(this.props.items)[0]
+      }
+    },
+
+    setSelected: function(index) {
+      if(index !== _selectedIndex) {
+        this.setState({selected: this.props.items[index]});
+        _selectedIndex = index;
+      }
+    },
+
+    render:function(){
+      return  (
+        React.createElement("div", {className: "container"}, 
+          React.createElement(ExerciseList, {items: this.props.items, setSelected: this.setSelected}), 
+          _.values(this.props.items).length > 0 ? React.createElement(SelectedExercise, {selected: this.state.selected, selectedKey: _selectedIndex}) : null
+        )
+        )
+    }
+  });
+module.exports = Exercises;
+
+},{"../actions/exercises-actions.js":167,"../stores/exercises-store.js":195,"./exercises/add-workout.js":179,"./exercises/exercises-list.js":181,"./exercises/seleted-exercise.js":185,"lodash":6,"react":164}],178:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -47783,7 +47826,9 @@ var AddWorkoutRow = React.createClass({displayName: "AddWorkoutRow",
   },
 
   onChange: function(e) {
-    this.setState({value: event.target.value});
+    if(/^\d+$/.test(event.target.value) || event.target.value === '') {
+      this.setState({value: event.target.value});
+    }
   },
 
   increase:function() {
@@ -47801,13 +47846,21 @@ var AddWorkoutRow = React.createClass({displayName: "AddWorkoutRow",
     });
 
     return (
-      React.createElement("div", {className: "Form-anim"}, 
-        React.createElement("input", {value: this.state.value, onChange: this.onChange}), 
+      React.createElement("div", {className: "Form-anim AddWorkoutRow"}, 
+        React.createElement("div", {className: "AddWorkoutRow-values"}, 
+          React.createElement("label", null, "Reps", 
+            React.createElement("input", {value: this.state.value, onChange: this.onChange})
+          ), 
+          React.createElement("div", {className: "Icon Icon--add"}), 
+          React.createElement("div", {className: "Icon Icon--remove"}), 
+          React.createElement("button", {type: "button", className: "Button", onClick: this.decrease}, "-"), 
+          React.createElement("button", {type: "button", className: "Button", onClick: this.increase}, "+")
+        ), 
+
          React.createElement("select", {defaultValue: this.props.reps}, 
           options
-        ), 
-        React.createElement("button", {type: "button", className: "Button", onClick: this.decrease}, "-"), 
-        React.createElement("button", {type: "button", className: "Button", onClick: this.increase}, "+")
+        )
+       
       )
     )
   }
@@ -47815,7 +47868,7 @@ var AddWorkoutRow = React.createClass({displayName: "AddWorkoutRow",
 
 module.exports = AddWorkoutRow;
 
-},{"react":164}],178:[function(require,module,exports){
+},{"react":164}],179:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AddWorkoutRow = require('./add-workout-row.js');
@@ -47949,7 +48002,7 @@ var AddWorkout = React.createClass({displayName: "AddWorkout",
 
 module.exports = AddWorkout;
 
-},{"../../actions/exercises-actions.js":167,"../../stores/exercises-store.js":194,"./add-workout-row.js":177,"lodash":6,"pikaday":9,"react":164}],179:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":167,"../../stores/exercises-store.js":195,"./add-workout-row.js":178,"lodash":6,"pikaday":9,"react":164}],180:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
@@ -48029,20 +48082,14 @@ var ExerciseItem = React.createClass({displayName: "ExerciseItem",
 
 module.exports = ExerciseItem;
 
-},{"../../actions/exercises-actions.js":167,"./add-workout.js":178,"./graph.js":182,"lodash":6,"react":164,"sweetalert":166}],180:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":167,"./add-workout.js":179,"./graph.js":183,"lodash":6,"react":164,"sweetalert":166}],181:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var ExercisesStore = require('../../stores/exercises-store.js');
-var ExercisesActions = require('../../actions/exercises-actions.js');
 var NewExercise = require('./new-exercise.js');
 var ExerciseItem = require('./exercise-item.js');
-var ReactFireMixin = require('reactfire');
-var Firebase = require('firebase');
-var Logout = require('../auth/logout.js');
 
 var ExercisesList = React.createClass({displayName: "ExercisesList",
   changeExercise: function(index) {
-    console.log(index);
     this.props.setSelected(index);
   },
 
@@ -48056,8 +48103,7 @@ var ExercisesList = React.createClass({displayName: "ExercisesList",
     return (
       React.createElement("div", {className: "ExerciseList"}, 
         items, 
-        React.createElement(NewExercise, null), 
-        React.createElement(Logout, null)
+        React.createElement(NewExercise, null)
       )
     )
   }
@@ -48065,7 +48111,7 @@ var ExercisesList = React.createClass({displayName: "ExercisesList",
 
 module.exports = ExercisesList;
 
-},{"../../actions/exercises-actions.js":167,"../../stores/exercises-store.js":194,"../auth/logout.js":176,"./exercise-item.js":179,"./new-exercise.js":183,"firebase":3,"react":164,"reactfire":165}],181:[function(require,module,exports){
+},{"./exercise-item.js":180,"./new-exercise.js":184,"react":164}],182:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 
@@ -48094,7 +48140,7 @@ var GraphItem = React.createClass({displayName: "GraphItem",
 
 module.exports = GraphItem;
 
-},{"react":164}],182:[function(require,module,exports){
+},{"react":164}],183:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesStore = require('../../stores/exercises-store.js');
@@ -48265,7 +48311,7 @@ function _GraphGoItems(items) {
 var Graph = React.createClass({displayName: "Graph",
   componentDidMount:function(){
     var items = _.values(this.props.items);
-    if(items.length > 0) {
+    if(items.length > 1) {
        _GraphGoTime(items);
     }
     else {
@@ -48295,7 +48341,7 @@ var Graph = React.createClass({displayName: "Graph",
 
 module.exports = Graph;
 
-},{"../../actions/exercises-actions.js":167,"../../stores/exercises-store.js":194,"./graph-item.js":181,"d3":1,"lodash":6,"react":164}],183:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":167,"../../stores/exercises-store.js":195,"./graph-item.js":182,"d3":1,"lodash":6,"react":164}],184:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var ExercisesActions = require('../../actions/exercises-actions.js');
@@ -48330,7 +48376,7 @@ var NewExercise = React.createClass({displayName: "NewExercise",
 
 module.exports = NewExercise;
 
-},{"../../actions/exercises-actions.js":167,"react":164}],184:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":167,"react":164}],185:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Graph = require('./graph.js');
@@ -48393,46 +48439,26 @@ var SelectedExercise =
   });
 module.exports = SelectedExercise;
 
-},{"../../actions/exercises-actions.js":167,"./add-workout.js":178,"./graph.js":182,"lodash":6,"react":164,"sweetalert":166}],185:[function(require,module,exports){
+},{"../../actions/exercises-actions.js":167,"./add-workout.js":179,"./graph.js":183,"lodash":6,"react":164,"sweetalert":166}],186:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var ExerciseList = require('./exercises/exercises-list.js');
-var SelectedExercise = require('./exercises/seleted-exercise.js');
-var ExercisesStore = require('../stores/exercises-store.js');
-var ExercisesActions = require('../actions/exercises-actions.js');
-var AddWorkout = require('./exercises/add-workout.js');
-var _ = require('lodash');
 
-var _selectedIndex;
+var Header = React.createClass({displayName: "Header",
+  render:function(){
 
-var MainView =
-  React.createClass({displayName: "MainView",
-    getInitialState:function(){
-      return {
-        selected: _.values(this.props.items)[0]
-      }
-    },
-
-    setSelected: function(index) {
-      if(index !== _selectedIndex) {
-        this.setState({selected: this.props.items[index]});
-        _selectedIndex = index;
-      }
-    },
-
-    render:function(){
-
-      return  (
-        React.createElement("div", {className: "container"}, 
-          React.createElement(ExerciseList, {items: this.props.items, setSelected: this.setSelected}), 
-          _.values(this.props.items).length > 0 ? React.createElement(SelectedExercise, {selected: this.state.selected, selectedKey: _selectedIndex}) : null
+    return (
+      React.createElement("header", null, 
+        React.createElement("ul", null, 
+          React.createElement("li", null, React.createElement("a", {href: "/"}, "Home"))
         )
-        )
-    }
-  });
-module.exports = MainView;
+      )
+    )
+  }
+});
 
-},{"../actions/exercises-actions.js":167,"../stores/exercises-store.js":194,"./exercises/add-workout.js":178,"./exercises/exercises-list.js":180,"./exercises/seleted-exercise.js":184,"lodash":6,"react":164}],186:[function(require,module,exports){
+module.exports = Header;
+
+},{"react":164}],187:[function(require,module,exports){
 module.exports = {
   FETCH_EXERCISES: 'FETCH_EXERCISES',
   ADD_EXERCISE: 'ADD_EXERCISE',
@@ -48441,14 +48467,14 @@ module.exports = {
   REMOVE_WORKOUT: 'REMOVE_WORKOUT'
 }
 
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports = {
   USER_STATUS: 'USER_STATUS',
   USER_LOGIN: 'USER_LOGIN',
   USER_REGISTER: 'USER_REGISTER'
 };
 
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 var Dispatcher = require('./dispatcher.js');
 var assign = require('object-assign');
 
@@ -48463,7 +48489,7 @@ var AppDispatcher = assign({}, Dispatcher.prototype, {
 
 module.exports = AppDispatcher;
 
-},{"./dispatcher.js":189,"object-assign":7}],189:[function(require,module,exports){
+},{"./dispatcher.js":190,"object-assign":7}],190:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var assign = require('object-assign');
 
@@ -48520,17 +48546,15 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":2,"object-assign":7}],190:[function(require,module,exports){
+},{"es6-promise":2,"object-assign":7}],191:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app.js');
 var React = require('react');
 
-React.render(
-  React.createElement(APP, null),
-  document.getElementById('app'));
+React.render( React.createElement(APP, null),  document.getElementById('app'));
 
 
-},{"./components/app.js":172,"react":164}],191:[function(require,module,exports){
+},{"./components/app.js":172,"react":164}],192:[function(require,module,exports){
 (function (process){
 (function() {var COMPILED=!0,goog=goog||{};goog.global=this;goog.exportPath_=function(a,d,e){a=a.split(".");e=e||goog.global;a[0]in e||!e.execScript||e.execScript("var "+a[0]);for(var f;a.length&&(f=a.shift());)a.length||void 0===d?e=e[f]?e[f]:e[f]={}:e[f]=d};goog.define=function(a,d){var e=d;COMPILED||goog.global.CLOSURE_DEFINES&&Object.prototype.hasOwnProperty.call(goog.global.CLOSURE_DEFINES,a)&&(e=goog.global.CLOSURE_DEFINES[a]);goog.exportPath_(a,e)};goog.DEBUG=!0;goog.LOCALE="en";goog.TRUSTED_SITE=!0;
 goog.provide=function(a){if(!COMPILED){if(goog.isProvided_(a))throw Error('Namespace "'+a+'" already declared.');delete goog.implicitNamespaces_[a];for(var d=a;(d=d.substring(0,d.lastIndexOf(".")))&&!goog.getObjectByName(d);)goog.implicitNamespaces_[d]=!0}goog.exportPath_(a)};goog.setTestOnly=function(a){if(COMPILED&&!goog.DEBUG)throw a=a||"",Error("Importing test-only code into non-debug environment"+a?": "+a:".");};goog.forwardDeclare=function(a){};
@@ -48682,7 +48706,7 @@ module.exports = FirebaseSimpleLogin;
 
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":5}],192:[function(require,module,exports){
+},{"oMfpAn":5}],193:[function(require,module,exports){
 var firebaseConnection = require('./firebaseConnection.js');
 var FirebaseSimpleLogin = require('./firebase-simple-login.js');
 var UserActions = require('./actions/user-actions.js');
@@ -48704,7 +48728,7 @@ var authClient = new FirebaseSimpleLogin(firebaseConnection, function(error, use
 
 module.exports = authClient;
 
-},{"./actions/exercises-actions.js":167,"./actions/user-actions.js":168,"./firebase-simple-login.js":191,"./firebaseConnection.js":193,"./stores/user-store.js":195}],193:[function(require,module,exports){
+},{"./actions/exercises-actions.js":167,"./actions/user-actions.js":168,"./firebase-simple-login.js":192,"./firebaseConnection.js":194,"./stores/user-store.js":196}],194:[function(require,module,exports){
 var Firebase = require('firebase/lib/firebase-web');
 
 var baseUrl = 'https://gymbror.firebaseio.com';
@@ -48713,7 +48737,7 @@ var firebaseConnection = new Firebase(baseUrl);
 
 module.exports = firebaseConnection;
 
-},{"firebase/lib/firebase-web":3}],194:[function(require,module,exports){
+},{"firebase/lib/firebase-web":3}],195:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -48859,7 +48883,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = ExerciseStore;
 
-},{"../constants/exercises-constants.js":186,"../dispatchers/app-dispatcher.js":188,"../firebaseConnection.js":193,"./user-store.js":195,"es6-promise":2,"events":4,"firebase":3,"object-assign":7}],195:[function(require,module,exports){
+},{"../constants/exercises-constants.js":187,"../dispatchers/app-dispatcher.js":189,"../firebaseConnection.js":194,"./user-store.js":196,"es6-promise":2,"events":4,"firebase":3,"object-assign":7}],196:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants.js');
@@ -48968,4 +48992,4 @@ AppDispatcher.register(function(payload) {
 
 module.exports = UserStore;
 
-},{"../constants/user-constants.js":187,"../dispatchers/app-dispatcher.js":188,"../firebaseAuth.js":192,"events":4,"object-assign":7}]},{},[190])
+},{"../constants/user-constants.js":188,"../dispatchers/app-dispatcher.js":189,"../firebaseAuth.js":193,"events":4,"object-assign":7}]},{},[191])

@@ -1,0 +1,19 @@
+.Icon{
+  display: inline-block;
+  background-size: 100% auto;
+  vertical-align: middle;
+}
+
+.Icon--add {
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  @include iconify(add);
+}
+
+.Icon--remove {
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  @include iconify(remove);
+}

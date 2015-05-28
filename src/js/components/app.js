@@ -1,9 +1,10 @@
 /** @jsx React.DOM */
 var React = require('react');
+var Header = require('./header.js');
 var UserStore = require('../stores/user-store.js');
 var Logout = require('./auth/logout.js');
 var Loader = require('./app-loader.js');
-var MainView = require('./main-view.js');
+var Exercises = require('./exercises.js');
 var AnonView = require('./anon-view.js');
 var ExercisesStore = require('../stores/exercises-store.js');
 var ReactFireMixin = require('reactfire');
@@ -13,7 +14,7 @@ var _items = null;
 
 var APP =
   React.createClass({
-    mixins:[ReactFireMixin],
+    mixins:[ReactFireMixin ],
 
     getInitialState:function(){
       return {
@@ -52,6 +53,7 @@ var APP =
             loggedIn: true, 
             loading: false
           });
+
         }.bind(this));
 
       }
@@ -60,11 +62,13 @@ var APP =
     render:function(){
       return (
         <div className="container">
+          <Header />
           {this.state.loggedIn ? <Logout /> : null}
-          {!this.state.loggedIn ? <AnonView /> : <MainView items={this.state.exercises} />}
+          {!this.state.loggedIn ? <AnonView /> : <Exercises items={this.state.exercises} /> }
           <Loader show={this.state.loading} />
         </div>
       )
     }
   });
+
 module.exports = APP;
