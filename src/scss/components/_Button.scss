@@ -1,15 +1,14 @@
 .Button {
-  background-color: $color-primary;
+  background-color: $color-active;
   outline: none;
   border: none;
   padding: $easy 15px;
-  color: $color-text;
+  color: #FFF;
   margin-right: $easy;
-}
-
-button.Button,
-input.Button {
-  width: auto;
+  min-width: 120px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
 }
 
 .Button:last-child {
@@ -27,6 +26,10 @@ input.Button {
   height: 40px;
   width: 40px;
   padding: $easy;
+}
+
+.Button--remove {
+  background: $color-error;
 }
 
 .Button--full {

@@ -67,8 +67,8 @@ var ExerciseItem = React.createClass({
     var dd = abab.length;
 
     return (
-      <div>
-      <h1 onClick={this.set}>{this.props.exercise.name}</h1>
+      <div className="ExerciseItem">
+      <h1 className="ExerciseItem-title" onClick={this.set}>{this.props.exercise.name}</h1>
       {dd}
       </div>
     )

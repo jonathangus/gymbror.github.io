@@ -11,7 +11,9 @@ var NewExercise = React.createClass({
   },
   addWorkout:function(e) {
     e.preventDefault();
-    ExercisesActions.addExercise(this.state.value);
+    var value = this.state.value;
+    var name = value.charAt(0).toUpperCase() + value.slice(1);
+    ExercisesActions.addExercise(name);
     this.setState({value: ''});
   },
   handleChange:function(event) {

@@ -47821,22 +47821,37 @@ var React = require('react');
 var AddWorkoutRow = React.createClass({displayName: "AddWorkoutRow",
   getInitialState:function(){
     return {
-      value: this.props.value
+      value: this.props.value,
+      reps: this.props.reps
     }
   },
 
-  onChange: function(e) {
+  onChangeValues: function(e) {
     if(/^\d+$/.test(event.target.value) || event.target.value === '') {
       this.setState({value: event.target.value});
     }
   },
 
-  increase:function() {
+  onChangeReps: function(e) {
+    if(/^\d+$/.test(event.target.value) || event.target.value === '') {
+      this.setState({reps: event.target.value});
+    }
+  },
+
+  increaseValues:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },
 
-  decrease:function() {
+  decreaseValues:function() {
     this.setState({value: parseInt(this.state.value) - 1});
+  },
+
+  increaseReps:function() {
+    this.setState({reps: parseInt(this.state.reps) + 1});
+  },
+
+  decreaseReps:function() {
+    this.setState({reps: parseInt(this.state.reps) - 1});
   },
 
   render:function(){
@@ -47848,19 +47863,20 @@ var AddWorkoutRow = React.createClass({displayName: "AddWorkoutRow",
     return (
       React.createElement("div", {className: "Form-anim AddWorkoutRow"}, 
         React.createElement("div", {className: "AddWorkoutRow-values"}, 
-          React.createElement("label", null, "Reps", 
-            React.createElement("input", {value: this.state.value, onChange: this.onChange})
+          React.createElement("label", null, "Värde", 
+            React.createElement("input", {value: this.state.value, onChange: this.onChangeValues})
           ), 
-          React.createElement("div", {className: "Icon Icon--add"}), 
-          React.createElement("div", {className: "Icon Icon--remove"}), 
-          React.createElement("button", {type: "button", className: "Button", onClick: this.decrease}, "-"), 
-          React.createElement("button", {type: "button", className: "Button", onClick: this.increase}, "+")
+          React.createElement("div", {role: "button", tabindex: "0", className: "Icon Icon--add", onClick: this.increaseValues}), 
+          React.createElement("div", {role: "button", tabindex: "0", className: "Icon Icon--remove", onClick: this.decreaseValues})
         ), 
 
-         React.createElement("select", {defaultValue: this.props.reps}, 
-          options
+        React.createElement("div", {className: "AddWorkoutRow-values"}, 
+          React.createElement("label", null, "Reps", 
+            React.createElement("input", {value: this.state.reps, onChange: this.onChangeReps})
+          ), 
+          React.createElement("div", {role: "button", tabindex: "0", className: "Icon Icon--add", onClick: this.increaseReps}), 
+          React.createElement("div", {role: "button", tabindex: "0", className: "Icon Icon--remove", onClick: this.decreaseReps})
         )
-       
       )
     )
   }
@@ -47902,18 +47918,15 @@ var AddWorkout = React.createClass({displayName: "AddWorkout",
   },
 
   addRow: function() {
-    var rows = this.state.rows,
-      lastRow;
+    var rows = this.state.rows;
+    var lastRow;
 
     for(var index in this.refs) {
-      if(index !== 'date') {
-        var attr = this.refs[index];
-        lastRow = {
-          reps: attr.getDOMNode().querySelector('select').value,
-          value: attr.getDOMNode().querySelector('input').value
-        }
+      if(String(index) !== 'date') {
+        lastRow = this.refs[index].state;
       }
     }
+
     rows.push(lastRow);
     this.setState({rows: rows});
     this.buttonVisible();
@@ -47990,7 +48003,7 @@ var AddWorkout = React.createClass({displayName: "AddWorkout",
       React.createElement("div", null, 
         React.createElement("form", {className: "Form", onSubmit: this.submitWorkout}, 
         sets, 
-        React.createElement("input", {className: "Form-anim", ref: 'date'}), 
+        React.createElement("input", {className: "Form-anim AddWorkoutRow-date", ref: 'date'}), 
         React.createElement("div", {onClick: this.addRow, className: "Button Form-anim", role: "button"}, "New row"), 
         this.state.removeButton ? null : React.createElement("div", {onClick: this.removeRow, className: "Button Form-anim", role: "button"}, "Remove row"), 
         React.createElement("button", {className: "Button Form-anim", role: "submit"}, "Add")
@@ -48072,8 +48085,8 @@ var ExerciseItem = React.createClass({displayName: "ExerciseItem",
     var dd = abab.length;
 
     return (
-      React.createElement("div", null, 
-      React.createElement("h1", {onClick: this.set}, this.props.exercise.name), 
+      React.createElement("div", {className: "ExerciseItem"}, 
+      React.createElement("h1", {className: "ExerciseItem-title", onClick: this.set}, this.props.exercise.name), 
       dd
       )
     )
@@ -48355,7 +48368,9 @@ var NewExercise = React.createClass({displayName: "NewExercise",
   },
   addWorkout:function(e) {
     e.preventDefault();
-    ExercisesActions.addExercise(this.state.value);
+    var value = this.state.value;
+    var name = value.charAt(0).toUpperCase() + value.slice(1);
+    ExercisesActions.addExercise(name);
     this.setState({value: ''});
   },
   handleChange:function(event) {
@@ -48432,7 +48447,7 @@ var SelectedExercise =
           React.createElement("h1", null, this.props.selected.name), 
           React.createElement(Graph, {items: this.props.selected.workouts}), 
           React.createElement(AddWorkout, {lastworkout: lastworkout, key: this.props.selectedKey}), 
-          React.createElement("span", {onClick: this.removeExercise}, "Remove exercise")
+          React.createElement("button", {className: "Button Button--remove", onClick: this.removeExercise}, "Remove exercise")
         )
         )
     }

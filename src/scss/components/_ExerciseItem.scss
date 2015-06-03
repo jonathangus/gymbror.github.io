@@ -1,1 +1,10 @@
-_ExerciseItem.scss
+.ExerciseItem {}
+
+.ExerciseItem-title {
+  cursor: pointer;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: $color-highlight;
+  }
+}

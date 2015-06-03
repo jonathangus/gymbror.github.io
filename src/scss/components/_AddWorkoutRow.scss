@@ -1,13 +1,16 @@
 .AddWorkoutRow {
   margin-bottom: $space;
+  display: flex;
 }
 
 .AddWorkoutRow-values {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  margin-right: $space;
+  width: 50%;
 }
 
 .AddWorkoutRow input {
-  width: auto;
   background: transparent;
   position: relative;
   color: $color-text;
@@ -16,4 +19,11 @@
   &:focus {
     border-bottom: 1px solid $color-highlight;
   }
+}
+
+.AddWorkoutRow-date {
+  margin-bottom: $easy;
+  background: transparent;
+  color: $color-text;
+  border: 1px solid $color-text;
 }

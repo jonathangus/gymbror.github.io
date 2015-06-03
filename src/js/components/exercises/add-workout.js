@@ -31,18 +31,15 @@ var AddWorkout = React.createClass({
   },
 
   addRow: function() {
-    var rows = this.state.rows,
-      lastRow;
+    var rows = this.state.rows;
+    var lastRow;
 
     for(var index in this.refs) {
-      if(index !== 'date') {
-        var attr = this.refs[index];
-        lastRow = {
-          reps: attr.getDOMNode().querySelector('select').value,
-          value: attr.getDOMNode().querySelector('input').value
-        }
+      if(String(index) !== 'date') {
+        lastRow = this.refs[index].state;
       }
     }
+
     rows.push(lastRow);
     this.setState({rows: rows});
     this.buttonVisible();
@@ -119,7 +116,7 @@ var AddWorkout = React.createClass({
       <div>
         <form className="Form" onSubmit={this.submitWorkout}>
         {sets}
-        <input className="Form-anim" ref={'date'}/>
+        <input className="Form-anim AddWorkoutRow-date" ref={'date'}/>
         <div onClick={this.addRow} className="Button Form-anim" role="button">New row</div>
         {this.state.removeButton ? null : <div onClick={this.removeRow} className="Button Form-anim" role="button">Remove row</div> }
         <button className="Button Form-anim" role="submit">Add</button>

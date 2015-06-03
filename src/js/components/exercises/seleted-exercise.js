@@ -53,7 +53,7 @@ var SelectedExercise =
           <h1>{this.props.selected.name}</h1>
           <Graph items={this.props.selected.workouts} />
           <AddWorkout lastworkout={lastworkout} key={this.props.selectedKey} />
-          <span onClick={this.removeExercise}>Remove exercise</span>
+          <button className="Button Button--remove" onClick={this.removeExercise}>Remove exercise</button>
         </div>
         )
     }

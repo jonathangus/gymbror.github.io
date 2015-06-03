@@ -4,22 +4,37 @@ var React = require('react');
 var AddWorkoutRow = React.createClass({
   getInitialState:function(){
     return {
-      value: this.props.value
+      value: this.props.value,
+      reps: this.props.reps
     }
   },
 
-  onChange: function(e) {
+  onChangeValues: function(e) {
     if(/^\d+$/.test(event.target.value) || event.target.value === '') {
       this.setState({value: event.target.value});
     }
   },
 
-  increase:function() {
+  onChangeReps: function(e) {
+    if(/^\d+$/.test(event.target.value) || event.target.value === '') {
+      this.setState({reps: event.target.value});
+    }
+  },
+
+  increaseValues:function() {
     this.setState({value: parseInt(this.state.value) + 1});
   },
 
-  decrease:function() {
+  decreaseValues:function() {
     this.setState({value: parseInt(this.state.value) - 1});
+  },
+
+  increaseReps:function() {
+    this.setState({reps: parseInt(this.state.reps) + 1});
+  },
+
+  decreaseReps:function() {
+    this.setState({reps: parseInt(this.state.reps) - 1});
   },
 
   render:function(){
@@ -31,19 +46,20 @@ var AddWorkoutRow = React.createClass({
     return (
       <div className="Form-anim AddWorkoutRow" >
         <div className="AddWorkoutRow-values">
-          <label>Reps
-            <input value={this.state.value} onChange={this.onChange}/>
+          <label>Värde
+            <input value={this.state.value} onChange={this.onChangeValues}/>
           </label>
-          <div className="Icon Icon--add"></div>
-          <div className="Icon Icon--remove"></div>
-          <button type="button" className="Button" onClick={this.decrease}>-</button>
-          <button type="button" className="Button" onClick={this.increase}>+</button>
+          <div role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseValues}></div>
+          <div role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseValues}></div>
         </div>
 
-         <select defaultValue={this.props.reps}>
-          {options}
-        </select>
-       
+        <div className="AddWorkoutRow-values">
+          <label>Reps
+            <input value={this.state.reps} onChange={this.onChangeReps}/>
+          </label>
+          <div role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseReps}></div>
+          <div role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseReps}></div>
+        </div>
       </div>
     )
   }

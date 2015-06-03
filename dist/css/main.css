@@ -1367,7 +1367,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'DINWebPro-Medium'; }
 
 .Form {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  max-width: 600px; }
 
 .Form-input {
   position: relative;
@@ -1623,15 +1625,16 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 10px; }
 
 .Button {
-  background-color: #2980b9;
+  background-color: #36b8b8;
   outline: none;
   border: none;
   padding: 10px 15px;
-  color: #5c5f66;
-  margin-right: 10px; }
-
-button.Button, input.Button {
-  width: auto; }
+  color: #FFF;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer; }
 
 .Button:last-child {
   margin-right: 0; }
@@ -1646,6 +1649,9 @@ button.Button, input.Button {
   height: 40px;
   width: 40px;
   padding: 10px; }
+
+.Button--remove {
+  background: #c0392b; }
 
 @media all and (min-width: 0) and (max-width: 500px) {
   .Button--full {
@@ -1775,19 +1781,28 @@ button.Button, input.Button {
   margin-right: 20px; }
 
 .AddWorkoutRow {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  display: flex; }
 
 .AddWorkoutRow-values {
-  display: inline-block; }
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  width: 50%; }
 
 .AddWorkoutRow input {
-  width: auto;
   background: transparent;
   position: relative;
   color: #5c5f66;
   border-bottom: 1px solid #2f2f37; }
   .AddWorkoutRow input:focus {
     border-bottom: 1px solid #c1cad3; }
+
+.AddWorkoutRow-date {
+  margin-bottom: 10px;
+  background: transparent;
+  color: #5c5f66;
+  border: 1px solid #5c5f66; }
 
 .Icon {
   display: inline-block;
@@ -1803,3 +1818,9 @@ button.Button, input.Button {
   cursor: pointer;
   height: 30px;
   width: 30px; }
+
+.ExerciseItem-title {
+  cursor: pointer;
+  transition: color 0.3s ease; }
+  .ExerciseItem-title:hover {
+    color: #c1cad3; }
