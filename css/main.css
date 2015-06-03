@@ -14,8 +14,23 @@
  * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
  */
 /* Breakpoint mixin, https://github.com/at-import/breakpoint */
-.Button--add {
-  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2230%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%3E%3Cpath%20d%3D%22M516.667%20200H333.333V16.667C333.333%207.462%20325.87%200%20316.667%200h-100C207.462%200%20200%207.462%20200%2016.667V200H16.667C7.462%20200%200%20207.462%200%20216.667v100c0%209.204%207.462%2016.666%2016.667%2016.666H200v183.334c0%209.204%207.462%2016.666%2016.667%2016.666h100c9.204%200%2016.667-7.462%2016.667-16.666V333.333h183.333c9.204%200%2016.667-7.462%2016.667-16.666v-100C30%20207.462%20525.87%20200%20516.667%20200z%22%2F%3E%3C%2Fsvg%3E'); }
+.Icon--add:hover {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-281%20373%2048%2048%22%3E%3Cpath%20fill%3D%22%23C1CAD3%22%20d%3D%22M-243%20399h-12v12h-4v-12h-12v-4h12v-12h4v12h12v4z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.Icon--add {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-281%20373%2048%2048%22%3E%3Cpath%20fill%3D%22%235C5F66%22%20d%3D%22M-243%20399h-12v12h-4v-12h-12v-4h12v-12h4v12h12v4z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.SelectedExercise-remove {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-293%20385%2024%2024%22%3E%3Cpath%20fill%3D%22%23C0392B%22%20d%3D%22M-274%20391.4l-1.4-1.4-5.6%205.6-5.6-5.6-1.4%201.4%205.6%205.6-5.6%205.6%201.4%201.4%205.6-5.6%205.6%205.6%201.4-1.4-5.6-5.6%205.6-5.6z%22%2F%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M-293%20385h24v24h-24v-24z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.ExerciseList-menu {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-293%20385%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M-293%20385h24v24h-24v-24z%22%2F%3E%3Cpath%20fill%3D%22%23C1CAD3%22%20d%3D%22M-290%20403h18v-2h-18v2zm0-5h18v-2h-18v2zm0-7v2h18v-2h-18z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.Icon--remove:hover {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-281%20373%2048%2048%22%3E%3Cpath%20fill%3D%22%23C1CAD3%22%20d%3D%22M-243%20399h-28v-4h28v4z%22%2F%3E%3C%2Fsvg%3E'); }
+
+.Icon--remove {
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-281%20373%2048%2048%22%3E%3Cpath%20fill%3D%22%235C5F66%22%20d%3D%22M-243%20399h-28v-4h28v4z%22%2F%3E%3C%2Fsvg%3E'); }
 
 /*!
  * Pikaday
@@ -1242,12 +1257,15 @@ td, th {
 .u-easy-bottom {
   margin-bottom: 10px; }
 
+.u-space-bottom {
+  margin-bottom: 20px; }
+
 ::selection {
-  background: #2c3e50;
+  background: #27272b;
   color: #FFF; }
 
 ::-moz-selection {
-  background: #2c3e50;
+  background: #27272b;
   color: #FFF; }
 
 html {
@@ -1258,10 +1276,15 @@ html {
   box-sizing: inherit; }
 
 body {
-  background: #2c3e50;
-  color: #fafafa;
+  background: #27272b;
+  color: #5c5f66;
   font-size: 14px;
   line-height: 1.55; }
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none; }
 
 input {
   border: none;
@@ -1271,18 +1294,18 @@ input {
   border-radius: 0; }
 
 ::-webkit-input-placeholder {
-  color: #fafafa; }
+  color: #5c5f66; }
 
 :-moz-placeholder {
   /* Firefox 18- */
-  color: #fafafa; }
+  color: #5c5f66; }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: #fafafa; }
+  color: #5c5f66; }
 
 :-ms-input-placeholder {
-  color: #fafafa; }
+  color: #5c5f66; }
 
 input, input[type=text], input[type=textarea], input[type=password] {
   padding: 15px; }
@@ -1333,7 +1356,7 @@ p {
   /*
   here's where the gradient would go
   **/
-  fill: #8CD0D5;
+  fill: #36b8b8;
   stroke-width: 0; }
 
 .yAxisTicks {
@@ -1358,13 +1381,18 @@ p {
   src: url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.woff') format('woff'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.ttf') format('truetype'), url('../assets/fonts/DINWebPro-Medium/DINWebPro-Medium.svg#DINWebPro-Medium') format('svg'); }
 
 body {
-  font: 13px/18px "LucidaGrande", verdana, sans-serif; }
+  font: 13px/18px "LucidaGrande", verdana, sans-serif;
+  line-height: 1.55; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'DINWebPro-Medium'; }
 
 .Form {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  margin-bottom: 20px; }
+  @media all and (min-width: 820px) {
+    .Form {
+      max-width: 600px; } }
 
 .Form-input {
   position: relative;
@@ -1405,6 +1433,62 @@ h1, h2, h3, h4, h5, h6 {
 
 .Form-input--fade {
   background: rgba(255, 255, 255, 0.6); }
+
+.Form-anim {
+  opacity: 0;
+  -webkit-transform: translateY(50px);
+  -moz-transform: translateY(50px);
+  -ms-transform: translateY(50px);
+  -o-transform: translateY(50px);
+  transform: translateY(50px);
+  -webkit-animation: fadeInUp;
+  animation: fadeInUp;
+  -webkit-animation-duration: 0.3s;
+  -moz-animation-duration: 0.3s;
+  -ms-animation-duration: 0.3s;
+  -o-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; }
+  .Form-anim:nth-child(2) {
+    -webkit-animation-delay: 0.15s;
+    -moz-animation-delay: 0.15s;
+    -ms-animation-delay: 0.15s;
+    -o-animation-delay: 0.15s;
+    animation-delay: 0.15s; }
+  .Form-anim:nth-child(3) {
+    -webkit-animation-delay: 0.3s;
+    -moz-animation-delay: 0.3s;
+    -ms-animation-delay: 0.3s;
+    -o-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+  .Form-anim:nth-child(4) {
+    -webkit-animation-delay: 0.45s;
+    -moz-animation-delay: 0.45s;
+    -ms-animation-delay: 0.45s;
+    -o-animation-delay: 0.45s;
+    animation-delay: 0.45s; }
+  .Form-anim:nth-child(5) {
+    -webkit-animation-delay: 0.6s;
+    -moz-animation-delay: 0.6s;
+    -ms-animation-delay: 0.6s;
+    -o-animation-delay: 0.6s;
+    animation-delay: 0.6s; }
+  .Form-anim:nth-child(6) {
+    -webkit-animation-delay: 0.75s;
+    -moz-animation-delay: 0.75s;
+    -ms-animation-delay: 0.75s;
+    -o-animation-delay: 0.75s;
+    animation-delay: 0.75s; }
+  .Form-anim:nth-child(7) {
+    -webkit-animation-delay: 0.9s;
+    -moz-animation-delay: 0.9s;
+    -ms-animation-delay: 0.9s;
+    -o-animation-delay: 0.9s;
+    animation-delay: 0.9s; }
 
 @-webkit-keyframes fadeInUp {
   from {
@@ -1537,7 +1621,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   top: 0;
   left: 0;
-  background: #2c3e50; }
+  background: #27272b; }
 
 .Loader-container {
   position: absolute;
@@ -1620,15 +1704,16 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 10px; }
 
 .Button {
-  background-color: #2980b9;
+  background-color: #36b8b8;
   outline: none;
   border: none;
   padding: 10px 15px;
-  color: #fafafa;
-  margin-right: 10px; }
-
-button.Button, input.Button {
-  width: auto; }
+  color: #FFF;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer; }
 
 .Button:last-child {
   margin-right: 0; }
@@ -1643,6 +1728,9 @@ button.Button, input.Button {
   height: 40px;
   width: 40px;
   padding: 10px; }
+
+.Button--remove {
+  background: #c0392b; }
 
 @media all and (min-width: 0) and (max-width: 500px) {
   .Button--full {
@@ -1667,7 +1755,7 @@ button.Button, input.Button {
 
 .Exercise {
   padding: 20px 0;
-  border-bottom: 1px solid #fafafa; }
+  border-bottom: 1px solid #5c5f66; }
 
 .Set {
   position: relative;
@@ -1685,22 +1773,20 @@ button.Button, input.Button {
 
 .Auth {
   width: 100%;
-  padding: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%); }
+  padding-top: 40px;
+  margin: 0 auto; }
   @media all and (min-width: 500px) {
     .Auth {
-      padding: 0;
       width: 430px; } }
 
 .Auth-container {
   white-space: nowrap; }
+
+.Auth-title {
+  margin: 20px 0;
+  padding-bottom: 10px;
+  color: #c1cad3;
+  border-bottom: 1px solid #c1cad3; }
 
 .Auth-form {
   width: 100%;
@@ -1750,10 +1836,39 @@ button.Button, input.Button {
   position: fixed;
   left: 0;
   top: 0;
-  background: #333;
+  height: 100%;
+  z-index: 100; }
+
+.ExerciseList-inner {
+  top: 0;
+  background: #2b2c31;
   bottom: 0;
-  padding: 40px 20px 0 20px;
-  width: 300px; }
+  padding: 60px 20px 0 20px;
+  width: 300px;
+  left: -300px;
+  z-index: 5;
+  overflow: scroll;
+  position: absolute;
+  transition: left 0.3s ease; }
+  @media all and (min-width: 820px) {
+    .ExerciseList-inner {
+      left: 0;
+      padding: 40px 20px 0 20px; } }
+
+.ExerciseList-inner--open {
+  left: 0; }
+
+.ExerciseList-menu {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 10; }
+  @media all and (min-width: 820px) {
+    .ExerciseList-menu {
+      display: none; } }
 
 .Graph-tooltip {
   padding: 20px;
@@ -1767,6 +1882,127 @@ button.Button, input.Button {
   font-weight: bold; }
 
 .SelectedExercise {
-  margin-left: 320px;
-  margin-top: 40px;
-  margin-right: 20px; }
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 60px; }
+  @media all and (min-width: 820px) {
+    .SelectedExercise {
+      margin-left: 320px;
+      margin-top: 40px;
+      margin-right: 20px; } }
+
+.SelectedExercise-top {
+  position: relative; }
+
+.SelectedExercise-title {
+  margin: 0 0 20px 0;
+  border-bottom: 1px solid #c1cad3;
+  padding-bottom: 10px;
+  color: #fafafa; }
+
+.SelectedExercise-remove {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer; }
+
+.AddWorkoutRow {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #5c5f66; }
+  .AddWorkoutRow:last-child {
+    border-bottom: none; }
+  @media all and (min-width: 500px) {
+    .AddWorkoutRow {
+      border: none;
+      padding: 0;
+      display: flex; } }
+
+@media all and (min-width: 500px) {
+  .AddWorkoutRow-values {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    width: 50%; } }
+
+.AddWorkoutRow input {
+  width: 135px;
+  background: transparent;
+  position: relative;
+  color: #5c5f66;
+  border-bottom: 1px solid #2f2f37; }
+  .AddWorkoutRow input:focus {
+    border-bottom: 1px solid #c1cad3;
+    color: #c1cad3; }
+  @media all and (min-width: 500px) {
+    .AddWorkoutRow input {
+      width: auto; } }
+
+.AddWorkoutRow-date {
+  margin-bottom: 10px;
+  background: transparent;
+  color: #5c5f66;
+  border: 1px solid #5c5f66; }
+
+.Icon {
+  display: inline-block;
+  background-size: 100% auto;
+  vertical-align: middle;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.Icon--add {
+  cursor: pointer;
+  height: 30px;
+  width: 30px; }
+
+.Icon--remove {
+  cursor: pointer;
+  height: 30px;
+  width: 30px; }
+
+.ExerciseItem-title {
+  cursor: pointer;
+  transition: color 0.3s ease; }
+  .ExerciseItem-title:hover {
+    color: #c1cad3; }
+
+.Timeline {
+  margin-bottom: 20px;
+  white-space: nowrap;
+  width: 100%;
+  overflow: scroll; }
+
+.Timeline-container {
+  background: #2f2f37;
+  padding: 15px; }
+
+.Timeline-workout {
+  width: 120px;
+  display: inline-block;
+  text-align: center; }
+
+.Timeline-dates {
+  background: #2b2c31;
+  padding: 10px; }
+
+.Timeline-dates-item {
+  width: 120px;
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 18px;
+  line-height: 14px;
+  font-size: 1.8rem;
+  line-height: 1.4rem; }
+  .Timeline-dates-item .day {
+    display: block;
+    font-family: 'DINWebPro-Medium'; }
+  .Timeline-dates-item .month {
+    font-size: 13px;
+    line-height: 13px;
+    font-size: 1.3rem;
+    line-height: 1.3rem; }
