@@ -2,6 +2,8 @@
   display: inline-block;
   background-size: 100% auto;
   vertical-align: middle;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .Icon--add {
@@ -9,6 +11,10 @@
   height: 30px;
   width: 30px;
   @include iconify(add);
+
+  &:hover {
+    @include iconify(add-highlight);
+  }
 }
 
 .Icon--remove {
@@ -16,4 +22,8 @@
   height: 30px;
   width: 30px;
   @include iconify(remove);
+
+  &:hover{
+    @include iconify(remove-highlight);
+  }
 }

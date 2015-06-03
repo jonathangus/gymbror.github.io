@@ -19,8 +19,13 @@
 
 body {
   font: 13px/18px "LucidaGrande",verdana,sans-serif;
+  line-height: 1.55;
+}
+
+@mixin headline() {
+  font-family: 'DINWebPro-Medium';
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'DINWebPro-Medium';
+  @include headline();
 }

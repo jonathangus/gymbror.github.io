@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var Graph = require('./graph.js');
+var Timeline = require('../timeline/timeline.js');
 var AddWorkout = require('./add-workout.js');
 var ExercisesActions = require('../../actions/exercises-actions.js');
 var _ = require('lodash');
@@ -30,10 +30,16 @@ var SelectedExercise =
           timer: 1250,
         }); 
         ExercisesActions.removeExercise(that.props.selectedKey);
+
       });
     },
 
     render:function(){
+      var children = 0;
+      if(this.props.selected) {
+        children = _.values(this.props.selected.workouts).length;
+      }
+
       if(this.props.selected.workouts) {
         for(index in this.props.selected.workouts) {
           lastworkout = this.props.selected.workouts[index];
@@ -50,10 +56,12 @@ var SelectedExercise =
       
       return  (
         <div className='SelectedExercise'>
-          <h1>{this.props.selected.name}</h1>
-          <Graph items={this.props.selected.workouts} />
+          <div className="SelectedExercise-top">
+            <h1 className="SelectedExercise-title">{this.props.selected.name}</h1>
+            <div className="SelectedExercise-remove" onClick={this.removeExercise}></div>
+          </div>
+          { children > 0 ? <Timeline items={this.props.selected.workouts} /> : null }
           <AddWorkout lastworkout={lastworkout} key={this.props.selectedKey} />
-          <button className="Button Button--remove" onClick={this.removeExercise}>Remove exercise</button>
         </div>
         )
     }

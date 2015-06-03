@@ -15,7 +15,7 @@ var Login =
     render:function() {
       return (
         <div className={this.props.class}>
-          <h2>Login</h2>
+          <h1 className="Auth-title">Login</h1>
           <form onSubmit={this.handleLogin} className="Form">
             <input type="text" ref="email" placeholder="Email" required="_" className="Form-input Form-anim" />
             

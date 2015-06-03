@@ -49,16 +49,16 @@ var AddWorkoutRow = React.createClass({
           <label>Värde
             <input value={this.state.value} onChange={this.onChangeValues}/>
           </label>
-          <div role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseValues}></div>
-          <div role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseValues}></div>
+          <button role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseValues}></button>
+          <button role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseValues}></button>
         </div>
 
         <div className="AddWorkoutRow-values">
           <label>Reps
             <input value={this.state.reps} onChange={this.onChangeReps}/>
           </label>
-          <div role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseReps}></div>
-          <div role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseReps}></div>
+          <button role="button" tabindex="0" className="Icon Icon--add" onClick={this.increaseReps}></button>
+          <button role="button" tabindex="0" className="Icon Icon--remove" onClick={this.decreaseReps}></button>
         </div>
       </div>
     )

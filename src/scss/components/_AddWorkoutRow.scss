@@ -1,16 +1,30 @@
 .AddWorkoutRow {
   margin-bottom: $space;
-  display: flex;
+  padding-bottom: $space;
+  border-bottom: 1px solid $color-text;
+
+  &:last-child{
+    border-bottom: none;
+  }
+
+  @include breakpoint($b-mob) {
+    border: none;
+    padding: 0;
+    display: flex;
+  }
 }
 
 .AddWorkoutRow-values {
-  display: flex;
-  align-items: center;
-  margin-right: $space;
-  width: 50%;
+  @include breakpoint($b-mob) {
+    display: flex;
+    align-items: center;
+    margin-right: $space;
+    width: 50%;
+  }
 }
 
 .AddWorkoutRow input {
+  width: 135px;
   background: transparent;
   position: relative;
   color: $color-text;
@@ -18,6 +32,11 @@
   
   &:focus {
     border-bottom: 1px solid $color-highlight;
+    color: $color-highlight;
+  }
+
+  @include breakpoint($b-mob) {
+    width: auto;
   }
 }
 

@@ -1,5 +1,33 @@
 .SelectedExercise {
-  margin-left: $w-eventlist + $space;
-  margin-top: $sectionAir;
+  margin-left: $space;
   margin-right: $space;
+  margin-top: $sectionAir + $space;
+  
+  @include breakpoint($b-tablet) {
+    margin-left: $w-eventlist + $space;
+    margin-top: $sectionAir;
+    margin-right: $space;
+  }
+}
+
+.SelectedExercise-top {
+  position: relative;
+}
+
+.SelectedExercise-title {
+  margin: 0 0 $space 0;
+  border-bottom: 1px solid $color-highlight;
+  padding-bottom: $easy;
+  color: $color-label;
+}
+
+.SelectedExercise-remove {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  @include iconify(delete);
 }

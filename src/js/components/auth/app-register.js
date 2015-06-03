@@ -15,10 +15,10 @@ var Register =
     render:function() {
       return (
         <div className={this.props.class}>
-          <h2>Register</h2>
+          <h1 className="Auth-title">Register</h1>
           <form onSubmit={this.handleRegister} className="Form">
-            <input type="text" required="_" ref="email" placeholder="Email" className="Form-input Form-input--fade Form-anim" />
-            <input type="text" required="_" ref="password" placeholder="Password" type="password" className="Form-input Form-input--fade Form-anim" />
+            <input type="text" required="_" ref="email" placeholder="Email" className="Form-input Form-anim" />
+            <input type="text" required="_" ref="password" placeholder="Password" type="password" className="Form-input Form-anim" />
             <button type="submit" className="Button Form-anim">Register</button>
           </form>
         </div>

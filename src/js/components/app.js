@@ -2,10 +2,9 @@
 var React = require('react');
 var Header = require('./header.js');
 var UserStore = require('../stores/user-store.js');
-var Logout = require('./auth/logout.js');
 var Loader = require('./app-loader.js');
 var Exercises = require('./exercises.js');
-var AnonView = require('./anon-view.js');
+var Auth = require('./auth/app-auth.js');
 var ExercisesStore = require('../stores/exercises-store.js');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
@@ -62,9 +61,7 @@ var APP =
     render:function(){
       return (
         <div className="container">
-          <Header />
-          {this.state.loggedIn ? <Logout /> : null}
-          {!this.state.loggedIn ? <AnonView /> : <Exercises items={this.state.exercises} /> }
+          {!this.state.loggedIn ? <Auth /> : <Exercises items={this.state.exercises} /> }
           <Loader show={this.state.loading} />
         </div>
       )

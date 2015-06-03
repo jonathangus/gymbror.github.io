@@ -2,8 +2,44 @@
   position: fixed;
   left: 0;
   top: 0;
+  height: 100%;
+  z-index: 100;
+  
+}
+
+.ExerciseList-inner {
+  top: 0;
   background: $color-flat-two;
   bottom: 0;
-  padding: $sectionAir $space 0 $space;
+  padding: ($sectionAir + $space) $space 0 $space;
   width: $w-eventlist;
+  left: -$w-eventlist;
+  z-index: 5;
+  overflow: scroll;
+  position: absolute;
+  transition: left 0.3s ease;
+
+  @include breakpoint($b-tablet) {
+    left: 0;
+    padding: $sectionAir $space 0 $space;
+  }
+}
+
+.ExerciseList-inner--open {
+  left: 0;
+}
+
+.ExerciseList-menu {
+  position: absolute;
+  top: $space;
+  left: $space;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 10;
+  @include iconify(menu);
+
+  @include breakpoint($b-tablet) {
+    display: none;
+  }
 }

@@ -1,0 +1,40 @@
+.Timeline {
+  margin-bottom: $space;
+  white-space: nowrap;
+  width: 100%;
+  overflow: scroll;
+}
+
+.Timeline-container {
+  background: $color-flat-third;
+  padding: 15px;
+}
+
+.Timeline-workout {
+  width: $w-timelime-item;
+  display: inline-block;
+  text-align: center;
+}
+
+.Timeline-dates {
+  background: $color-flat-two;
+  padding: $easy;
+}
+
+.Timeline-dates-item {
+  width: $w-timelime-item;
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  @include font-size(18, 14);
+  
+
+  .day {
+    display: block;
+    @include headline();
+  }
+
+  .month {
+     @include font-size(13, 13);
+  }
+}

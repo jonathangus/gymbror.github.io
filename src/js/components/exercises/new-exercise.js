@@ -21,7 +21,7 @@ var NewExercise = React.createClass({
   },
   render:function(){
     return (
-      <div>
+      <div className="u-space-bottom">
         <h2>Add new exercise</h2>
         <form onSubmit={this.addWorkout}>
           <input onChange={this.handleChange} value={this.state.value} />

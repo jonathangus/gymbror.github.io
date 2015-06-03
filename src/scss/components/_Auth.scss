@@ -1,19 +1,26 @@
 .Auth {
   width: 100%;
-  padding: $space;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  @include transform(translate(-50%, -50%));
+  padding-top: $sectionAir;
+  margin: 0 auto;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // @include transform(translate(-50%, -50%));
 
   @include breakpoint($b-mob) {
-    padding: 0;
     width: 430px;
   }
 }
 
 .Auth-container {
   white-space: nowrap;
+}
+
+.Auth-title {
+  margin: $space 0;
+  padding-bottom: $easy;
+  color: $color-highlight;
+  border-bottom: 1px solid $color-highlight;
 }
 
 .Auth-form {

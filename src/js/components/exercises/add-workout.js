@@ -77,14 +77,20 @@ var AddWorkout = React.createClass({
     e.preventDefault();
     var sets = [];
 
+    // for(var index in this.refs) {
+    //     if(index !== 'date') {
+    //     var attr = this.refs[index];
+    //     var set = {
+    //       reps: attr.getDOMNode().querySelector('select').value,
+    //       value: attr.getDOMNode().querySelector('input').value
+    //     }
+    //     sets.push(set);
+    //   }
+    // }
+
     for(var index in this.refs) {
-        if(index !== 'date') {
-        var attr = this.refs[index];
-        var set = {
-          reps: attr.getDOMNode().querySelector('select').value,
-          value: attr.getDOMNode().querySelector('input').value
-        }
-        sets.push(set);
+      if(String(index) !== 'date') {
+        sets.push(this.refs[index].state);
       }
     }
 
@@ -106,7 +112,6 @@ var AddWorkout = React.createClass({
   },
 
   render:function(){
-    console.log(this.state.rows);
     var sets;
     sets = this.state.rows.map(function(row, i) {
       return <AddWorkoutRow ref={'w' + i} value={row.value} reps={row.reps} /> 
