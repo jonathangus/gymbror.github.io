@@ -17,7 +17,8 @@
 clear child float (pika-lendar), using the famous micro clearfix hack
 http://nicolasgallagher.com/micro-clearfix-hack/
 */
-.pika-single:before, .pika-single:after {
+.pika-single:before,
+.pika-single:after {
   content: " ";
   display: table; }
 
@@ -66,7 +67,8 @@ http://nicolasgallagher.com/micro-clearfix-hack/
   filter: alpha(opacity=0);
   opacity: 0; }
 
-.pika-prev, .pika-next {
+.pika-prev,
+.pika-next {
   display: block;
   cursor: pointer;
   position: relative;
@@ -87,20 +89,24 @@ http://nicolasgallagher.com/micro-clearfix-hack/
   *position: absolute;
   *top: 0; }
 
-.pika-prev:hover, .pika-next:hover {
+.pika-prev:hover,
+.pika-next:hover {
   opacity: 1; }
 
-.pika-prev, .is-rtl .pika-next {
+.pika-prev,
+.is-rtl .pika-next {
   float: left;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==');
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==");
   *left: 0; }
 
-.pika-next, .is-rtl .pika-prev {
+.pika-next,
+.is-rtl .pika-prev {
   float: right;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=');
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=");
   *right: 0; }
 
-.pika-prev.is-disabled, .pika-next.is-disabled {
+.pika-prev.is-disabled,
+.pika-next.is-disabled {
   cursor: default;
   opacity: .2; }
 
@@ -114,8 +120,9 @@ http://nicolasgallagher.com/micro-clearfix-hack/
   border-spacing: 0;
   border: 0; }
 
-.pika-table th, .pika-table td {
-  width: 14.28571%;
+.pika-table th,
+.pika-table td {
+  width: 14.285714285714286%;
   padding: 0; }
 
 .pika-table th {
