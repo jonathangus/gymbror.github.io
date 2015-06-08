@@ -1,19 +1,38 @@
 .Timeline {
   margin-bottom: $space;
-  white-space: nowrap;
   width: 100%;
-  overflow: scroll;
+  overflow: hidden;
+  background: $color-flat-third;
+
+  // white-space: nowrap;
+  // width: 100%;
+  // overflow: scroll;
+    white-space: nowrap;
 }
 
-.Timeline-container {
-  background: $color-flat-third;
+.Timeline-wrapper {
+  // background: $color-flat-third;
+}
+
+.Timeline-item {
+  width: $w-timelime-item;
+  display: inline-block;
+  white-space: normal;
+  text-align: center;
+}
+
+.Timeline-item-info {
+  display: inline-block;
+  text-align: center;
   padding: 15px;
 }
 
+.Timeline-item-date {
+
+}
+
 .Timeline-workout {
-  width: $w-timelime-item;
-  display: inline-block;
-  text-align: center;
+
 }
 
 .Timeline-dates {
@@ -21,9 +40,9 @@
   padding: $easy;
 }
 
-.Timeline-dates-item {
-  width: $w-timelime-item;
-  display: inline-block;
+.Timeline-item-date {
+  background: $color-flat-two;
+  padding: $easy 0;
   text-transform: uppercase;
   text-align: center;
   @include font-size(18, 14);

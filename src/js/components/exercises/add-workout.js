@@ -77,17 +77,6 @@ var AddWorkout = React.createClass({
     e.preventDefault();
     var sets = [];
 
-    // for(var index in this.refs) {
-    //     if(index !== 'date') {
-    //     var attr = this.refs[index];
-    //     var set = {
-    //       reps: attr.getDOMNode().querySelector('select').value,
-    //       value: attr.getDOMNode().querySelector('input').value
-    //     }
-    //     sets.push(set);
-    //   }
-    // }
-
     for(var index in this.refs) {
       if(String(index) !== 'date') {
         sets.push(this.refs[index].state);
@@ -108,7 +97,7 @@ var AddWorkout = React.createClass({
       summary: summary / sets.length
     }
 
-    ExercisesActions.addWorkout(newWorkout, this.props.key);
+    ExercisesActions.addWorkout(newWorkout, this.props.id);  
   },
 
   render:function(){

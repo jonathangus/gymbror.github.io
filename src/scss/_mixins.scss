@@ -20,3 +20,12 @@
   -webkit-align-items: $align;
   align-items: $align;
 }
+
+
+@mixin transition($trans) {
+  transition: $trans;
+}
+
+@mixin transform($trans) {
+  transform: $trans;
+}

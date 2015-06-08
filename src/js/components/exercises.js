@@ -13,9 +13,14 @@ var Exercises =
   React.createClass({
 
     getInitialState:function(){
+      _selectedIndex = Object.keys(this.props.items)[0];
       return {
         selected: _.values(this.props.items)[0]
       }
+    },
+
+    componentWillReceiveProps:function(nextProps){
+      this.setState({selected: nextProps.items[_selectedIndex]});
     },
 
     setSelected: function(index) {
@@ -26,6 +31,7 @@ var Exercises =
     },
 
     render:function(){
+      console.log(_selectedIndex);
       return  (
         <div className="container">
           <ExerciseList items={this.props.items} setSelected={this.setSelected} />

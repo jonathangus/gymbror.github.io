@@ -5,11 +5,13 @@ var plumber = require('gulp-plumber');
 var sass = require('gulp-sass');
 var iconify = require('gulp-iconify');
 var livereload = require('gulp-livereload');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass', function () {
     gulp.src('./src/scss/*.scss')
         .pipe(plumber())
         .pipe(sass())
+        .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
         .pipe(gulp.dest('./dist/css'))
         .pipe(livereload());
 });
@@ -17,7 +19,7 @@ gulp.task('sass', function () {
 gulp.task('browserify', function() {
     gulp.src('src/js/main.js')
       .pipe(plumber())
-      .pipe(browserify({transform: 'reactify'}))
+      .pipe(browserify({transform: ['reactify']}))
       .pipe(concat('main.js'))
       .pipe(gulp.dest('dist/js'));
 });
@@ -30,7 +32,6 @@ gulp.task('iconify', function() {
         styleTemplate: '_icon_gen.scss.mustache'
     });
 });
-
 
 gulp.task('copy', function() {
     gulp.src('src/index.html')

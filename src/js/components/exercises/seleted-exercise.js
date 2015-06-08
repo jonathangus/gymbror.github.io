@@ -61,7 +61,7 @@ var SelectedExercise =
             <div className="SelectedExercise-remove" onClick={this.removeExercise}></div>
           </div>
           { children > 0 ? <Timeline items={this.props.selected.workouts} /> : null }
-          <AddWorkout lastworkout={lastworkout} key={this.props.selectedKey} />
+          <AddWorkout lastworkout={lastworkout} id={this.props.selectedKey} />
         </div>
         )
     }

@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 var React = require('react');
 var Header = require('./header.js');
 var UserStore = require('../stores/user-store.js');
@@ -59,9 +58,14 @@ var APP =
     },
 
     render:function(){
+      var view = null;
+      if(!this.state.loading) {
+        view = this.state.loggedIn ? <Exercises items={this.state.exercises} /> : <Auth />;
+      }
+
       return (
         <div className="container">
-          {!this.state.loggedIn ? <Auth /> : <Exercises items={this.state.exercises} /> }
+          {view}
           <Loader show={this.state.loading} />
         </div>
       )
